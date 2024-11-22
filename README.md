@@ -1,6 +1,6 @@
 
-<div style="background-color: #f0f9ff; color: #222; font-family: Arial, sans-serif; padding: 15px; border-radius: 10px;">
-  <h3>Custom Environment</h3>
+<div style="background-color: #f1f9ff; color: #444; font-family: Arial, sans-serif; padding: 15px; border-radius: 10px;">
+  <h3>PreFace</h3>
   <p>
  Hi, I’m Mehdi, and I use this blog to document my learning journey.
  I am a research scientist at Meta<img src="images/Meta.png"  width="30" height="30"> | **Exploring computer vision, computational photography, and Gen-AI 🚀
