@@ -19,7 +19,7 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 ```
 
 <div style="background-color:rgba(20, 10, 230, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0;">
-Mehdi seyfi is a nice guy
+Stable Diffusion is a powerful generative model that synthesizes high-quality images guided by textual descriptions. It leverages the strengths of Variational Autoencoders (VAEs) and Denoising Diffusion Probabilistic Models (DDPMs) to produce images efficiently and effectively.
 </div>
 
 <div style="background-color:rgba(340, 10, 120, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0; margin-top:30px">
