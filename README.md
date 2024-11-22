@@ -3,7 +3,12 @@
  I am a research scientist at Meta <img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀**
 
 
+
+
+
 [<img src="images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en)
+
+
 
 
 ## [![Latent Diffusion](https://img.shields.io/badge/Latent_Diffusion-grey?style=for-the-badge&logo=github)](posts/StableDiffusion.md)
