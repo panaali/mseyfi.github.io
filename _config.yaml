@@ -1,6 +1,6 @@
-title: Architect theme by Haj Mehdi
+title: Mehdi Seyfi
 description: Architect is a theme for GitHub Pages.
-show_downloads: true
+show_downloads: False
 google_analytics:
 theme: jekyll-theme-architect
 remote_theme: pages-themes/architect@v0.2.0
