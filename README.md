@@ -17,7 +17,6 @@ Stable Diffusion is a powerful generative model that synthesizes high-quality im
  
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
-
 ---
 
 ## [![Diffusion Models DDPM](https://img.shields.io/badge/Diffusion_Models-grey?style=for-the-badge&logo=github)](posts/Diffusion.md)
@@ -26,16 +25,6 @@ In this guide, we'll provide sample code for training and inference of a diffusi
  
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
-
----
-
-## [![Diffusion Models DDPM](https://img.shields.io/badge/Learning_Transferable_Visual_Models_From_Natural_Language_Supervision_(CLIP)-grey?style=for-the-badge&logo=github)](posts/CLIP.md)
-<div style="background-color:rgba(246, 245, 250, 0.0470588); text-align:left; vertical-align: center; padding:40px 0;">
-Learning Transferable Visual Models From Natural Language Supervision" is a groundbreaking paper by OpenAI that introduces CLIP (Contrastive Language-Image Pre-training). CLIP learns visual concepts from natural language supervision by jointly training an image encoder and a text encoder to predict the correct pairings of images and texts.
-
-Last updated: {{ site.time | date: "%B %d, %Y" }}_
-</div>
-
 ---
 
 ## [![GLIP](https://img.shields.io/badge/Grounded_Language_Image_Pre_training_(GLIP)-grey?style=for-the-badge&logo=github)](posts/GLIP.md)
@@ -44,7 +33,15 @@ GLIP (Grounded Language-Image Pre-training) is a unified model architecture that
 
 Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
-
 ---
+
+## [![CLIP](https://img.shields.io/badge/Learning_Transferable_Visual_Models_From_Natural_Language_Supervision_(CLIP)-grey?style=for-the-badge&logo=github)](posts/CLIP.md)
+<div style="background-color:rgba(246, 245, 250, 0.0470588); text-align:left; vertical-align: center; padding:40px 0;">
+Learning Transferable Visual Models From Natural Language Supervision" is a groundbreaking paper by OpenAI that introduces CLIP (Contrastive Language-Image Pre-training). CLIP learns visual concepts from natural language supervision by jointly training an image encoder and a text encoder to predict the correct pairings of images and texts.
+
+Last updated: {{ site.time | date: "%B %d, %Y" }}_
+</div>
+---
+
 
 
