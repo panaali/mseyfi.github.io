@@ -2,7 +2,9 @@
 **Hi, I’m Mehdi, and I use this blog to document my learning journey. 
  I am a research scientist at Meta <img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀**
 
-*I’ve discovered that I grasp concepts more effectively when I understand a simple code example associated with them. Therefore, in this blog, I explore new concepts through coding!*
+**I’ve discovered that I grasp concepts more effectively when I understand a simple code example associated with them. Therefore, in this blog, I explore new concepts through coding!**
+
+**I try to use simple scenarios and of-course I never use charGPT as well 🤥**
 <p></p>
 <p></p>
 <p></p>
