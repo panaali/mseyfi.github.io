@@ -1,16 +1,13 @@
-title: "Hi, I’m Mehdi, and I use this blog to document my learning journey. I am a Research scientist at Meta 🧠 | Exploring computer vision, computational photography, and Gen-AI 🚀"
+title: "Mehdi's Blog"
 author:
   name: Mehdi Seyfi
   
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
 description: >
-  Write an awesome description for your new site here. You can edit this line
-  in _config.yml. It will appear in your document head meta (for Google search
-  results) and in your feed.xml site description.
+  "Hi, I’m Mehdi, and I use this blog to document my learning journey. I am a Research scientist at Meta 🧠 | Exploring computer vision, computational photography, and Gen-AI 🚀"
 
 # Build settings
-
 # If you clone the Minima repo and build locally, use this setting.
 theme: minima
 
@@ -43,5 +40,5 @@ minima:
   # solarized-light	   Light variant of solarized color scheme.
   # solarized-dark	   Dark variant of solarized color scheme.
   # solarized	         Adaptive skin for solarized color scheme skins.
-  skin: classic
+  skin: solarized-light
   
