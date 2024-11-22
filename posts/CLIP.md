@@ -1,5 +1,5 @@
 # Learning Transferable Visual Models From Natural Language Supervision (CLIP)
-[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../ReadMe)
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../README)
 
 
 **Introduction**
