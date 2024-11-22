@@ -1,3 +1,5 @@
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
 # Generalization issue with Distillation
 When performing **knowledge distillation**—where a smaller **student** model learns to mimic a larger **teacher** model—it's crucial to ensure that the student not only performs well during training but also generalizes effectively during inference. If you encounter a scenario where the **student's training loss is low** but the **inference loss is high**, while the **teacher model performs well in both**, it indicates a disconnect between training and deployment phases for the student model. Let's delve into the possible **situations** causing this issue and explore **strategies** to address it.
 
