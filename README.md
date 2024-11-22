@@ -3,7 +3,7 @@
  I am a research scientist at Meta 🧠 | Exploring computer vision, computational photography, and Gen-AI 🚀***
 
 
-
+[![LinkedIn](images/LinkedIn_logo_initials.png)]([https://www.linkedin.com/in/your-username/](https://www.linkedin.com/in/mehdi-seyfi-38189220/))
 
 
 
