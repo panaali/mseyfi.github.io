@@ -3,6 +3,8 @@
  I am a research scientist at Meta 🧠 | Exploring computer vision, computational photography, and Gen-AI 🚀**
 
 ![my badge](https://badgen.net/badge/Mehdi/seyfi/red?icon=twitter)
+[![my badge](https://badgen.net/badge/Mehdiseyfi/red?icon=linkedin)](https://www.linkedin.com/in/mehdi-seyfi-38189220/)
+
 
 
 [<img src="images/LinkedIn_logo_initials.png"  width="50" height="50">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="50" height="50">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en)
