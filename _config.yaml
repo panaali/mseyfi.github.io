@@ -1,11 +1,7 @@
 title: "Mehdi's Blog"
-author:
-  name: Mehdi Seyfi
   
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
-description: >
-  "Hi, I’m Mehdi, and I use this blog to document my learning journey. I am a Research scientist at Meta 🧠 | Exploring computer vision, computational photography, and Gen-AI 🚀"
 
 # Build settings
 # If you clone the Minima repo and build locally, use this setting.
