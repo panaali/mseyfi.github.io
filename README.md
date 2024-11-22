@@ -5,5 +5,5 @@
 
 
 # [Stable Diffusion](posts/StableDiffusion.md)
-{% include StableDiffusion_S.md %}
+{% include posts/StableDiffusion_S.md %}
 
