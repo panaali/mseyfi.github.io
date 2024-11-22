@@ -1,2 +1,5 @@
-name: My Site is mon site
-theme: jekyll-theme-architecht
+title: Architect theme by Haj Mehdi
+description: Architect is a theme for GitHub Pages.
+show_downloads: true
+google_analytics:
+theme: jekyll-theme-architect
