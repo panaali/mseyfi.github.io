@@ -45,4 +45,8 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 
 
 
+<div style="background-color: #f0f8ff; color: #333; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+  <h3 style="margin-top: 0;">Custom Text Box</h3>
+  <p>This is a text box with a light blue background, dark font color, and customized margins.Learning Transferable Visual Models From Natural Language Supervision" is a groundbreaking paper by OpenAI that introduces CLIP (Contrastive Language-Image Pre-training). CLIP learns visual concepts from natural language supervision by jointly training an image encoder and a text encoder to predict the correct pairings of images and texts.</p>
+</div>
 
