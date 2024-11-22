@@ -4,7 +4,7 @@
 
 **I’ve discovered that I grasp concepts more effectively when I understand a simple code example associated with them. Therefore, in this blog, I explore new concepts through coding!**
 
-**I try to use simple scenarios and of-course I never use charGPT as well 🤥**
+**I try to use simple scenarios and of-course I never use charGPT🤥**
 <p></p>
 <p></p>
 <p></p>
