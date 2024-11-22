@@ -4,7 +4,7 @@
 
 
 
-<img src="images/LinkedIn_logo_initials.png"  width="300" height="200">
+<img src="images/LinkedIn_logo_initials.png"  width="50" height="50">
 
 
 ## Stable Diffusion [🔗](posts/StableDiffusion.md) 
