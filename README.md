@@ -2,16 +2,12 @@
 <div style="background-color: #f3f3f3; color: #512; font-weight: 700; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
   <h3>Preface:</h3>
   <p>
-
-
-<h5>
 Hi, I’m Mehdi, and I use this blog to document my learning journey.
- I am a research scientist at Meta<img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀
+I am a research scientist at Meta<img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀
 
 I’ve discovered that I grasp concepts more effectively when I understand a simple code example associated with them. Therefore, in this blog, I explore new concepts through coding!
 
 I try to use simple scenarios and of course, I never use ChatGPT🤥
-</h5>.
 </p>
 </div>
 
