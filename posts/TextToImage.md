@@ -1,4 +1,6 @@
-Below is a list of notable text-to-image generation models along with their corresponding research papers, sorted by the year they were published:
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+## Below is a list of notable text-to-image generation models along with their corresponding research papers, sorted by the year they were published:
 
 ---
 
