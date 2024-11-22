@@ -3,6 +3,7 @@
  I am a research scientist at Meta <img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀**
 
 ![my badge](https://badgen.net/badge/Mehdi_seyfi/red?icon=twitter)
+[![my badge](https://flat.badgen.net/badge/StableDiffusion/s/blue?icon=github)](posts/StableDiffusion.md)
 [![my badge](https://badgen.net/badge/StableDiffusion/s/blue?icon=github)](posts/StableDiffusion.md)
 
 [![Stable Diffusion](https://badgen.net/badge/icon/stable%20diffusion?icon=github&label)](posts/StableDiffusion.md)
