@@ -34,42 +34,42 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![Diffusion Models DDPM](https://img.shields.io/badge/DDPM-Diffusion_Models-blue?style=for-the-badge&logo=github)](posts/Diffusion)
-<div style="background-color: #f0f8ff; color: #333;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+<div style="background-color: #f0f8ff; color: #111;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 In this guide, we'll provide sample code for training and inference of a diffusion model, specifically focusing on a Denoising Diffusion Probabilistic Model (DDPM). We'll define the structure for the encoder and decoder using a simplified UNet architecture. Each line of code includes inline comments explaining its purpose, along with the tensor shapes.
  <p></p>
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![GLIP](https://img.shields.io/badge/GLIP-Grounded_Language_Image_Pre_training-blue?style=for-the-badge&logo=github)](posts/GLIP)
-<div style="background-color: #f0f8ff; color: #333;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+<div style="background-color: #f0f8ff; color: #999;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 GLIP (Grounded Language-Image Pre-training) is a unified model architecture that bridges the gap between vision and language by integrating object detection and phrase grounding tasks. It leverages both visual and textual data to perform object detection conditioned on textual descriptions, enabling the model to recognize objects based on their semantic meanings.
 <p></p>
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![CLIP](https://img.shields.io/badge/CLIP-Learning_Transferable_Visual_Models_From_Natural_Language_Supervision-blue?style=for-the-badge&logo=github)](posts/CLIP)
-<div style="background-color: #f0f8ff; color: #333;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+<div style="background-color: #f0f8ff; color: #555;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Learning Transferable Visual Models From Natural Language Supervision" is a groundbreaking paper by OpenAI that introduces CLIP (Contrastive Language-Image Pre-training). CLIP learns visual concepts from natural language supervision by jointly training an image encoder and a text encoder to predict the correct pairings of images and texts.
 <p></p>
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![texttoimage](https://img.shields.io/badge/Text_to_Image-grey?style=for-the-badge&logo=github)](posts/TextToImage)
-<div style="background-color: #f0f8ff; color: #333;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+<div style="background-color: #f0f8ff; color: #454;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 notable text-to-image generation models along with their corresponding research papers, sorted by the year they were published:
  <p></p>
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![DETR](https://img.shields.io/badge/DETR-Detection_Transformer-blue?style=for-the-badge&logo=github)](posts/DETR)
-<div style="background-color: #f0f8ff; color: #333;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+<div style="background-color: #f0f8ff; color: #787;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 The Detection Transformer (DETR) is a novel approach to object detection that leverages Transformers, which were originally designed for sequence-to-sequence tasks like machine translation. Introduced by Carion et al. in 2020, DETR simplifies the object detection pipeline by eliminating the need for hand-crafted components like anchor generation and non-maximum suppression (NMS).
  <p></p>
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![VIT](https://img.shields.io/badge/VIT-Vision_Transformers-blue?style=for-the-badge&logo=github)](posts/VIT)
-<div style="background-color: #f0f8ff; color: #333;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+<div style="background-color: #f0f8ff; color: #567;font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Vision Transformers (ViTs) apply the Transformer architecture, originally designed for natural language processing (NLP), to computer vision tasks like image classification. ViTs treat an image as a sequence of patches (akin to words in a sentence) and process them using Transformer encoders. <p></p>
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
