@@ -3,8 +3,8 @@
  I am a research scientist at Meta 🧠 | Exploring computer vision, computational photography, and Gen-AI 🚀***
 
 
-[![LinkedIn](images/LinkedIn_logo_initials.png)]{ width=50% }([https://www.linkedin.com/in/your-username/](https://www.linkedin.com/in/mehdi-seyfi-38189220/))
 
+<img src="images/LinkedIn_logo_initials.png"  width="300" height="200">
 
 
 ## Stable Diffusion [🔗](posts/StableDiffusion.md) 
