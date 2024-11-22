@@ -5,11 +5,13 @@
 <p></p>
 <p></p>
 
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../README)
+
 [<img src="images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en)
 <p></p>
 <p></p>
 
-## [![Latent Diffusion](https://img.shields.io/badge/Latent_Diffusion-grey?style=for-the-badge&logo=github)](posts/StableDiffusion)
+## [![Latent Diffusion](https://img.shields.io/badge/DDPM-Latent_Diffusion-blue?style=for-the-badge&logo=github)](posts/StableDiffusion)
 <div style="background-color: #f0f8ff; color: #333; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Stable Diffusion is a powerful generative model that synthesizes high-quality images guided by textual/another modality descriptions. It leverages the strengths of Variational Autoencoders (VAEs) and Denoising Diffusion Probabilistic Models (DDPMs) to produce images efficiently and effectively.
  <p></p>
