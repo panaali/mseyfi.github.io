@@ -27,7 +27,7 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <p></p>
 
 ## [![Latent Diffusion](https://img.shields.io/badge/LDM-Latent_Diffusion_Models-blue?style=for-the-badge&logo=github)](posts/StableDiffusion)
-<div style="background-color: #f0f8ff; color: #666;font-weight: 300; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+<div style="background-color: #f0f8ff; color: #666;font-weight: 400; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Stable Diffusion is a powerful generative model that synthesizes high-quality images guided by textual/another modality descriptions. It leverages the strengths of Variational Autoencoders (VAEs) and Denoising Diffusion Probabilistic Models (DDPMs) to produce images efficiently and effectively.
  <p></p>
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
