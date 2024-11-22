@@ -36,7 +36,7 @@ GLIP (Grounded Language-Image Pre-training) is a unified model architecture that
 ---
 
 ## [![CLIP](https://img.shields.io/badge/Learning_Transferable_Visual_Models_From_Natural_Language_Supervision_(CLIP)-grey?style=for-the-badge&logo=github)](posts/CLIP.md)
-<div style="background-color:rgba(250, 25, 30, 0.170588); text-align:left; vertical-align: center; padding:40px 0;">
+<div style="background-color:rgba(250, 25, 30, 0.170588); text-align:left; vertical-align: center; padding:40px 40;">
 Learning Transferable Visual Models From Natural Language Supervision" is a groundbreaking paper by OpenAI that introduces CLIP (Contrastive Language-Image Pre-training). CLIP learns visual concepts from natural language supervision by jointly training an image encoder and a text encoder to predict the correct pairings of images and texts.XXX
 
 *Last updated*: {{ site.time | date: "%B %d, %Y" }}
