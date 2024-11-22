@@ -19,7 +19,7 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 ```
 
 <div style="background-color:rgba(20, 10, 230, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0;">
-<a href="/donate">DONATE</a>
+<a Mehdi seyfi is a nice guy</a>
 </div>
 
 <div style="background-color:rgba(340, 10, 120, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0; margin-top:30px">
