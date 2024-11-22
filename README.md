@@ -2,14 +2,8 @@
 **Hi, I’m Mehdi, and I use this blog to document my learning journey. 
  I am a research scientist at Meta <img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀**
 
-![my badge](https://badgen.net/badge/MehdiSeyfi?icon=twitter&label)
-[![my badge](https://flat.badgen.net/badge/StableDiffusion/s/blue?icon=github)](posts/StableDiffusion.md)
-[![my badge](https://badgen.net/badge/StableDiffusion/s/blue?icon=github)](posts/StableDiffusion.md)
 
-[![Stable Diffusion](https://badgen.net/badge/icon/stable%20diffusion?icon=github&label)](posts/StableDiffusion.md)
-
-
-[<img src="images/LinkedIn_logo_initials.png"  width="50" height="50">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="50" height="50">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en)
+[<img src="images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en)
 
 
 ## [![Latent Diffusion](https://img.shields.io/badge/Latent_Diffusion-grey?style=for-the-badge&logo=github)](posts/StableDiffusion.md)
