@@ -12,7 +12,7 @@
 
 
 ## [![Stable Diffusion](https://img.shields.io/badge/stable_diffusion-grey?style=for-the-badge&logo=github)](posts/StableDiffusion.md)
-<div style="background-color:rgba(246, 245, 250, 0.0470588); text-align:center; vertical-align: middle; padding:40px 0;">
+<div style="background-color:rgba(246, 245, 250, 0.0470588); text-align:center; vertical-align: left; padding:40px 0;">
 Stable Diffusion is a powerful generative model that synthesizes high-quality images guided by textual descriptions. It leverages the strengths of Variational Autoencoders (VAEs) and Denoising Diffusion Probabilistic Models (DDPMs) to produce images efficiently and effectively.
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
