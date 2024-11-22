@@ -1,8 +1,9 @@
  
 <div style="background-color: #f0f8ff; color: #333; font-family: Arial, sans-serif; padding: 15px; border-radius: 5px;">
   <h3>Custom Environment</h3>
-  <p>**Hi, I’m Mehdi, and I use this blog to document my learning journey. 
- I am a research scientist at Meta <img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀**
+  <p>
+ **Hi, I’m Mehdi, and I use this blog to document my learning journey.** 
+ **I am a research scientist at Meta** <img src="images/Meta.png"  width="30" height="30"> | **Exploring computer vision, computational photography, and Gen-AI 🚀**
 
 **I’ve discovered that I grasp concepts more effectively when I understand a simple code example associated with them. Therefore, in this blog, I explore new concepts through coding!**
 
