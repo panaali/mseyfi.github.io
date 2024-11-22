@@ -11,10 +11,17 @@
 [<img src="images/LinkedIn_logo_initials.png"  width="50" height="50">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="50" height="50">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en)
 
 
-## [![Stable Diffusion](https://img.shields.io/badge/stable_diffusion-grey?style=for-the-badge&logo=github)](posts/StableDiffusion.md)
+## [![Latent Diffusion](https://img.shields.io/badge/Latent_Diffusion-grey?style=for-the-badge&logo=github)](posts/StableDiffusion.md)
 <div style="background-color:rgba(246, 245, 250, 0.0470588); text-align:center; vertical-align: left; padding:40px 0;">
-Stable Diffusion is a powerful generative model that synthesizes high-quality images guided by textual descriptions. It leverages the strengths of Variational Autoencoders (VAEs) and Denoising Diffusion Probabilistic Models (DDPMs) to produce images efficiently and effectively.
+Stable Diffusion is a powerful generative model that synthesizes high-quality images guided by textual/another modality descriptions. It leverages the strengths of Variational Autoencoders (VAEs) and Denoising Diffusion Probabilistic Models (DDPMs) to produce images efficiently and effectively.
  
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
+---
+
+## [![Diffusion Models DDPM](https://img.shields.io/badge/Diffusion_Models-grey?style=for-the-badge&logo=github)](posts/Diffusion.md)
+<div style="background-color:rgba(246, 245, 250, 0.0470588); text-align:center; vertical-align: left; padding:40px 0;">
+In this guide, we'll provide sample code for training and inference of a diffusion model, specifically focusing on a Denoising Diffusion Probabilistic Model (DDPM). We'll define the structure for the encoder and decoder using a simplified UNet architecture. Each line of code includes inline comments explaining its purpose, along with the tensor shapes.
+_Last updated: {{ site.time | date: "%B %d, %Y" }}_
+</div>
