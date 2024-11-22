@@ -1,6 +1,6 @@
  
 **Hi, I’m Mehdi, and I use this blog to document my learning journey. 
- I am a research scientist at Meta <img src="images/meta.png"  width="20" height="20"> | Exploring computer vision, computational photography, and Gen-AI 🚀**
+ I am a research scientist at Meta <img src="images/Meta.png"  width="20" height="20"> | Exploring computer vision, computational photography, and Gen-AI 🚀**
 
 ![my badge](https://badgen.net/badge/Mehdi_seyfi/red?icon=twitter)
 [![my badge](https://badgen.net/badge/StableDiffusion/s/blue?icon=github)](posts/StableDiffusion.md)
