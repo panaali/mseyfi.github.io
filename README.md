@@ -1,5 +1,5 @@
- 
-<div style="background-color: #f0f9ff; color: #222; font-family: Arial, sans-serif; padding: 15px; border-radius: 5px;">
+
+<div style="background-color: #f0f9ff; color: #222; font-family: Arial, sans-serif; padding: 15px; border-radius: 10px;">
   <h3>Custom Environment</h3>
   <p>
  Hi, I’m Mehdi, and I use this blog to document my learning journey.
