@@ -1,5 +1,5 @@
 
-<div style="background-color: #f1f9ff; color: #444; font-family: Arial, sans-serif; padding: 15px; border-radius: 10px;">
+<div style="background-color: #b0f8ff; color: #133; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
   <h3>PreFace</h3>
   <p>
  Hi, I’m Mehdi, and I use this blog to document my learning journey.
@@ -14,8 +14,10 @@ I try to use simple scenarios and of course I never use charGPT🤥
 <p></p>
 <p></p>
 <p></p>
+<p></p>
+<p></p>
+<p></p>
 
-[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../README)
 
 [<img src="images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en)
 <p></p>
