@@ -1,6 +1,6 @@
 
 <div style="background-color: #f3f3f3; color: #912; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
-  <h3>**PreFace**</h3>
+  **PreFace**
   <p>
  Hi, I’m Mehdi, and I use this blog to document my learning journey.
  I am a research scientist at Meta<img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀
