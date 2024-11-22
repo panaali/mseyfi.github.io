@@ -4,7 +4,7 @@
 
 
 
-<img src="images/LinkedIn_logo_initials.png"  width="50" height="50">
+[<img src="images/LinkedIn_logo_initials.png"  width="50" height="50">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)
 
 
 ## Stable Diffusion [🔗](posts/StableDiffusion.md) 
