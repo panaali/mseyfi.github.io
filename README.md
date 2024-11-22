@@ -12,7 +12,8 @@
 <!-- -->
 
 ## [![Latent Diffusion](https://img.shields.io/badge/Latent_Diffusion-grey?style=for-the-badge&logo=github)](posts/StableDiffusion)
-<div style="background-color:rgba(200, 200, 210, 0.1470588); text-align:left; vertical-align: center; padding:30px 30;">
+<div style="background-color: #f0f8ff; color: #333; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+  <h3 style="margin-top: 0;">Custom Text Box</h3>
 Stable Diffusion is a powerful generative model that synthesizes high-quality images guided by textual/another modality descriptions. It leverages the strengths of Variational Autoencoders (VAEs) and Denoising Diffusion Probabilistic Models (DDPMs) to produce images efficiently and effectively.
 
  
@@ -20,7 +21,8 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![Diffusion Models DDPM](https://img.shields.io/badge/Diffusion_Models-grey?style=for-the-badge&logo=github)](posts/Diffusion)
-<div style="background-color:rgba(200, 200, 210, 0.1470588); text-align:left; vertical-align: center; padding:30px 30;">
+<div style="background-color: #f0f8ff; color: #333; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+  <h3 style="margin-top: 0;">Custom Text Box</h3>
 In this guide, we'll provide sample code for training and inference of a diffusion model, specifically focusing on a Denoising Diffusion Probabilistic Model (DDPM). We'll define the structure for the encoder and decoder using a simplified UNet architecture. Each line of code includes inline comments explaining its purpose, along with the tensor shapes.
 
  
@@ -28,7 +30,8 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![GLIP](https://img.shields.io/badge/Grounded_Language_Image_Pre_training_(GLIP)-grey?style=for-the-badge&logo=github)](posts/GLIP)
-<div style="background-color:rgba(200, 200, 210, 0.1470588); text-align:left; vertical-align: center; padding:30px 30;">
+<div style="background-color: #f0f8ff; color: #333; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+  <h3 style="margin-top: 0;">Custom Text Box</h3>
 GLIP (Grounded Language-Image Pre-training) is a unified model architecture that bridges the gap between vision and language by integrating object detection and phrase grounding tasks. It leverages both visual and textual data to perform object detection conditioned on textual descriptions, enabling the model to recognize objects based on their semantic meanings.
 
 
@@ -36,7 +39,8 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![CLIP](https://img.shields.io/badge/Learning_Transferable_Visual_Models_From_Natural_Language_Supervision_(CLIP)-grey?style=for-the-badge&logo=github)](posts/CLIP)
-<div style="background-color:rgba(200, 200, 210, 0.1470588); text-align:left; vertical-align: center; padding:30px 30;">
+<div style="background-color: #f0f8ff; color: #333; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+  <h3 style="margin-top: 0;">Custom Text Box</h3>
 Learning Transferable Visual Models From Natural Language Supervision" is a groundbreaking paper by OpenAI that introduces CLIP (Contrastive Language-Image Pre-training). CLIP learns visual concepts from natural language supervision by jointly training an image encoder and a text encoder to predict the correct pairings of images and texts.
 
 
