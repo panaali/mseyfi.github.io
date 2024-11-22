@@ -3,6 +3,8 @@
   <h3>Preface:</h3>
   <p>
 <h5>
+<span style="font-weight: 700;">This text is bold with a font weight of 700.</span>
+
 Hi, I’m Mehdi, and I use this blog to document my learning journey.
  I am a research scientist at Meta<img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀
 
