@@ -34,9 +34,9 @@ The core idea behind classifier-guided diffusion is to **modify the reverse diff
 
 ### **Maximizing Class Probability**
 
-Suppose we have a pre-trained classifier $p_{\text{cls}}(y \mid x)$ that assigns a probability to a class $y$ given an input $x$. During generation, we aim to generate samples $x$ that not only resemble the training data but also belong to a specific class $y$.
+Suppose we have a pre-trained classifier $p_{\textrm{cls}}(y \mid x)$ that assigns a probability to a class $y$ given an input $x$. During generation, we aim to generate samples $x$ that not only resemble the training data but also belong to a specific class $y$.
 
-To achieve this, we want to **maximize the probability** $p_{\text{cls}}(y \mid x)$ of the desired class. Taking the gradient of the log probability $\nabla_x \log p_{\text{cls}}(y \mid x)$ gives us the direction in the data space that increases the likelihood of class $y$.
+To achieve this, we want to **maximize the probability** $p_{\textrm{cls}}(y \mid x)$ of the desired class. Taking the gradient of the log probability $x \log p_{\textrm{cls}}(y \mid x)$ gives us the direction in the data space that increases the likelihood of class $y$.
 
 ### **Steering the Generation Process**
 
