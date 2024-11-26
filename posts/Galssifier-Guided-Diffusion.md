@@ -421,6 +421,37 @@ visualize_sample(generated_x)
 
 ---
 
+
+## **References**
+
+1. **Denoising Diffusion Probabilistic Models**
+   - **Authors:** Jonathan Ho, Ajay Jain, Pieter Abbeel
+   - **Link:** [arXiv:2006.11239](https://arxiv.org/abs/2006.11239)
+   
+2. **Classifier Guidance for Diffusion Models**
+   - **Authors:** Prafulla Dhariwal, Alexander Nichol
+   - **Link:** [GitHub Repository](https://github.com/openai/guided-diffusion)
+   
+3. **Improved Techniques for Training Score-based Generative Models**
+   - **Authors:** Yang Song, Stefano Ermon
+   - **Link:** [arXiv:2006.09011](https://arxiv.org/abs/2006.09011)
+   
+4. **Diffusion Models Beat GANs on Image Synthesis**
+   - **Authors:** Prafulla Dhariwal, Alexander Nichol
+   - **Link:** [arXiv:2105.05233](https://arxiv.org/abs/2105.05233)
+   
+5. **Guided Diffusion Models**
+   - **Authors:** OpenAI
+   - **Link:** [OpenAI Blog](https://openai.com/blog/guided-diffusion)
+   
+6. **Score-Based Generative Modeling through Stochastic Differential Equations**
+   - **Authors:** Yang Song, Stefano Ermon
+   - **Link:** [arXiv:2011.13456](https://arxiv.org/abs/2011.13456)
+   
+7. **Stable Diffusion: High-Resolution Image Synthesis with Latent Diffusion Models**
+   - **Authors:** Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, Björn Ommer
+   - **Link:** [arXiv:2112.10752](https://arxiv.org/abs/2112.10752)
+
 ## **Conclusion**
 
 Classifier-guided diffusion enhances generative models by incorporating external classifiers to steer the generation process toward desired attributes or classes. By leveraging the gradient of the classifier's log probability, the diffusion model can produce more controlled and accurate outputs. This technique has been instrumental in advancing the quality and applicability of generative models in various domains, including image synthesis, text generation, and beyond.
