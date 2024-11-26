@@ -2,8 +2,6 @@
 
 
 # Sample Code for Diffusion Model Training and Inference
-$$ x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon $$
-
 ---
 
 In this guide, we'll provide sample code for training and inference of a diffusion model, specifically focusing on a **Denoising Diffusion Probabilistic Model (DDPM)**. We'll define the structure for the encoder and decoder using a simplified **UNet architecture**. Each line of code includes inline comments explaining its purpose, along with the tensor shapes.
@@ -96,6 +94,7 @@ class UNet(nn.Module):
         
         return x5
 ```
+$$ x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon $$
 
 ### Explanation
 
