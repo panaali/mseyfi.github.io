@@ -26,7 +26,15 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <p></p>
 <p></p>
 
-## [![Classifier-Guided Diffusion](https://img.shields.io/badge/Classifier_Guided_Diffusion-blue?style=for-the-badge&logo=github)](posts/Classifier_Guided_Diffusion)
+## [![CFG](https://img.shields.io/badge/CFD-Classifier_Free_Diffusion-blue?style=for-the-badge&logo=github)](posts/CFG)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+Classifier-Free Diffusion is a powerful technique in generative modeling, particularly within diffusion models, that enhances the quality and controllability of generated outputs without relying on an external classifier. This comprehensive guide will delve into the intricacies of classifier-free diffusion, covering its principles, training and inference processes, intuitive explanations, and practical implementations in tasks like image inpainting, super-resolution, and text-to-image generation.
+<p></p>
+_Last updated: {{ site.time | date: "%B %d, %Y" }}_
+</div>
+
+
+## [![Classifier-Guided Diffusion](https://img.shields.io/badge/CGD-Classifier_Guided_Diffusion-blue?style=for-the-badge&logo=github)](posts/Classifier_Guided_Diffusion)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Classifier-guided diffusion is a powerful technique in generative modeling that leverages an external classifier to steer the generation process toward desired attributes or classes. This method enhances the quality and controllability of generated data, such as images, by integrating class-specific information during the diffusion process.
 <p></p>
