@@ -107,9 +107,7 @@ To enable classifier-free guidance, the model is trained to handle both conditio
 1. **Randomly Drop Conditions**: With a certain probability (e.g., 10%), the conditioning information $\mathbf{c}$ is replaced with a null value during training.
    
    ```math
-   \mathbf{c}' = \left\{
-   \mathbf{c} & \text{with probability } p \\
-   \text{null} & \text{with probability } 1 - p
+   \mathbf{c}' = \begin{cases} \mathbf{c} & \text{with probability } p \\ \text{null} & \text{with probability } 1 - p \end{cases}
    ```
 
 2. **Objective Function**: The model minimizes the difference between the predicted noise and the actual noise added during the forward process, regardless of whether $\mathbf{c}$ is present.
