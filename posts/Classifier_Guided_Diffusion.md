@@ -63,7 +63,9 @@ Imagine navigating a landscape where each point represents a potential image. Th
 
 The standard reverse diffusion step updates $x_{t-1}$ based on $x_t$ and the predicted noise:
 
+
 $$ x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(x_t, t) \right) + \sigma_t z $$
+
 
 where $\alpha_t$, $\beta_t$, $\bar{\alpha}_t$, and $\sigma_t$ are predefined noise schedule parameters, and $z$ is Gaussian noise.
 
@@ -74,7 +76,9 @@ $$ \epsilon_\theta(x_t, t) - s \cdot \sigma_t \nabla_{x_t} \log p_{\text{cls}}(y
 
 Thus, the guided reverse diffusion step becomes:
 
+
 $$ x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \left[ \epsilon_\theta(x_t, t) - s \cdot \sigma_t \nabla_{x_t} \log p_{\text{cls}}(y \mid x_t) \right] \right) + \sigma_t z $$
+
 
 ### **Intuition Behind the Formula**
 
