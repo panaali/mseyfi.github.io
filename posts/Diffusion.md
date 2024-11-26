@@ -2,6 +2,7 @@
 
 
 # Sample Code for Diffusion Model Training and Inference
+\[ x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon \]
 
 ---
 
