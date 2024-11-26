@@ -203,9 +203,11 @@ for epoch in range(num_epochs):
 - **Adding Noise (Forward Diffusion)**:
   - **`x_t`**: Noisy images at time step `t`.
   - Computed using the formula:
+    
     $$
     x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon
     $$
+    
 - **Model Prediction**:
   - The model predicts the noise added to the images.
 - **Loss Calculation**:
