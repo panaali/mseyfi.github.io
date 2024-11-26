@@ -20,8 +20,8 @@ plugins:
   - jekyll-seo-tag
 
 # Theme-specific settings
-kramdown:
-  math_engine: mathjax
+# kramdown:
+#   math_engine: mathjax
   
 # If you want to link only specific pages in your header, use this and add the path to the pages
 # in order as they should show up.
