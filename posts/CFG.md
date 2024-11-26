@@ -165,8 +165,9 @@ Classifier-free diffusion can be applied to various generative tasks. We'll expl
 ### Training Objective
 
 The training process aims to minimize the difference between the predicted noise and the actual noise added during the forward diffusion process. This is formalized using the mean squared error (MSE) loss.
-
-$$ \mathcal{L} = \mathbb{E}_{t, x_0, \epsilon, c} \left[ \|\epsilon - \epsilon_\theta(x_t, t, c)\|^2 \right] $$
+```math
+\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon, c} \left[ \|\epsilon - \epsilon_\theta(x_t, t, c)\|^2 \right]
+```
 
 Where:
 - $x_0$: Original data sample.
