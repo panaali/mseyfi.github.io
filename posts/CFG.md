@@ -1,7 +1,6 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-# Classifier-Free Diffusion:
-**Classifier-Free Diffusion Models: A Comprehensive Guide**
+# Classifier-Free Diffusion Models: A Comprehensive Guide
 
 Classifier-free diffusion models have revolutionized generative modeling by enabling high-quality image generation, super-resolution, inpainting, and text-to-image synthesis without relying on external classifiers. This guide delves deep into the mechanics of classifier-free diffusion, exploring its training and inference processes, mathematical foundations, practical applications, and implementation details with code examples.
 
@@ -55,52 +54,52 @@ This method simplifies the architecture, reduces computational overhead, and mit
 
 ### Forward Diffusion Process
 
-Given data \( x_0 \) from the data distribution \( q(x_0) \), the forward process adds Gaussian noise over \( T \) timesteps:
+Given data $x_0$ from the data distribution $q(x_0)$, the forward process adds Gaussian noise over $T$ timesteps:
 
-\[
+```math
 q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t \mathbf{I})
-\]
+```
 
-Where \( \beta_t \) is the noise variance at timestep \( t \).
+Where $\beta_t$ is the noise variance at timestep $t$.
 
-An analytical expression for \( q(x_t | x_0) \) is:
+An analytical expression for $q(x_t | x_0)$ is:
 
-\[
+```math
 q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) \mathbf{I})
-\]
+```
 
-With \( \bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s) \).
+With $\bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s)$.
 
 ### Reverse Diffusion Process
 
-The model learns to approximate the reverse process \( p_\theta(x_{t-1} | x_t, c) \), where \( c \) is the condition (e.g., text).
+The model learns to approximate the reverse process $p_\theta(x_{t-1} | x_t, c)$, where $c$ is the condition (e.g., text).
 
-The objective is to minimize the variational bound or, equivalently, use denoising score matching to train the model to predict the noise \( \epsilon \):
+The objective is to minimize the variational bound or, equivalently, use denoising score matching to train the model to predict the noise $\epsilon$:
 
-\[
+```math
 \mathcal{L} = \mathbb{E}_{x_0, \epsilon, t} \left[ \| \epsilon - \epsilon_\theta(x_t, t, c) \|^2 \right]
-\]
+```
 
 ### Classifier-Free Guidance
 
-During training, the model is occasionally trained without conditions by dropping them with probability \( p \). Let \( c \) be the condition and \( \emptyset \) represent no condition.
+During training, the model is occasionally trained without conditions by dropping them with probability $p$. Let $c$ be the condition and $\emptyset$ represent no condition.
 
 The model predicts noise as:
 
-\[
+```math
 \epsilon_\theta(x_t, t, c) = \epsilon_\theta(x_t, t, c) \quad \text{(conditional)}
-\]
-\[
+```
+```math
 \epsilon_\theta(x_t, t, \emptyset) \quad \text{(unconditional)}
-\]
+```
 
 During inference, guidance is performed by:
 
-\[
+```math
 \epsilon_{\text{guided}} = \epsilon_\theta(x_t, t, c) + w \cdot (\epsilon_\theta(x_t, t, c) - \epsilon_\theta(x_t, t, \emptyset))
-\]
+```
 
-Where \( w \) is the guidance scale. This amplifies the conditional signal, guiding the generation towards desired conditions.
+Where $w$ is the guidance scale. This amplifies the conditional signal, guiding the generation towards desired conditions.
 
 ## Model Architecture: U-Net in Diffusion Models
 
@@ -112,7 +111,7 @@ The **U-Net** architecture is pivotal in diffusion models due to its ability to 
 - **Decoder:** Upsamples to reconstruct the output.
 - **Skip Connections:** Facilitate information flow between corresponding encoder and decoder layers.
 
-In classifier-free diffusion models, the condition \( c \) (e.g., text embeddings) is incorporated into the U-Net, typically via Adaptive Normalization layers (e.g., FiLM layers) or concatenation with feature maps.
+In classifier-free diffusion models, the condition $c$ (e.g., text embeddings) is incorporated into the U-Net, typically via Adaptive Normalization layers (e.g., FiLM layers) or concatenation with feature maps.
 
 **Illustrative U-Net Structure:**
 
@@ -140,30 +139,30 @@ Output: Predicted noise \epsilon_\theta(x_t, t, c)
 
 ### Training Objectives
 
-The primary objective is to train the model to predict the added noise \( \epsilon \) at each timestep \( t \):
+The primary objective is to train the model to predict the added noise $\epsilon$ at each timestep $t$:
 
-\[
+```math
 \mathcal{L} = \mathbb{E}_{x_0, t, \epsilon} \left[ \| \epsilon - \epsilon_\theta(x_t, t, c) \|^2 \right]
-\]
+```
 
 ### Incorporating Guidance During Training
 
 To enable classifier-free guidance, the model is trained in both conditional and unconditional modes:
 
-1. **With Condition:** With probability \( 1 - p \), provide the condition \( c \) to the model.
-2. **Without Condition:** With probability \( p \), replace \( c \) with \( \emptyset \) (e.g., zero vectors).
+1. **With Condition:** With probability $1 - p$, provide the condition $c$ to the model.
+2. **Without Condition:** With probability $p$, replace $c$ with $\emptyset$ (e.g., zero vectors).
 
 This dual training allows the model to learn to generate both conditionally and unconditionally, facilitating guidance during inference.
 
 ### Training Steps
 
-1. **Sample a Data Point:** \( x_0 \sim q(x_0) \).
-2. **Sample Timestep:** \( t \sim \text{Uniform}(\{1, 2, ..., T\}) \).
-3. **Sample Noise:** \( \epsilon \sim \mathcal{N}(0, \mathbf{I}) \).
-4. **Generate Noisy Input:** \( x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon \).
-5. **Decide Condition:** With probability \( p \), set \( c = \emptyset \); else, use the actual condition.
-6. **Predict Noise:** \( \epsilon_\theta(x_t, t, c) \).
-7. **Compute Loss:** \( \| \epsilon - \epsilon_\theta(x_t, t, c) \|^2 \).
+1. **Sample a Data Point:** $x_0 \sim q(x_0)$.
+2. **Sample Timestep:** $t \sim \text{Uniform}(\{1, 2, ..., T\})$.
+3. **Sample Noise:** $\epsilon \sim \mathcal{N}(0, \mathbf{I})$.
+4. **Generate Noisy Input:** $x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon$.
+5. **Decide Condition:** With probability $p$, set $c = \emptyset$; else, use the actual condition.
+6. **Predict Noise:** $\epsilon_\theta(x_t, t, c)$.
+7. **Compute Loss:** $\| \epsilon - \epsilon_\theta(x_t, t, c) \|^2$.
 8. **Backpropagate and Update Model Parameters.**
 
 ## Inference with Classifier-Free Guidance
@@ -172,23 +171,23 @@ During inference, classifier-free guidance modifies the model's predictions to s
 
 ### Guided Prediction
 
-\[
+```math
 \epsilon_{\text{guided}} = \epsilon_\theta(x_t, t, c) + w \cdot (\epsilon_\theta(x_t, t, c) - \epsilon_\theta(x_t, t, \emptyset))
-\]
+```
 
 Where:
-- \( \epsilon_\theta(x_t, t, c) \): Conditional prediction.
-- \( \epsilon_\theta(x_t, t, \emptyset) \): Unconditional prediction.
-- \( w \): Guidance scale (controls the strength of conditioning).
+- $\epsilon_\theta(x_t, t, c)$: Conditional prediction.
+- $\epsilon_\theta(x_t, t, \emptyset)$: Unconditional prediction.
+- $w$: Guidance scale (controls the strength of conditioning).
 
 ### Sampling Process
 
-1. **Initialize:** Start with \( x_T \sim \mathcal{N}(0, \mathbf{I}) \).
+1. **Initialize:** Start with $x_T \sim \mathcal{N}(0, \mathbf{I})$.
 2. **Iteratively Denoise:**
-   - For each timestep \( t = T, T-1, ..., 1 \):
-     - Compute \( \epsilon_{\text{guided}} \).
-     - Estimate \( x_{t-1} \) using the guided prediction.
-3. **Output:** \( x_0 \) as the generated data.
+   - For each timestep $t = T, T-1, ..., 1$:
+     - Compute $\epsilon_{\text{guided}}$.
+     - Estimate $x_{t-1}$ using the guided prediction.
+3. **Output:** $x_0$ as the generated data.
 
 ## Applications
 
@@ -196,7 +195,7 @@ Where:
 
 **Objective:** Fill in missing regions of an image coherently based on the surrounding context.
 
-**Condition \( c \):** Masked image where missing regions are marked.
+**Condition $c$:** Masked image where missing regions are marked.
 
 **Process:**
 - The model is conditioned on the masked image.
@@ -206,7 +205,7 @@ Where:
 
 **Objective:** Enhance the resolution of a low-resolution image.
 
-**Condition \( c \):** Low-resolution image.
+**Condition $c$:** Low-resolution image.
 
 **Process:**
 - The model is conditioned on the low-resolution input.
@@ -216,7 +215,7 @@ Where:
 
 **Objective:** Generate images based on textual descriptions.
 
-**Condition \( c \):** Text embeddings (e.g., from a transformer model like CLIP).
+**Condition $c$:** Text embeddings (e.g., from a transformer model like CLIP).
 
 **Process:**
 - The model is conditioned on the text embeddings.
@@ -259,15 +258,15 @@ def sample(model, c, guidance_scale, T, device):
 ### Application-Specific Considerations
 
 - **Image Inpainting:**
-  - Condition \( c \): Masked image.
+  - Condition $c$: Masked image.
   - Ensure masked regions are updated, while known regions are preserved.
 
 - **Image Super-Resolution:**
-  - Condition \( c \): Low-resolution image.
+  - Condition $c$: Low-resolution image.
   - Align high-resolution output with low-res input via upsampling layers.
 
 - **Text-to-Image:**
-  - Condition \( c \): Text embeddings.
+  - Condition $c$: Text embeddings.
   - Integrate text features into the U-Net via cross-attention or FiLM layers.
 
 ## Implementation Examples with Code
@@ -336,9 +335,9 @@ class UNet(nn.Module):
 
 **Tensor Sizes Example:**
 
-- Input \( x \): `[B, 3, 64, 64]`
-- Time embedding \( t \): `[B, 1]`
-- Condition \( c \): `[B, C]` (varies per application)
+- Input $x$: `[B, 3, 64, 64]`
+- Time embedding $t$: `[B, 1]`
+- Condition $c$: `[B, C]` (varies per application)
 - Output: `[B, 3, 64, 64]` (predicting noise)
 
 ### Training Code
@@ -430,7 +429,7 @@ def sample_step(x, eps, t):
 ### Image Inpainting Example
 
 **Training Considerations:**
-- **Condition \( c \):** Masked image where masked regions are set to zero or a constant value.
+- **Condition $c$:** Masked image where masked regions are set to zero or a constant value.
 - **Loss:** Only compute loss on masked regions to focus on inpainting.
 
 **Code Adjustments:**
@@ -485,8 +484,8 @@ def train_inpainting(model, dataloader, optimizer, device, num_epochs, T, p_drop
 ### Image Super-Resolution Example
 
 **Training Considerations:**
-- **Condition \( c \):** Low-resolution (LR) image.
-- **Target \( x_0 \):** High-resolution (HR) image.
+- **Condition $c$:** Low-resolution (LR) image.
+- **Target $x_0$:** High-resolution (HR) image.
 - **Loss:** MSE between predicted noise and actual noise.
 
 **Code Adjustments:**
@@ -541,7 +540,7 @@ def train_super_resolution(model, dataloader, optimizer, device, num_epochs, T, 
 ### Text-to-Image Generation Example
 
 **Training Considerations:**
-- **Condition \( c \):** Text embeddings (e.g., from a pre-trained transformer).
+- **Condition $c$:** Text embeddings (e.g., from a pre-trained transformer).
 - **Loss:** Standard MSE loss between predicted and actual noise.
 
 **Code Adjustments:**
@@ -611,18 +610,18 @@ This dual training empowers the model to understand and separate the influence o
 
 ### Diffusion Model Structure
 
-- **Input:** Noisy data \( x_t \), timestep \( t \), condition \( c \) (optional).
+- **Input:** Noisy data $x_t$, timestep $t$, condition $c$ (optional).
 - **Architecture:** U-Net with:
   - Time embeddings integrated into residual blocks.
   - Condition embeddings integrated via Adaptive Normalization or cross-attention.
-- **Output:** Predicted noise \( \epsilon_\theta(x_t, t, c) \).
+- **Output:** Predicted noise $\epsilon_\theta(x_t, t, c)$.
 
 ### Guidance Model Structure
 
 The guidance mechanism leverages both the conditional and unconditional predictions from the same diffusion model:
 
-- **Conditional Prediction:** \( \epsilon_\theta(x_t, t, c) \).
-- **Unconditional Prediction:** \( \epsilon_\theta(x_t, t, \emptyset) \).
+- **Conditional Prediction:** $\epsilon_\theta(x_t, t, c)$.
+- **Unconditional Prediction:** $\epsilon_\theta(x_t, t, \emptyset)$.
 - **Guided Prediction:** Combination of the two using a guidance scale.
 
 This approach eliminates the need for a separate guidance network, simplifying the architecture.
@@ -802,9 +801,9 @@ class UNet(nn.Module):
 
 **Tensor Sizes Example:**
 
-- Input \( x \): `[B, 3, 64, 64]`
-- Time embedding \( t \): `[B, 256*4]`
-- Condition \( c \): `[B, C_cond]` (if any)
+- Input $x$: `[B, 3, 64, 64]`
+- Time embedding $t$: `[B, 256*4]`
+- Condition $c$: `[B, C_cond]` (if any)
 - Output: `[B, 3, 64, 64]`
 
 ### Training Code
