@@ -26,6 +26,13 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <p></p>
 <p></p>
 
+## [![Classifier-Guided Diffusion](https://img.shields.io/badge/Classifier_Guided_Diffusion-blue?style=for-the-badge&logo=github)](posts/Classifier_Guided_Diffusion)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+Classifier-guided diffusion is a powerful technique in generative modeling that leverages an external classifier to steer the generation process toward desired attributes or classes. This method enhances the quality and controllability of generated data, such as images, by integrating class-specific information during the diffusion process.
+<p></p>
+_Last updated: {{ site.time | date: "%B %d, %Y" }}_
+</div>
+
 ## [![Latent Diffusion](https://img.shields.io/badge/LDM-Latent_Diffusion_Models-blue?style=for-the-badge&logo=github)](posts/StableDiffusion)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Stable Diffusion is a powerful generative model that synthesizes high-quality images guided by textual/another modality descriptions. It leverages the strengths of Variational Autoencoders (VAEs) and Denoising Diffusion Probabilistic Models (DDPMs) to produce images efficiently and effectively.
