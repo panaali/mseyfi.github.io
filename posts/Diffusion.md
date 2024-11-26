@@ -193,7 +193,7 @@ for epoch in range(num_epochs):
             print(f"Epoch [{epoch+1}/{num_epochs}], Step [{batch_idx}/{len(data_loader)}], Loss: {loss.item():.4f}")
 ```
 
-### Explanation
+### Explanation.
 
 - **Sampling Time Steps**:
   - **`t`**: Random time steps for each image in the batch.
