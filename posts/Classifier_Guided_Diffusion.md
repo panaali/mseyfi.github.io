@@ -1,6 +1,6 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-# Classifier-Guided Diffusion: An In-Depth Exploration
+## Classifier-Guided Diffusion: An In-Depth Exploration:
 
 Classifier-guided diffusion is a powerful technique in generative modeling that leverages an external classifier to steer the generation process toward desired attributes or classes. This method enhances the quality and controllability of generated data, such as images, by integrating class-specific information during the diffusion process.
 
@@ -421,8 +421,7 @@ visualize_sample(generated_x)
 
 ---
 
-
-## **References**
+## References
 
 1. **Denoising Diffusion Probabilistic Models**
    - **Authors:** Jonathan Ho, Ajay Jain, Pieter Abbeel
