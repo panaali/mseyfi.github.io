@@ -100,9 +100,9 @@ Classifier-free guidance doesn't require a separate guidance network. Instead, t
 ### **Combined Loss Function:**
 
 The overall loss is a combination of both conditional and unconditional losses, typically averaged:
-
-$$ \mathcal{L} = \mathbb{E}_{t, x_0, \epsilon, c} \left[ \lambda \mathcal{L}_{\text{cond}} + (1 - \lambda) \mathcal{L}_{\text{uncond}} \right] $$
-
+```math
+\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon, c} \left[ \lambda \mathcal{L}_{\text{cond}} + (1 - \lambda) \mathcal{L}_{\text{uncond}} \right]
+```
 Where:
 - $\lambda$: Balances the conditional and unconditional loss (often set to 0.5).
 
