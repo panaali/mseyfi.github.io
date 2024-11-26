@@ -192,7 +192,6 @@ for epoch in range(num_epochs):
         if batch_idx % 100 == 0:
             print(f"Epoch [{epoch+1}/{num_epochs}], Step [{batch_idx}/{len(data_loader)}], Loss: {loss.item():.4f}")
 ```
-$$ x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon $$
 
 ### Explanation
 
@@ -203,11 +202,9 @@ $$ x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsi
 - **Adding Noise (Forward Diffusion)**:
   - **`x_t`**: Noisy images at time step `t`.
   - Computed using the formula:
-    
-  
+      
 $$ x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon $$
   
-    
 - **Model Prediction**:
   - The model predicts the noise added to the images.
 - **Loss Calculation**:
