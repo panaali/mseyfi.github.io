@@ -94,7 +94,6 @@ class UNet(nn.Module):
         
         return x5
 ```
-$$ x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon $$
 
 ### Explanation
 
@@ -193,6 +192,7 @@ for epoch in range(num_epochs):
         if batch_idx % 100 == 0:
             print(f"Epoch [{epoch+1}/{num_epochs}], Step [{batch_idx}/{len(data_loader)}], Loss: {loss.item():.4f}")
 ```
+$$ x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon $$
 
 ### Explanation
 
