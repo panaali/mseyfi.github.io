@@ -198,14 +198,14 @@ for epoch in range(num_epochs):
 
 - **Sampling Time Steps**:
   - **`t`**: Random time steps for each image in the batch.
-- **Computing `alpha_hat_t`**:
+- **Computing $\alpha_hat_t$**:
   - Reshaped to match the dimensions of `x`.
 - **Adding Noise (Forward Diffusion)**:
   - **`x_t`**: Noisy images at time step `t`.
   - Computed using the formula:
-    \[
+    $$
     x_t = \sqrt{\hat{\alpha}_t} \cdot x_0 + \sqrt{1 - \hat{\alpha}_t} \cdot \epsilon
-    \]
+    $$
 - **Model Prediction**:
   - The model predicts the noise added to the images.
 - **Loss Calculation**:
