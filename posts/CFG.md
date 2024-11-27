@@ -1,6 +1,6 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-# Classifier-Free Diffusion Models: A Comprehensive Guide
+# Classifier-Free Diffusion Models: A Comprehensive Guide!
 
 1. **Introduction to Classifier-Free Diffusion Models**
 2. **Diffusion Model Structure**
@@ -44,9 +44,8 @@ Diffusion models generate data by reversing a gradual noising process. They cons
 
 Let $\mathbf{x}_0$ be the original data sample (e.g., an image). The forward process adds Gaussian noise over $T$ time steps:
 
-```math
-q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I})
-```
+
+$$ q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I}) $$
 
 where $\beta_t$ is the noise variance schedule.
 
