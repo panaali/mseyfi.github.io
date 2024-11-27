@@ -7,7 +7,7 @@ title: "Learning Muse by Mehdi Seyfi"
 # If you clone the Minima repo and build locally, use this setting.
 theme: minima
 custom_styles:
-  content_width: 200px
+  content_width: 300px
 highlighter: rouge
 
 # As of November 2023, GitHub Pages still uses Minima 2.5.1 (https://pages.github.com/versions/). 
