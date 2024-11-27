@@ -3,7 +3,7 @@
   <h2>Preface:</h2>
   <p>
 Hi, I’m Mehdi, and I use this blog to document my learning journey.
-I am a research scientist at Meta <img src="images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀.
+I am a research scientist at Meta <img src="../images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀.
 
 I’ve discovered that I grasp concepts more effectively when I understand a simple code example associated with them. Therefore, in this blog, I explore new concepts through coding!|
 
@@ -22,7 +22,7 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <p></p>
 
 
-[<img src="images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en) [<img src="images/github.png"  width="40" height="40">](https://github.com/mseyfi)
+[<img src="../images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="../images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en) [<img src="../images/github.png"  width="40" height="40">](https://github.com/mseyfi)
 <p></p>
 <p></p>
 
