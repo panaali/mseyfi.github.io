@@ -6,6 +6,6 @@ $content-width: 45%;
   "minima/skins/{{ site.minima.skin | default: 'classic' }}",
   "minima/initialize";
 
-@font-face {
-    font-weight: 400;
+.markdown-body {
+  font-family: 'Times New Roman', Times, serif;
 }
