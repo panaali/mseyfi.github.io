@@ -49,7 +49,7 @@ $$ q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \bet
 
 where $\beta_t$ is the noise variance schedule.
 
-The reverse process aims to model $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)$, typically parameterized as:
+The reverse process aims to model $p_\theta(\mathbf{x}_{t-1}\|\mathbf{x}_t)$, typically parameterized as:
 
 
 $$ p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \mu_\theta(\mathbf{x}_t, t), \Sigma_\theta(\mathbf{x}_t, t)) $$
