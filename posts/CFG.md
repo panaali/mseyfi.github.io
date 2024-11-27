@@ -51,9 +51,8 @@ where $\beta_t$ is the noise variance schedule.
 
 The reverse process aims to model $p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t)$, typically parameterized as:
 
-```math
-p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \mu_\theta(\mathbf{x}_t, t), \Sigma_\theta(\mathbf{x}_t, t))
-```
+
+$$ p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \mu_\theta(\mathbf{x}_t, t), \Sigma_\theta(\mathbf{x}_t, t)) $$
 
 The model is trained to predict the noise $\epsilon$ added at each step.
 
@@ -82,9 +81,7 @@ Let $\mathbf{c}$ represent the conditioning information (e.g., text prompt). The
 
 During inference, the guided prediction is:
 
-```math
-\epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) + s \cdot \left( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null}) \right)
-```
+$$ \epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) + s \cdot \left( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null}) \right) $$
 
 where $s$ is the guidance scale controlling the strength of conditioning.
 
@@ -105,15 +102,12 @@ To enable classifier-free guidance, the model is trained to handle both conditio
 
 1. **Randomly Drop Conditions**: With a certain probability (e.g., 10%), the conditioning information $\mathbf{c}$ is replaced with a null value during training.
    
-   ```math
-   \mathbf{c}' = \begin{cases} \mathbf{c} & \text{with probability } p \\ \text{null} & \text{with probability } 1 - p \end{cases}
-   ```
+$$  \mathbf{c}' = \begin{cases} \mathbf{c} & \text{with probability } p \\ \text{null} & \text{with probability } 1 - p \end{cases} $$
 
 2. **Objective Function**: The model minimizes the difference between the predicted noise and the actual noise added during the forward process, regardless of whether $\mathbf{c}$ is present.
 
-   ```math
-   \mathcal{L} = \mathbb{E}_{t, \mathbf{x}_0, \epsilon, \mathbf{c}'} \left[ \|\epsilon - \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}')\|^2 \right]
-   ```
+   
+$$ \mathcal{L} = \mathbb{E}_{t, \mathbf{x}_0, \epsilon, \mathbf{c}'} \left[ \|\epsilon - \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}')\|^2 \right] $$
 
 ### **Intuition**
 
@@ -200,9 +194,7 @@ Skip Connections: From encoder to decoder
 
 The training aims to minimize the mean squared error between the predicted noise and the actual noise added during the forward process.
 
-```math
-\mathcal{L} = \mathbb{E}_{t, \mathbf{x}_0, \epsilon, \mathbf{c}'} \left[ \|\epsilon - \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}')\|^2 \right]
-```
+$$ \mathcal{L} = \mathbb{E}_{t, \mathbf{x}_0, \epsilon, \mathbf{c}'} \left[ \|\epsilon - \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}')\|^2 \right] $$
 
 ### **Inference Process**
 
@@ -210,15 +202,13 @@ The training aims to minimize the mean squared error between the predicted noise
 
 2. **Reverse Denoising**: Iteratively apply the denoising step from $t = T$ to $t = 1$:
 
-   ```math
-   \mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( \mathbf{x}_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_{\text{guided}} \right) + \sigma_t \mathbf{z}
-   ```
+   
+   $$ \mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( \mathbf{x}_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_{\text{guided}} \right) + \sigma_t \mathbf{z} $$
 
    where $\epsilon_{\text{guided}}$ is the guided noise prediction:
 
-   ```math
-   \epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) + s \cdot \left( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null}) \right)
-   ```
+
+$$ \epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) + s \cdot \left( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null}) \right) $$
 
    and $\mathbf{z} \sim \mathcal{N}(0, \mathbf{I})$.
 
