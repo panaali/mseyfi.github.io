@@ -88,8 +88,7 @@ where $s$ is the guidance scale controlling the strength of conditioning.
 
 - **Unconditional Prediction**: Represents the general denoising without specific guidance.
 - **Conditional Prediction**: Incorporates the desired attributes via $\mathbf{c}$.
-- **Difference Term**: $\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null})$ captures the influence of the condition.
-- **Difference Term**: $\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null})$ captures the influence of the condition.
+- **Difference Term**: $ \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null}) $ captures the influence of the condition.
 - **Guided Prediction**: Enhances the conditional prediction by scaling the influence of the condition.
 
 ---
