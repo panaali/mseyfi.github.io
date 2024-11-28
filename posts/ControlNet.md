@@ -86,47 +86,49 @@ $$
 
 ### Training and Inference in Diffusion Models
 
-```plaintext
+#### Training and Inference Overview
+
+> ## Training and Inference Overview
 >
- **Training:**
+> **Training:**
+>
+> 1. **Data Preparation:** Start with the original image $$ \mathbf{x}_0 $$.
+>
+> 2. **Sample Time Step:** Randomly select a time step $$ t $$ for each image in the batch to simulate different noise levels.
+>
+>    $$ t \sim \text{Uniform}(1, T) $$
+>
+> 3. **Add Noise (Forward Diffusion):** Add Gaussian noise to $$ \mathbf{x}_0 $$ based on the sampled time step $$ t $$ to obtain $$ \mathbf{x}_t $$.
+>
+>    $$ \mathbf{x}_t = \sqrt{\bar{\alpha}_t} \mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon $$
+>
+> 4. **Predict Noise:** Use the model to predict the noise $$ \epsilon_\theta(\mathbf{x}_t, t) $$.
+>
+>    $$ \epsilon_{\text{pred}} = \epsilon_\theta(\mathbf{x}_t, t) $$
+>
+> 5. **Compute Loss:** Calculate the MSE loss between the predicted noise and the actual noise.
+>
+>    $$ \mathcal{L}_{\text{diffusion}} = \left\| \epsilon_{\text{pred}} - \epsilon \right\|^2 $$
+>
+> 6. **Backpropagation and Optimization:** Backpropagate the loss and update model parameters to minimize the loss.
+>
+>    *Optimizer steps are performed here.*
+>
+> **Inference:**
+>
+> 1. **Initialize with Noise:** Start with a sample of pure noise $$ \mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I}) $$.
+>
+>    $$ \mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I}) $$  
+>    *xt = torch.randn(batch_size, C, H, W)*
+>
+> 2. **Iterative Denoising:** For each time step $$ t = T, T-1, \dots, 1 $$, predict the noise and compute $$ \mathbf{x}_{t-1} $$.
+>
+>    $$ \mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( \mathbf{x}_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(\mathbf{x}_t, t) \right) + \sigma_t \mathbf{z} $$
+>
+> 3. **Output Generation:** The final $$ \mathbf{x}_0 $$ after denoising is the generated image.
+>
+>    $$ \mathbf{x}_0 $$ is the output image.
 
- 1. **Data Preparation:** Start with the original image $$ \mathbf{x}_0 $$.
-
- 2. **Sample Time Step:** Randomly select a time step $$ t $$ for each image in the batch to simulate different noise levels.
-
-    $$ t \sim \text{Uniform}(1, T) $$
-
- 3. **Add Noise (Forward Diffusion):** Add Gaussian noise to $$ \mathbf{x}_0 $$ based on the sampled time step $$ t $$ to obtain $$ \mathbf{x}_t $$.
-
-    $$ \mathbf{x}_t = \sqrt{\bar{\alpha}_t} \mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon $$
-
- 4. **Predict Noise:** Use the model to predict the noise $$ \epsilon_\theta(\mathbf{x}_t, t) $$.
-
-    $$ \epsilon_{\text{pred}} = \epsilon_\theta(\mathbf{x}_t, t) $$
-
- 5. **Compute Loss:** Calculate the MSE loss between the predicted noise and the actual noise.
-
-    $$ \mathcal{L}_{\text{diffusion}} = \left\| \epsilon_{\text{pred}} - \epsilon \right\|^2 $$
-
- 6. **Backpropagation and Optimization:** Backpropagate the loss and update model parameters to minimize the loss.
-
-    *Optimizer steps are performed here.*
-
- **Inference:**
-
- 1. **Initialize with Noise:** Start with a sample of pure noise $$ \mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I}) $$.
-
-    $$ \mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I}) $$  
-    xt = torch.randn(batch_size, C, H, W)
-
- 2. **Iterative Denoising:** For each time step $$ t = T, T-1, \dots, 1 $$, predict the noise and compute $$ \mathbf{x}_{t-1} $$.
-
-    $$ \mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( \mathbf{x}_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(\mathbf{x}_t, t) \right) + \sigma_t \mathbf{z} $$
-
- 3. **Output Generation:** The final $$ \mathbf{x}_0 $$ after denoising is the generated image.
-
-    $$ \mathbf{x}_0 $$ is the output image.
-```
 ---
 
 ## 3. Introducing ControlNet
@@ -778,8 +780,3 @@ Understanding the mathematical foundations, training procedures, and architectur
 
 ---
 
-# End of Tutorial
-
-This comprehensive guide provides an in-depth understanding of ControlNet within the context of diffusion models. By exploring the mathematical foundations, training and inference procedures, and practical implementations, you are equipped to leverage ControlNet's capabilities in various computer vision and AI applications. The provided PyTorch implementations serve as a foundation for further experimentation and customization to suit specific project requirements.
-
-If you have further questions or need additional clarifications on any section, feel free to reach out!
