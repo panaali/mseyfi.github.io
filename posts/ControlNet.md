@@ -1,6 +1,8 @@
-# **ControlNet: A Comprehensive Professional Tutorial**
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-## **Table of Contents**
+# ControlNet: A Comprehensive Professional Tutorial
+
+## Table of Contents
 
 1. [Introduction to Diffusion Models](#1-introduction-to-diffusion-models)
 2. [Understanding the Diffusion Process](#2-understanding-the-diffusion-process)
