@@ -53,7 +53,7 @@ q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t
 $$
 
 - $\beta_t$: A variance schedule parameter controlling the amount of noise added at each step.
-- **Cumulative Product** $\bar{\alpha}_t$: Defined as $\bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s)$.
+- **Cumulative Product** $ \bar{\alpha}_t $: Defined as $ \bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s) $.
 
 After many steps, $\mathbf{x}_T$ becomes nearly pure noise, effectively erasing the original data structure.
 
