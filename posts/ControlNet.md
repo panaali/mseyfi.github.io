@@ -169,11 +169,11 @@ $$
 
 **Role of U-Net in ControlNet:**
 
-In ControlNet, the U-Net architecture serves as the core component for predicting the noise `ε`, similar to its role in standard diffusion models. However, ControlNet extends this by conditioning the noise prediction on additional control signals `c`. This allows the model to incorporate specific structural or semantic information into the denoising process, enabling more controlled and guided image generation.
+In ControlNet, the U-Net architecture serves as the core component for predicting the noise $$\mathbf{\epsilon}$$, similar to its role in standard diffusion models. However, ControlNet extends this by conditioning the noise prediction on additional control signals $$\mathbf{c}$$. This allows the model to incorporate specific structural or semantic information into the denoising process, enabling more controlled and guided image generation.
 
 **Image Generation via Formulation:**
 
-During inference, ControlNet follows the same reverse diffusion process as standard diffusion models. Starting with pure noise `x_T`, it iteratively denoises the image using the U-Net's predictions conditioned on the control signals `c`. This ensures that the generated image `x₀` not only resembles realistic data but also adheres to the provided control constraints.
+During inference, ControlNet follows the same reverse diffusion process as standard diffusion models. Starting with pure noise $$\mathbf{x}_T$$, it iteratively denoises the image using the U-Net's predictions conditioned on the control signals $$\mathbf{c}$$. This ensures that the generated image $$\mathbf{x}_0$$ not only resembles realistic data but also adheres to the provided control constraints.
 
 ### Diffusion Loss Function
 
@@ -193,7 +193,7 @@ $$
 \mathcal{L}_{\text{perceptual}} = \mathbb{E}_{x₀, c, t} \left[ \| φ(x₀) - φ(x_{\text{generated}}) \|^2 \right]
 $$
 
-- **`φ`:** A feature extractor (e.g., a pre-trained convolutional neural network).
+- **$$\mathbf{\phi}$$:** A feature extractor (e.g., a pre-trained convolutional neural network).
 
 ### Combined Loss Function
 
@@ -203,7 +203,7 @@ $$
 \mathcal{L}_{\text{total}} = \mathcal{L}_{\text{diffusion}} + λ \, \mathcal{L}_{\text{perceptual}}
 $$
 
-- **`λ`:** A hyperparameter balancing the two loss components.
+- **$\lambda$:** A hyperparameter balancing the two loss components.
 
 ---
 
@@ -217,7 +217,7 @@ The **controller** in ControlNet is responsible for processing the control signa
 
 ### ControlNet Implementation
 
-```plaintext
+```python
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -350,7 +350,7 @@ The `ControlNet` class defined above extends the standard U-Net architecture by 
 
 Below is a comprehensive PyTorch implementation for training ControlNet. This includes data loading, model initialization, the training loop with loss computation, and optimization steps.
 
-```plaintext
+```python
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -538,7 +538,7 @@ for epoch in range(num_epochs):
 
 The inference process involves generating images by iteratively denoising from pure noise while adhering to the control signals. Below is a comprehensive PyTorch implementation for performing inference with ControlNet.
 
-```plaintext
+```python
 import torch
 import torch.nn.functional as F
 import torchvision.utils as vutils
