@@ -187,7 +187,7 @@ $$
 
 In addition to the diffusion loss, ControlNet may incorporate auxiliary loss functions to ensure that the control signals are accurately integrated and that the generated output adheres to the control conditions. One common approach is to use a perceptual loss that compares features extracted from the generated image and the control signal.
 
-For example, using a perceptual loss `L_perceptual`:
+For example, using a perceptual loss $$\mathcal{L}_{\text{perceptual}}$$ :
 
 $$
 \mathcal{L}_{\text{perceptual}} = \mathbb{E}_{x₀, c, t} \left[ \| φ(x₀) - φ(x_{\text{generated}}) \|^2 \right]
