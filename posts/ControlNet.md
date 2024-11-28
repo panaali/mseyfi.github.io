@@ -1,8 +1,7 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+# **ControlNet: A Comprehensive Professional Tutorial**
 
-# ControlNet: A Comprehensive Professional Tutorial
-
-## Table of Contents
+## **Table of Contents**
 
 1. [Introduction to Diffusion Models](#1-introduction-to-diffusion-models)
 2. [Understanding the Diffusion Process](#2-understanding-the-diffusion-process)
@@ -46,35 +45,35 @@ Diffusion models are a class of generative models that have achieved state-of-th
 
 ### **Forward Diffusion Process**
 
-The forward diffusion process systematically corrupts the data by adding Gaussian noise over $T$ time steps. Each step $t$ modifies the data $\mathbf{x}_{t-1}$ to $\mathbf{x}_t$ as follows:
+The forward diffusion process systematically corrupts the data by adding Gaussian noise over \( T \) time steps. Each step \( t \) modifies the data \( \mathbf{x}_{t-1} \) to \( \mathbf{x}_t \) as follows:
 
-$$
+\[
 q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I})
-$$
+\]
 
-- $\beta_t$: A variance schedule parameter controlling the amount of noise added at each step.
-- **Cumulative Product** $ \bar{\alpha}_t $: Defined as $ \bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s) $.
+- **\( \beta_t \):** A variance schedule parameter controlling the amount of noise added at each step.
+- **Cumulative Product \( \bar{\alpha}_t \):** Defined as \( \bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s) \).
 
-After many steps, $\mathbf{x}_T$ becomes nearly pure noise, effectively erasing the original data structure.
+After many steps, \( \mathbf{x}_T \) becomes nearly pure noise, effectively erasing the original data structure.
 
 ### **Reverse Diffusion Process**
 
-The reverse process aims to reconstruct the original data from the noisy sample $\mathbf{x}_T$. The model $p_\theta$ approximates the reverse conditional probabilities:
+The reverse process aims to reconstruct the original data from the noisy sample \( \mathbf{x}_T \). The model \( p_\theta \) approximates the reverse conditional probabilities:
 
-$$
+\[
 p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \mu_\theta(\mathbf{x}_t, t), \Sigma_\theta(\mathbf{x}_t, t))
-$$
+\]
 
-- $\mu_\theta$ and $\Sigma_\theta$: Learnable parameters representing the mean and covariance of the reverse distribution.
-- **Objective:** Learn $\mu_\theta$ and $\Sigma_\theta$ such that the reverse process can accurately denoise $\mathbf{x}_t$ back to $\mathbf{x}_{t-1}$.
+- **\( \mu_\theta \) and \( \Sigma_\theta \):** Learnable parameters representing the mean and covariance of the reverse distribution.
+- **Objective:** Learn \( \mu_\theta \) and \( \Sigma_\theta \) such that the reverse process can accurately denoise \( \mathbf{x}_t \) back to \( \mathbf{x}_{t-1} \).
 
 ### **Diffusion Loss Function**
 
-The model is trained to predict the noise $\epsilon$ added at each time step. The loss function typically used is the Mean Squared Error (MSE) between the predicted noise and the actual noise:
+The model is trained to predict the noise \( \epsilon \) added at each time step. The loss function typically used is the Mean Squared Error (MSE) between the predicted noise and the actual noise:
 
-$$
+\[
 \mathcal{L}_{\text{diffusion}} = \mathbb{E}_{\mathbf{x}_0, \epsilon, t} \left[ \left\| \epsilon - \epsilon_\theta(\mathbf{x}_t, t) \right\|^2 \right]
-$$
+\]
 
 ### **Training and Inference in Diffusion Models**
 
@@ -84,15 +83,15 @@ To understand how diffusion models are trained and how they generate images duri
 
 | **Process** | **Step** | **Description** | **Formulation/Code Snippet** |
 |-------------|----------|-----------------|-------------------------------|
-| **Training** | **1. Data Preparation** | Start with the original image $\mathbf{x}_0$. | *No specific code; data is loaded from the dataset.* |
-|             | **2. Sample Time Step** | Randomly select a time step $t$ for each image in the batch to simulate different noise levels. | $t \sim \text{Uniform}(1, T)$ |
-|             | **3. Add Noise (Forward Diffusion)** | Add Gaussian noise to $\mathbf{x}_0$ based on the sampled time step $t$ to obtain $\mathbf{x}_t$. | \(\mathbf{x}_t = \sqrt{\bar{\alpha}_t} \mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon\) |
-|             | **4. Predict Noise** | Use the model to predict the noise $\epsilon_\theta(\mathbf{x}_t, t)$. | \(\epsilon_{\text{pred}} = \epsilon_\theta(\mathbf{x}_t, t)\) |
+| **Training** | **1. Data Preparation** | Start with the original image \( \mathbf{x}_0 \). | *No specific code; data is loaded from the dataset.* |
+|             | **2. Sample Time Step** | Randomly select a time step \( t \) for each image in the batch to simulate different noise levels. | \( t \sim \text{Uniform}(1, T) \) |
+|             | **3. Add Noise (Forward Diffusion)** | Add Gaussian noise to \( \mathbf{x}_0 \) based on the sampled time step \( t \) to obtain \( \mathbf{x}_t \). | \(\mathbf{x}_t = \sqrt{\bar{\alpha}_t} \mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon\) |
+|             | **4. Predict Noise** | Use the model to predict the noise \( \epsilon_\theta(\mathbf{x}_t, t) \). | \(\epsilon_{\text{pred}} = \epsilon_\theta(\mathbf{x}_t, t)\) |
 |             | **5. Compute Loss** | Calculate the MSE loss between the predicted noise and the actual noise. | \(\mathcal{L}_{\text{diffusion}} = \left\| \epsilon_{\text{pred}} - \epsilon \right\|^2\) |
 |             | **6. Backpropagation and Optimization** | Backpropagate the loss and update model parameters to minimize the loss. | *Optimizer steps are performed here.* |
-| **Inference** | **1. Initialize with Noise** | Start with a sample of pure noise $\mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I})$. | \(\mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I})\) <br> *xt = torch.randn(batch_size, C, H, W)* |
-|             | **2. Iterative Denoising** | For each time step $t = T, T-1, \dots, 1$, predict the noise and compute $\mathbf{x}_{t-1}$. | \(\mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( \mathbf{x}_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(\mathbf{x}_t, t) \right) + \sigma_t \mathbf{z}\) |
-|             | **3. Output Generation** | The final $\mathbf{x}_0$ after denoising is the generated image. | \(\mathbf{x}_0\) is the output image. |
+| **Inference** | **1. Initialize with Noise** | Start with a sample of pure noise \( \mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I}) \). | \(\mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I})\) <br> *xt = torch.randn(batch_size, C, H, W)* |
+|             | **2. Iterative Denoising** | For each time step \( t = T, T-1, \dots, 1 \), predict the noise and compute \( \mathbf{x}_{t-1} \). | \(\mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( \mathbf{x}_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(\mathbf{x}_t, t) \right) + \sigma_t \mathbf{z}\) |
+|             | **3. Output Generation** | The final \( \mathbf{x}_0 \) after denoising is the generated image. | \(\mathbf{x}_0\) is the output image. |
 
 ---
 
@@ -125,41 +124,41 @@ ControlNet integrates control signals into the diffusion process, enabling the m
 
 ### **Extending the Diffusion Model with ControlNet**
 
-ControlNet enhances the standard diffusion model by introducing a conditional input $\mathbf{c}$, which represents the control signal (e.g., edge maps, segmentation masks). The model now predicts the noise conditioned on both the noisy data $\mathbf{x}_t$, the time step $t$, and the control signal $\mathbf{c}$:
+ControlNet enhances the standard diffusion model by introducing a conditional input \( \mathbf{c} \), which represents the control signal (e.g., edge maps, segmentation masks). The model now predicts the noise conditioned on both the noisy data \( \mathbf{x}_t \), the time step \( t \), and the control signal \( \mathbf{c} \):
 
-$$
+\[
 \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) = \text{ControlNet}(\mathbf{x}_t, t, \mathbf{c})
-$$
+\]
 
 ### **Diffusion Loss Function**
 
 As in standard diffusion models, ControlNet utilizes the Mean Squared Error (MSE) between the predicted noise and the actual noise. However, the prediction is now conditioned on the control signal:
 
-$$
+\[
 \mathcal{L}_{\text{diffusion}} = \mathbb{E}_{\mathbf{x}_0, \mathbf{c}, \epsilon, t} \left[ \left\| \epsilon - \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) \right\|^2 \right]
-$$
+\]
 
 ### **ControlNet Loss Function**
 
 In addition to the diffusion loss, ControlNet may incorporate auxiliary loss functions to ensure that the control signals are accurately integrated and that the generated output adheres to the control conditions. One common approach is to use a perceptual loss that compares features extracted from the generated image and the control signal.
 
-For example, using a perceptual loss $\mathcal{L}_{\text{perceptual}}$:
+For example, using a perceptual loss \( \mathcal{L}_{\text{perceptual}} \):
 
-$$
+\[
 \mathcal{L}_{\text{perceptual}} = \mathbb{E}_{\mathbf{x}_0, \mathbf{c}, t} \left[ \left\| \phi(\mathbf{x}_0) - \phi(\mathbf{x}_{\text{generated}}) \right\|^2 \right]
-$$
+\]
 
-- **$\phi$:** A feature extractor (e.g., a pre-trained convolutional neural network).
+- **\( \phi \):** A feature extractor (e.g., a pre-trained convolutional neural network).
 
 ### **Combined Loss Function**
 
 The total loss for ControlNet can be expressed as:
 
-$$
+\[
 \mathcal{L}_{\text{total}} = \mathcal{L}_{\text{diffusion}} + \lambda \mathcal{L}_{\text{perceptual}}
-$$
+\]
 
-- **$\lambda$:** A hyperparameter balancing the two loss components.
+- **\( \lambda \):** A hyperparameter balancing the two loss components.
 
 ---
 
@@ -342,12 +341,12 @@ for epoch in range(num_epochs):
    - **Batch Size, Learning Rate, Epochs, etc.:** Set according to your computational resources and dataset size.
 
 4. **Precompute Constants:**
-   - **$\beta$, $\alpha$, $\bar{\alpha}_t$, and $1 - \bar{\alpha}_t$:** These are crucial for the diffusion process and are precomputed for efficiency.
+   - **\( \beta \), \( \alpha \), \( \bar{\alpha}_t \), and \( 1 - \bar{\alpha}_t \):** These are crucial for the diffusion process and are precomputed for efficiency.
 
 5. **Training Loop:**
-   - **Sampling Time Steps:** Randomly samples a time step $t$ for each image in the batch.
-   - **Adding Noise:** Computes the noisy image $\mathbf{x}_t$ using the forward diffusion formula.
-   - **Predicting Noise:** Uses ControlNet to predict the noise $\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c})$.
+   - **Sampling Time Steps:** Randomly samples a time step \( t \) for each image in the batch.
+   - **Adding Noise:** Computes the noisy image \( \mathbf{x}_t \) using the forward diffusion formula.
+   - **Predicting Noise:** Uses ControlNet to predict the noise \( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) \).
    - **Computing Loss:** Calculates the diffusion loss (and optionally the perceptual loss).
    - **Backpropagation:** Updates the model parameters to minimize the loss.
 
@@ -465,13 +464,13 @@ if __name__ == "__main__":
    - **Purpose:** Performs a single step of the reverse diffusion process.
    - **Inputs:**
      - **`model`:** The trained ControlNet model.
-     - **`xt`:** The current noisy image at time step $t$.
+     - **`xt`:** The current noisy image at time step \( t \).
      - **`t`:** The current time step.
      - **`c`:** The control signal associated with the image.
      - **`beta`, `alpha_cumprod`, `one_minus_alpha_cumprod`:** Precomputed constants for the diffusion process.
    - **Process:**
      - Predicts the noise using ControlNet.
-     - Computes $\mathbf{x}_{t-1}$ using the reverse diffusion formula.
+     - Computes \( \mathbf{x}_{t-1} \) using the reverse diffusion formula.
      - Adds Gaussian noise if not at the final step to maintain stochasticity.
 
 2. **Inference Function (`generate_image`):**
@@ -483,7 +482,7 @@ if __name__ == "__main__":
      - **`beta`:** Tensor of beta values defining the noise schedule.
    - **Process:**
      - Initializes with random noise.
-     - Iteratively applies the reverse diffusion step for each time step from $T$ to 1.
+     - Iteratively applies the reverse diffusion step for each time step from \( T \) to 1.
      - Clamps the final image to ensure pixel values are within a valid range.
      - Returns the generated image tensor.
 
@@ -677,7 +676,7 @@ if __name__ == "__main__":
 | **Guidance Method**         | Uses explicit control signals (e.g., edge maps, segmentation masks) | Conditions on textual or other embeddings                      | Utilizes gradients from an external classifier                | Combines conditional and unconditional model predictions      |
 | **Model Complexity**        | Adds additional parameters and pathways for control signals         | Operates in a latent space for efficiency                      | Requires training and integrating a separate classifier      | Single model architecture without external classifiers       |
 | **Intuition**               | Provides direct structural or semantic control over generation     | Generates images based on latent representations and conditions | Steers generation by modifying gradients based on classifier feedback | Balances conditional adherence and diversity without a classifier |
-| **Mathematical Formulation**| $\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c})$               | $\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c})$            | Modifies $\epsilon_\theta$ using classifier gradients    | $\epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) + s (\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null}))$ |
+| **Mathematical Formulation**| \( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) \)               | \( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) \)            | Modifies \( \epsilon_\theta \) using classifier gradients    | \( \epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) + s (\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null})) \) |
 | **Training Complexity**     | Requires paired data of images and control signals                  | Standard training with conditioning data                        | More complex due to dual-model training                       | Simpler as it avoids training an external classifier          |
 | **Control Precision**       | High precision with explicit control inputs                         | Moderate precision based on condition embeddings                | Depends on classifier accuracy and guidance strength          | Offers adjustable precision through guidance scaling        |
 | **Flexibility**             | Highly flexible with various types of control signals               | Primarily text-based or similar high-level conditions           | Limited to classifier-defined conditions                      | Flexible through internal conditional mechanisms             |
@@ -736,9 +735,3 @@ Understanding the mathematical foundations, training procedures, and architectur
    - Hugging Face. *Diffusers: State-of-the-Art Diffusion Models*. [GitHub Repository](https://github.com/huggingface/diffusers)
 
 ---
-
-# **End of Tutorial**
-
-This comprehensive guide provides an in-depth understanding of ControlNet within the context of diffusion models. By exploring the mathematical foundations, training and inference procedures, and practical implementations, you are equipped to leverage ControlNet's capabilities in various computer vision and AI applications. The provided PyTorch implementations serve as a foundation for further experimentation and customization to suit specific project requirements.
-
-If you have further questions or need additional clarifications on any section, feel free to reach out!
