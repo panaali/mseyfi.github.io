@@ -47,9 +47,9 @@ Diffusion models are a class of generative models that have achieved state-of-th
 
 The forward diffusion process systematically corrupts the data by adding Gaussian noise over \( T \) time steps. Each step \( t \) modifies the data \( \mathbf{x}_{t-1} \) to \( \mathbf{x}_t \) as follows:
 
-\[
+$$
 q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I})
-\]
+$$
 
 - **\( \beta_t \):** A variance schedule parameter controlling the amount of noise added at each step.
 - **Cumulative Product \( \bar{\alpha}_t \):** Defined as \( \bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s) \).
@@ -60,9 +60,9 @@ After many steps, \( \mathbf{x}_T \) becomes nearly pure noise, effectively eras
 
 The reverse process aims to reconstruct the original data from the noisy sample \( \mathbf{x}_T \). The model \( p_\theta \) approximates the reverse conditional probabilities:
 
-\[
+$$
 p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \mu_\theta(\mathbf{x}_t, t), \Sigma_\theta(\mathbf{x}_t, t))
-\]
+$$
 
 - **\( \mu_\theta \) and \( \Sigma_\theta \):** Learnable parameters representing the mean and covariance of the reverse distribution.
 - **Objective:** Learn \( \mu_\theta \) and \( \Sigma_\theta \) such that the reverse process can accurately denoise \( \mathbf{x}_t \) back to \( \mathbf{x}_{t-1} \).
@@ -71,9 +71,9 @@ p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \mu_\t
 
 The model is trained to predict the noise \( \epsilon \) added at each time step. The loss function typically used is the Mean Squared Error (MSE) between the predicted noise and the actual noise:
 
-\[
+$$
 \mathcal{L}_{\text{diffusion}} = \mathbb{E}_{\mathbf{x}_0, \epsilon, t} \left[ \left\| \epsilon - \epsilon_\theta(\mathbf{x}_t, t) \right\|^2 \right]
-\]
+$$
 
 ### **Training and Inference in Diffusion Models**
 
@@ -126,17 +126,17 @@ ControlNet integrates control signals into the diffusion process, enabling the m
 
 ControlNet enhances the standard diffusion model by introducing a conditional input \( \mathbf{c} \), which represents the control signal (e.g., edge maps, segmentation masks). The model now predicts the noise conditioned on both the noisy data \( \mathbf{x}_t \), the time step \( t \), and the control signal \( \mathbf{c} \):
 
-\[
+$$
 \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) = \text{ControlNet}(\mathbf{x}_t, t, \mathbf{c})
-\]
+$$
 
 ### **Diffusion Loss Function**
 
 As in standard diffusion models, ControlNet utilizes the Mean Squared Error (MSE) between the predicted noise and the actual noise. However, the prediction is now conditioned on the control signal:
 
-\[
+$$
 \mathcal{L}_{\text{diffusion}} = \mathbb{E}_{\mathbf{x}_0, \mathbf{c}, \epsilon, t} \left[ \left\| \epsilon - \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) \right\|^2 \right]
-\]
+$$
 
 ### **ControlNet Loss Function**
 
@@ -144,9 +144,9 @@ In addition to the diffusion loss, ControlNet may incorporate auxiliary loss fun
 
 For example, using a perceptual loss \( \mathcal{L}_{\text{perceptual}} \):
 
-\[
+$$
 \mathcal{L}_{\text{perceptual}} = \mathbb{E}_{\mathbf{x}_0, \mathbf{c}, t} \left[ \left\| \phi(\mathbf{x}_0) - \phi(\mathbf{x}_{\text{generated}}) \right\|^2 \right]
-\]
+$$
 
 - **\( \phi \):** A feature extractor (e.g., a pre-trained convolutional neural network).
 
@@ -154,9 +154,9 @@ For example, using a perceptual loss \( \mathcal{L}_{\text{perceptual}} \):
 
 The total loss for ControlNet can be expressed as:
 
-\[
+$$
 \mathcal{L}_{\text{total}} = \mathcal{L}_{\text{diffusion}} + \lambda \mathcal{L}_{\text{perceptual}}
-\]
+$$
 
 - **\( \lambda \):** A hyperparameter balancing the two loss components.
 
