@@ -1,5 +1,5 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
-# ControlNet: A Comprehensive Professional Tutorial 3
+# ControlNet: A Comprehensive Professional Tutorial 4
 
 ## **Table of Contents**
 
