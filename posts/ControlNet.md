@@ -207,7 +207,10 @@ $$
 ---
 ## 6. ControlNet Model Structure in PyTorch
 
-Below is a comprehensive implementation of ControlNet in PyTorch. This example builds upon a standard U-Net architecture used in diffusion models, with additional pathways to process the control signals.
+ControlNet builds upon the standard U-Net architecture used in diffusion models, with additional pathways to process and integrate control signals. Below is a comprehensive implementation of ControlNet in PyTorch.
+
+Role of the Controller
+The controller in ControlNet is responsible for processing the control signals and integrating them into the U-Net architecture. This allows the model to condition the denoising process on specific structural or semantic information, enabling more precise and guided image generation. The controller typically consists of convolutional layers that extract meaningful features from the control signals, which are then combined with the noise predictions at various stages of the U-Net.
 
 ```python
 import torch
