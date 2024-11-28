@@ -1,222 +1,212 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
-# ControlNet: A Comprehensive Professional Tutorial
+# ControlNet: A Comprehensive Tutorial on Controllers in Diffusion Models
 
 ## Table of Contents
 
-1. [Introduction to Diffusion Models](#1-introduction-to-diffusion-models)
-2. [Understanding the Diffusion Process](#2-understanding-the-diffusion-process)
-   - [Forward Diffusion Process](#forward-diffusion-process)
-   - [Reverse Diffusion Process](#reverse-diffusion-process)
-   - [Diffusion Loss Function](#diffusion-loss-function)
-   - [Training and Inference in Diffusion Models](#training-and-inference-in-diffusion-models)
-     - [Training and Inference Overview](#training-and-inference-overview)
-3. [Introducing ControlNet](#3-introducing-controlnet)
-4. [Intuition and Analogies Behind ControlNet](#4-intuition-and-analogies-behind-controlnet)
-5. [Mathematical Formulations of ControlNet](#5-mathematical-formulations-of-controlnet)
-   - [ControlNet Loss Function](#controlnet-loss-function)
-6. [ControlNet Training and Inference Procedures](#6-controlnet-training-and-inference-procedures)
-   - [ControlNet Training Code in PyTorch](#controlnet-training-code-in-pytorch)
-   - [ControlNet Inference Code in PyTorch](#controlnet-inference-code-in-pytorch)
-7. [ControlNet Model Structure in PyTorch](#7-controlnet-model-structure-in-pytorch)
-8. [Comparison with Other Guided Diffusion Algorithms](#8-comparison-with-other-guided-diffusion-algorithms)
-9. [Conclusion](#9-conclusion)
-10. [References](#10-references)
+1. [Introduction](#1-introduction)
+2. [Intuitions Behind ControlNet](#2-intuitions-behind-controlnet)
+3. [Architecture of ControlNet](#3-architecture-of-controlnet)
+    - [U-Net Backbone](#unet-backbone)
+    - [The Controller](#the-controller)
+    - [Zero Convolutions](#zero-convolutions)
+4. [ControlNet Loss Function](#4-controlnet-loss-function)
+5. [Training Procedure](#5-training-procedure)
+6. [Inference Procedure](#6-inference-procedure)
+7. [Segmentation Task: Sample Code](#7-segmentation-task-sample-code)
+8. [Conclusion](#8-conclusion)
 
 ---
 
-## 1. Introduction to Diffusion Models
+## 1. Introduction
 
-### What Are Diffusion Models?
+In the realm of generative models, diffusion models have emerged as powerful tools for generating high-fidelity images. However, standard diffusion models often lack precise control over the generated content, limiting their applicability in tasks requiring specific structural or semantic constraints. ControlNet is an innovative extension of diffusion models designed to address this limitation by introducing **controllers** that provide additional conditioning signals, enabling fine-grained control over the generation process.
 
-Diffusion models are a class of generative models that have achieved state-of-the-art performance in generating high-quality data, particularly images. They operate by modeling the data distribution through a two-phase process:
-
-1. **Forward Process (Diffusion):** Gradually adds noise to the data over several time steps, effectively transforming the data into pure noise.
-2. **Reverse Process (Denoising):** Learns to reverse the noising process, reconstructing the original data from noise.
-
-### Applications of Diffusion Models
-
-- **Image Generation:** Creating realistic and diverse images from noise.
-- **Image Editing:** Modifying specific attributes of images while preserving others.
-- **Super-Resolution:** Enhancing the resolution of low-quality images.
-- **Inpainting:** Filling in missing regions of images seamlessly.
+This tutorial delves into the intricacies of ControlNet, focusing on the role of the controller, the architectural innovations such as zero convolutions, and the specialized loss functions that facilitate controlled generation. By the end of this guide, you will have a comprehensive understanding of ControlNet and how to implement it for tasks like image segmentation.
 
 ---
 
-## 2. Understanding the Diffusion Process
+## 2. Intuitions Behind ControlNet
 
-### Forward Diffusion Process
+### The Need for Control
 
-The forward diffusion process systematically corrupts the data by adding Gaussian noise over $$ T $$ time steps. Each step $$ t $$ modifies the data $$ \mathbf{x}_{t-1} $$ to $$ \mathbf{x}_t $$ as follows:
+While diffusion models like Denoising Diffusion Probabilistic Models (DDPM) and their variants (e.g., Stable Diffusion) excel at generating realistic images, they primarily rely on stochastic processes and conditioning information like text prompts. This approach, while powerful, lacks the capability to enforce strict structural constraints or incorporate specific semantic information beyond high-level descriptions.
 
-$$
-q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I})
-$$
+**Example Scenario:**
+Imagine generating an image of a cat sitting on a chair based solely on a text prompt. While the model can produce a plausible image, it might not adhere precisely to the desired pose, background, or chair design.
 
-- **$$ \beta_t $$:** A variance schedule parameter controlling the amount of noise added at each step.
-- **Cumulative Product $$ \bar{\alpha}_t $$:** Defined as $$ \bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s) $$.
+### Introducing Controllers
 
-After many steps, $$ \mathbf{x}_T $$ becomes nearly pure noise, effectively erasing the original data structure.
+ControlNet introduces **controllers**—additional neural network modules that process auxiliary inputs (e.g., edge maps, segmentation masks, poses) to guide the diffusion model. These controllers integrate with the main diffusion model, providing explicit structural or semantic information that ensures the generated images conform to specific requirements.
 
-### Reverse Diffusion Process
-
-The reverse process aims to reconstruct the original data from the noisy sample $$ \mathbf{x}_T $$. The model $$ p_\theta $$ approximates the reverse conditional probabilities:
-
-$$
-p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \mu_\theta(\mathbf{x}_t, t), \Sigma_\theta(\mathbf{x}_t, t))
-$$
-
-- **$$ \mu_\theta $$ and $$ \Sigma_\theta $$:** Learnable parameters representing the mean and covariance of the reverse distribution.
-- **Objective:** Learn $$ \mu_\theta $$ and $$ \Sigma_\theta $$ such that the reverse process can accurately denoise $$ \mathbf{x}_t $$ back to $$ \mathbf{x}_{t-1} $$.
-
-**Role of U-Net in Reverse Diffusion:**
-
-In diffusion models, the U-Net architecture is employed as the backbone for predicting the noise $$ \epsilon $$ added during the forward diffusion process. Specifically, the U-Net takes the noisy image $$ \mathbf{x}_t $$ and the time step $$ t $$ as inputs and predicts the noise component $$ \epsilon_\theta(\mathbf{x}_t, t) $$. By accurately predicting this noise, the model can iteratively denoise $$ \mathbf{x}_t $$ to generate the original image $$ \mathbf{x}_0 $$.
-
-**Image Generation via Formulation:**
-
-During inference, images are generated by starting with pure noise $$ \mathbf{x}_T $$ and iteratively applying the reverse diffusion steps to obtain $$ \mathbf{x}_{T-1}, \mathbf{x}_{T-2}, \dots, \mathbf{x}_0 $$. At each step, the U-Net predicts the noise component, which is then used to compute the less noisy image in the previous time step. This process continues until the final denoised image $$ \mathbf{x}_0 $$ is obtained.
-
-### Diffusion Loss Function
-
-The model is trained to predict the noise $$ \epsilon $$ added at each time step. The loss function typically used is the Mean Squared Error (MSE) between the predicted noise and the actual noise:
-
-$$
-\mathcal{L}_{\text{diffusion}} = \mathbb{E}_{\mathbf{x}_0, \epsilon, t} \left[ \left\| \epsilon - \epsilon_\theta(\mathbf{x}_t, t) \right\|^2 \right]
-$$
-
-### Training and Inference in Diffusion Models
-
-#### Training and Inference Overview
-
-> ## Training and Inference Overview
->
-> **Training:**
->
-> 1. **Data Preparation:** Start with the original image $$ \mathbf{x}_0 $$.
->
-> 2. **Sample Time Step:** Randomly select a time step $$ t $$ for each image in the batch to simulate different noise levels.
->
->    $$ t \sim \text{Uniform}(1, T) $$
->
-> 3. **Add Noise (Forward Diffusion):** Add Gaussian noise to $$ \mathbf{x}_0 $$ based on the sampled time step $$ t $$ to obtain $$ \mathbf{x}_t $$.
->
->    $$ \mathbf{x}_t = \sqrt{\bar{\alpha}_t} \mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon $$
->
-> 4. **Predict Noise:** Use the model to predict the noise $$ \epsilon_\theta(\mathbf{x}_t, t) $$.
->
->    $$ \epsilon_{\text{pred}} = \epsilon_\theta(\mathbf{x}_t, t) $$
->
-> 5. **Compute Loss:** Calculate the MSE loss between the predicted noise and the actual noise.
->
->    $$ \mathcal{L}_{\text{diffusion}} = \left\| \epsilon_{\text{pred}} - \epsilon \right\|^2 $$
->
-> 6. **Backpropagation and Optimization:** Backpropagate the loss and update model parameters to minimize the loss.
->
->    *Optimizer steps are performed here.*
->
-> **Inference:**
->
-> 1. **Initialize with Noise:** Start with a sample of pure noise $$ \mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I}) $$.
->
->    $$ \mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I}) $$  
->    *xt = torch.randn(batch_size, C, H, W)*
->
-> 2. **Iterative Denoising:** For each time step $$ t = T, T-1, \dots, 1 $$, predict the noise and compute $$ \mathbf{x}_{t-1} $$.
->
->    $$ \mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( \mathbf{x}_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(\mathbf{x}_t, t) \right) + \sigma_t \mathbf{z} $$
->
-> 3. **Output Generation:** The final $$ \mathbf{x}_0 $$ after denoising is the generated image.
->
->    $$ \mathbf{x}_0 $$ is the output image.
+**Benefits:**
+- **Precision:** Enables fine-grained control over image attributes.
+- **Flexibility:** Supports various types of control signals.
+- **Enhanced Quality:** Maintains high image fidelity while adhering to constraints.
 
 ---
 
-## 3. Introducing ControlNet
+## 3. Architecture of ControlNet
 
-### What is ControlNet?
+ControlNet builds upon the standard U-Net architecture commonly used in diffusion models. It introduces additional pathways and mechanisms to incorporate control signals effectively.
 
-ControlNet is an advanced extension of diffusion models that introduces additional control mechanisms, allowing for precise guidance over the generation process. By integrating control signals (e.g., edge maps, segmentation masks, poses), ControlNet enables the generation of images that adhere to specific structural or semantic constraints provided by the user.
+### U-Net Backbone
 
-### Why Do We Need ControlNet?
+The U-Net serves as the core architecture for both standard diffusion models and ControlNet. It consists of an encoder-decoder structure with skip connections that facilitate the flow of information across different spatial resolutions.
 
-While diffusion models are powerful, they often lack fine-grained control over the generated content. ControlNet addresses this limitation by providing a mechanism to guide the diffusion process using additional information, ensuring that the generated outputs not only follow the learned data distribution but also conform to user-specified guidelines.
+**Components:**
+- **Encoder:** Downsamples the input image, capturing high-level features.
+- **Decoder:** Upsamples the features back to the original resolution.
+- **Skip Connections:** Directly connect corresponding layers in the encoder and decoder, preserving spatial information.
+
+### The Controller
+
+The **controller** is the distinguishing feature of ControlNet. It processes the auxiliary control signals and integrates their information into the U-Net architecture.
+
+**Key Functions:**
+1. **Feature Extraction:** The controller extracts meaningful features from the control signals (e.g., edge maps).
+2. **Conditioning:** These features are then used to condition the U-Net's layers, influencing the denoising process to adhere to the control signals.
+
+**Implementation Details:**
+- **Separate Pathways:** The controller often mirrors the encoder's structure, enabling it to process control signals at multiple scales.
+- **Fusion Mechanisms:** Feature maps from the controller are fused with the U-Net's feature maps, typically through concatenation or addition.
+
+### Zero Convolutions
+
+**Zero Convolutions** are specialized layers introduced in ControlNet to ensure that the controller does not interfere with the diffusion model's initial training phases. These layers are initialized with weights set to zero, effectively nullifying their impact at the outset.
+
+**Purpose:**
+- **Stabilize Training:** Prevent the controller from disrupting the already trained diffusion model during the early training stages.
+- **Gradual Integration:** Allow the controller to gradually influence the generation process as training progresses.
+
+**Implementation:**
+```python
+import torch.nn as nn
+
+class ZeroConv2d(nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size=1, padding=0):
+        super(ZeroConv2d, self).__init__()
+        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size, padding=padding)
+        nn.init.constant_(self.conv.weight, 0)
+        nn.init.constant_(self.conv.bias, 0)
+
+    def forward(self, x):
+        return self.conv(x)
+```
+
+**Usage in ControlNet:**
+Zero convolutions are typically placed after the controller's convolutional layers, ensuring that their initial output is zero and allowing for gradual learning.
+
+---
+
+## 4. ControlNet Loss Function
+
+ControlNet employs a specialized loss function that extends the standard diffusion loss to account for the additional control signals.
+
+### Diffusion Loss
+
+The core objective remains predicting the noise added during the forward diffusion process. The Mean Squared Error (MSE) between the predicted noise and the actual noise serves as the primary loss component.
+
+**Formula:**
+$$
+\mathcal{L}_{\text{diffusion}} = \mathbb{E}_{x_0, \epsilon, t} \left[ \| \epsilon - \epsilon_\theta(x_t, t, c) \|^2 \right]
+$$
+
+- **$$x_0$$:** Original image.
+- **$$\epsilon$$:** Noise added to the image at time step $$t$$.
+- **$$c$$:** Control signal (e.g., segmentation mask).
+- **$$\epsilon_\theta$$:** Noise prediction model (ControlNet).
+
+### Perceptual Loss (Optional)
+
+To ensure that the generated images not only adhere to the control signals but also maintain perceptual quality, an auxiliary **perceptual loss** can be incorporated.
+
+**Purpose:**
+- **Feature Consistency:** Ensures that high-level features between the generated image and the ground truth are consistent.
+- **Enhanced Quality:** Encourages the preservation of semantic content and visual coherence.
+
+**Formula:**
+$$
+\mathcal{L}_{\text{perceptual}} = \mathbb{E}_{x_0, c, t} \left[ \| \phi(x_{\text{generated}}) - \phi(x_0) \|^2 \right]
+$$
+
+- **$$\phi$$:** Pre-trained feature extractor (e.g., VGG network).
+
+### Combined Loss
+
+The total loss function combines the diffusion loss and the perceptual loss, weighted by a hyperparameter $$\lambda$$.
+
+$$
+\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{diffusion}} + \lambda \, \mathcal{L}_{\text{perceptual}}
+$$
+
+- **$$\lambda$$:** Balances the influence of the perceptual loss relative to the diffusion loss.
+
+**Implementation Example:**
+```python
+lambda_perceptual = 0.1
+loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
+```
 
 ---
 
-## 4. Intuition and Analogies Behind ControlNet
+## 5. Training Procedure
 
-### Analogy: Sculpting with a Blueprint
+Training ControlNet involves optimizing the model parameters to minimize the combined loss function. Below is a step-by-step guide, accompanied by a PyTorch implementation example.
 
-- **Diffusion Model Alone:** Similar to sculpting a statue without any reference—a process reliant on general knowledge and creativity.
-- **ControlNet:** Equivalent to sculpting with a detailed blueprint—providing precise guidelines to shape the statue exactly as envisioned.
+### Step-by-Step Guide
 
-### Intuition
+1. **Data Preparation:**
+    - **Images ($$x_0$$):** Original images from the dataset.
+    - **Control Signals ($$c$$):** Auxiliary inputs such as segmentation masks.
+    - **Transformations:** Apply necessary transformations (e.g., resizing, normalization).
 
-ControlNet integrates control signals into the diffusion process, enabling the model to generate images that strictly adhere to provided structural or semantic cues. This integration ensures that the generated content not only maintains high fidelity but also aligns with specific user-defined requirements.
+2. **Noise Scheduling:**
+    - Define a variance schedule $$\beta_t$$ for the forward diffusion process.
+    - Compute cumulative products $$\bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s)$$.
 
----
+3. **Model Initialization:**
+    - Initialize the ControlNet model.
+    - Initialize zero convolutions to prevent early interference.
 
-## 5. Mathematical Formulations of ControlNet
+4. **Forward Pass:**
+    - Sample a random time step $$t$$ for each image in the batch.
+    - Add noise to $$x_0$$ to obtain $$x_t$$.
+    - Use ControlNet to predict the noise $$\epsilon_\theta(x_t, t, c)$$.
 
-### Extending the Diffusion Model with ControlNet
+5. **Loss Computation:**
+    - Calculate the diffusion loss (MSE between predicted and actual noise).
+    - Optionally, compute the perceptual loss.
+    - Combine the losses to obtain the total loss.
 
-ControlNet enhances the standard diffusion model by introducing a conditional input $$ \mathbf{c} $$, which represents the control signal (e.g., edge maps, segmentation masks). The model now predicts the noise conditioned on both the noisy data $$ \mathbf{x}_t $$, the time step $$ t $$, and the control signal $$ \mathbf{c} $$:
+6. **Backpropagation and Optimization:**
+    - Backpropagate the total loss.
+    - Update the model parameters using an optimizer (e.g., Adam).
 
-$$
-\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) = \text{ControlNet}(\mathbf{x}_t, t, \mathbf{c})
-$$
+7. **Iterate:**
+    - Repeat the process for multiple epochs until convergence.
 
-**Role of U-Net in ControlNet:**
-
-In ControlNet, the U-Net architecture serves as the core component for predicting the noise $$ \epsilon $$, similar to its role in standard diffusion models. However, ControlNet extends this by conditioning the noise prediction on additional control signals $$ \mathbf{c} $$. This allows the model to incorporate specific structural or semantic information into the denoising process, enabling more controlled and guided image generation.
-
-**Image Generation via Formulation:**
-
-During inference, ControlNet follows the same reverse diffusion process as standard diffusion models. Starting with pure noise $$ \mathbf{x}_T $$, it iteratively denoises the image using the U-Net's predictions conditioned on the control signals $$ \mathbf{c} $$. This ensures that the generated image $$ \mathbf{x}_0 $$ not only resembles realistic data but also adheres to the provided control constraints.
-
-### Diffusion Loss Function
-
-As in standard diffusion models, ControlNet utilizes the Mean Squared Error (MSE) between the predicted noise and the actual noise. However, the prediction is now conditioned on the control signal:
-
-$$
-\mathcal{L}_{\text{diffusion}} = \mathbb{E}_{\mathbf{x}_0, \mathbf{c}, \epsilon, t} \left[ \left\| \epsilon - \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) \right\|^2 \right]
-$$
-
-### ControlNet Loss Function
-
-In addition to the diffusion loss, ControlNet may incorporate auxiliary loss functions to ensure that the control signals are accurately integrated and that the generated output adheres to the control conditions. One common approach is to use a perceptual loss that compares features extracted from the generated image and the control signal.
-
-For example, using a perceptual loss $$ \mathcal{L}_{\text{perceptual}} $$:
-
-$$
-\mathcal{L}_{\text{perceptual}} = \mathbb{E}_{\mathbf{x}_0, \mathbf{c}, t} \left[ \left\| \phi(\mathbf{x}_0) - \phi(\mathbf{x}_{\text{generated}}) \right\|^2 \right]
-$$
-
-- **$$ \phi $$:** A feature extractor (e.g., a pre-trained convolutional neural network).
-
-### Combined Loss Function
-
-The total loss for ControlNet can be expressed as:
-
-$$
-\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{diffusion}} + \lambda \mathcal{L}_{\text{perceptual}}
-$$
-
-- **$$ \lambda $$:** A hyperparameter balancing the two loss components.
-
----
-## 6. ControlNet Model Structure in PyTorch
-
-ControlNet builds upon the standard U-Net architecture used in diffusion models, with additional pathways to process and integrate control signals. Below is a comprehensive implementation of ControlNet in PyTorch.
-
-Role of the Controller
-The controller in ControlNet is responsible for processing the control signals and integrating them into the U-Net architecture. This allows the model to condition the denoising process on specific structural or semantic information, enabling more precise and guided image generation. The controller typically consists of convolutional layers that extract meaningful features from the control signals, which are then combined with the noise predictions at various stages of the U-Net.
+### PyTorch Implementation Example
 
 ```python
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.optim as optim
+from torch.utils.data import DataLoader, Dataset
+import torchvision.transforms as transforms
+from torchvision import models
 
+# Define ZeroConv2d
+class ZeroConv2d(nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size=1, padding=0):
+        super(ZeroConv2d, self).__init__()
+        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size, padding=padding)
+        nn.init.constant_(self.conv.weight, 0)
+        nn.init.constant_(self.conv.bias, 0)
+
+    def forward(self, x):
+        return self.conv(x)
+
+# Define ResidualBlock
 class ResidualBlock(nn.Module):
     def __init__(self, in_channels, out_channels, time_emb_dim, cond_emb_dim=None):
         super(ResidualBlock, self).__init__()
@@ -236,6 +226,7 @@ class ResidualBlock(nn.Module):
         out = self.conv2(out)
         return self.relu(out + self.residual_conv(x))
 
+# Define ControlNet
 class ControlNet(nn.Module):
     def __init__(self, in_channels=3, cond_channels=3, out_channels=3, time_emb_dim=256, cond_emb_dim=256, base_channels=64):
         super(ControlNet, self).__init__()
@@ -247,7 +238,7 @@ class ControlNet(nn.Module):
         )
         
         # Control signal processing
-        self.cond_conv = nn.Conv2d(cond_channels, cond_emb_dim, kernel_size=3, padding=1)
+        self.cond_conv = ZeroConv2d(cond_channels, cond_emb_dim, kernel_size=3, padding=1)
         
         # U-Net Encoder
         self.encoder1 = ResidualBlock(in_channels, base_channels, time_emb_dim, cond_emb_dim)
@@ -304,141 +295,50 @@ class ControlNet(nn.Module):
         out = self.final_conv(d1)                               # Shape: [B, out_channels, H, W]
         return out
 
-# Example usage:
-if __name__ == "__main__":
-    # Hyperparameters
-    batch_size = 8
-    C, C_cond, H, W = 3, 3, 256, 256
-    T = 1000  # Number of diffusion steps
-    time_emb_dim = 256
-    cond_emb_dim = 256
-    base_channels = 64
-    learning_rate = 1e-4
-    num_epochs = 100
-    lambda_perceptual = 0.1
-
-    # Initialize model and optimizer
-    model = ControlNet(in_channels=C, cond_channels=C_cond, out_channels=C, time_emb_dim=time_emb_dim, cond_emb_dim=cond_emb_dim, base_channels=base_channels)
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    mse_loss = nn.MSELoss()
-    # Assume perceptual_loss and phi are defined elsewhere
-
-    # Dummy dataloader
-    from torch.utils.data import DataLoader
-
-    class RandomDataset(Dataset):
-        def __init__(self, num_samples, channels, height, width):
-            self.num_samples = num_samples
-            self.channels = channels
-            self.height = height
-            self.width = width
-        
-        def __len__(self):
-            return self.num_samples
-        
-        def __getitem__(self, idx):
-            x0 = torch.randn(self.channels, self.height, self.width)
-            c = torch.randn(3, self.height, self.width)  # Assuming control signals have 3 channels
-            return {'image': x0, 'control_signal': c}
-
-    dataset = RandomDataset(num_samples=1000, channels=3, height=256, width=256)
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-
-    # Training loop would go here
-```
-
-**Explanation:**
-
-- **ResidualBlock Class:**
-  - **Purpose:** Implements a residual block with optional conditioning on time embeddings and control signals.
-  - **Components:**
-    - **Convolutions:** Two convolutional layers with ReLU activations.
-    - **Time Embedding:** Integrates temporal information by adding the time embedding to the activations.
-    - **Condition Embedding:** If control signals are provided, integrates them similarly.
-    - **Residual Connection:** Ensures better gradient flow and model performance.
-
-- **ControlNet Class:**
-  - **Purpose:** Defines the overall ControlNet architecture based on the U-Net model.
-  - **Components:**
-    - **Time Embedding MLP:** Transforms the scalar time step into a higher-dimensional embedding.
-    - **Control Signal Processing:** Processes the control signals through convolutional layers to extract meaningful features.
-    - **U-Net Encoder:** Downsamples the input while capturing hierarchical features.
-    - **Bottleneck:** The deepest layer capturing high-level features.
-    - **U-Net Decoder:** Upsamples the features, integrating information from the encoder via skip connections.
-    - **Final Convolution:** Produces the final output predicting the noise.
-
-- **Example Usage:**
-  - **Hyperparameters:** Defines key parameters like batch size, learning rate, number of epochs, etc.
-  - **Model Initialization:** Creates an instance of ControlNet and sets up the optimizer and loss functions.
-  - **Dataset and Dataloader:** Uses a `RandomDataset` for demonstration. Replace this with your actual dataset.
-  - **Training Loop Placeholder:** Indicates where the training loop should be implemented.
-
-**Note:** For a complete implementation, especially when incorporating perceptual loss, you would need to define the `PerceptualLoss` class and integrate it into the training loop as shown in Section 6.
-
----
-
-
-## 7. ControlNet Training and Inference Procedures
-
-### ControlNet Training Code in PyTorch
-
-Below is a comprehensive PyTorch implementation for training ControlNet. This includes data loading, model initialization, the training loop with loss computation, and optimization steps.
-
-```python
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader, Dataset
-import torchvision.transforms as transforms
-
-# Assume ControlNet model is defined as in Section 7
-
-# Placeholder for a dataset
-class CustomDataset(Dataset):
-    def __init__(self, images, control_signals, transform=None):
-        """
-        images: List or array of original images.
-        control_signals: List or array of corresponding control signals.
-        transform: Optional transformations to apply.
-        """
-        self.images = images
-        self.control_signals = control_signals
-        self.transform = transform
-    
-    def __len__(self):
-        return len(self.images)
-    
-    def __getitem__(self, idx):
-        x0 = self.images[idx]
-        c = self.control_signals[idx]
-        if self.transform:
-            x0 = self.transform(x0)
-            c = self.transform(c)
-        return {'image': x0, 'control_signal': c}
-
-# Placeholder perceptual loss and feature extractor
+# Define PerceptualLoss
 class PerceptualLoss(nn.Module):
     def __init__(self, feature_extractor):
         super(PerceptualLoss, self).__init__()
         self.feature_extractor = feature_extractor
-        # Freeze the feature extractor
+        # Freeze feature extractor parameters
         for param in self.feature_extractor.parameters():
             param.requires_grad = False
-    
+
     def forward(self, generated, target):
         gen_features = self.feature_extractor(generated)
         target_features = self.feature_extractor(target)
         loss = nn.MSELoss()(gen_features, target_features)
         return loss
 
-# Example Feature Extractor (e.g., VGG16)
-from torchvision import models
-
-vgg = models.vgg16(pretrained=True).features[:16].eval()  # Use up to certain layers
+# Example Feature Extractor (VGG16)
+vgg = models.vgg16(pretrained=True).features[:16].eval().cuda()
 for param in vgg.parameters():
     param.requires_grad = False
 
-perceptual_loss_fn = PerceptualLoss(vgg)
+perceptual_loss_fn = PerceptualLoss(vgg).cuda()
+
+# Define Custom Dataset
+class CustomSegmentationDataset(Dataset):
+    def __init__(self, images, segmentation_masks, transform=None):
+        """
+        images: List of PIL images or file paths.
+        segmentation_masks: List of corresponding segmentation masks.
+        transform: Transformations to apply.
+        """
+        self.images = images
+        self.segmentation_masks = segmentation_masks
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        x0 = self.images[idx]
+        c = self.segmentation_masks[idx]
+        if self.transform:
+            x0 = self.transform(x0)
+            c = self.transform(c)
+        return {'image': x0, 'control_signal': c}
 
 # Hyperparameters
 batch_size = 16
@@ -447,44 +347,45 @@ num_epochs = 100
 lambda_perceptual = 0.1
 T = 1000  # Number of diffusion steps
 
-# Precompute alpha_cumprod and one_minus_alpha_cumprod
-beta = torch.linspace(0.0001, 0.02, T)
+# Define Beta Schedule
+beta = torch.linspace(0.0001, 0.02, T).cuda()
 alpha = 1.0 - beta
-alpha_cumprod = torch.cumprod(alpha, dim=0)
+alpha_cumprod = torch.cumprod(alpha, dim=0).cuda()
 one_minus_alpha_cumprod = 1.0 - alpha_cumprod
 
-# Define transformations
+# Define Transformations
 transform = transforms.Compose([
     transforms.Resize((256, 256)),
     transforms.ToTensor()
 ])
 
-# Load your dataset
-# images = [...]  # List of images
-# control_signals = [...]  # Corresponding control signals
-# dataset = CustomDataset(images, control_signals, transform=transform)
+# Initialize Dataset and DataLoader
+# Replace with actual data loading
+# images = [...]  # List of PIL images
+# segmentation_masks = [...]  # List of segmentation masks
+# dataset = CustomSegmentationDataset(images, segmentation_masks, transform=transform)
 # dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # For demonstration, using random tensors
-class RandomDataset(Dataset):
+class RandomSegmentationDataset(Dataset):
     def __init__(self, num_samples, channels, height, width):
         self.num_samples = num_samples
         self.channels = channels
         self.height = height
         self.width = width
-    
+
     def __len__(self):
         return self.num_samples
-    
-    def __getitem__(self, idx):
-        x0 = torch.randn(self.channels, self.height, self.width)
-        c = torch.randn(3, self.height, self.width)  # Assuming control signals have 3 channels
-        return {'image': x0, 'control_signal': c}
 
-dataset = RandomDataset(num_samples=1000, channels=3, height=256, width=256)
+    def __getitem__(self, idx):
+        image = torch.randn(self.channels, self.height, self.width)
+        mask = torch.randint(0, 2, (self.channels, self.height, self.width)).float()  # Binary mask
+        return {'image': image, 'control_signal': mask}
+
+dataset = RandomSegmentationDataset(num_samples=1000, channels=3, height=256, width=256)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-# Initialize model, optimizer, and loss functions
+# Initialize ControlNet Model
 model = ControlNet(
     in_channels=3,
     cond_channels=3,
@@ -494,8 +395,11 @@ model = ControlNet(
     base_channels=64
 ).cuda()
 
+# Initialize Optimizer
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-mse_loss = nn.MSELoss()
+
+# Define Loss Functions
+mse_loss_fn = nn.MSELoss()
 
 # Training Loop
 for epoch in range(num_epochs):
@@ -503,81 +407,110 @@ for epoch in range(num_epochs):
     epoch_loss = 0.0
     for batch in dataloader:
         x0 = batch['image'].cuda()              # Original images
-        c = batch['control_signal'].cuda()      # Control signals
-        
+        c = batch['control_signal'].cuda()      # Segmentation masks
+
         B, C, H, W = x0.size()
-        
+
         # Sample random time steps
         t = torch.randint(1, T+1, (B,)).cuda()  # [B]
-        
+
         # Sample noise
         epsilon = torch.randn_like(x0).cuda()
-        
+
         # Compute x_t using the forward diffusion process
-        sqrt_alpha_cumprod_t = alpha_cumprod[t-1].sqrt().view(B, 1, 1, 1).cuda()
-        sqrt_one_minus_alpha_cumprod_t = one_minus_alpha_cumprod[t-1].sqrt().view(B, 1, 1, 1).cuda()
+        sqrt_alpha_cumprod_t = alpha_cumprod[t-1].sqrt().view(B, 1, 1, 1)
+        sqrt_one_minus_alpha_cumprod_t = one_minus_alpha_cumprod[t-1].sqrt().view(B, 1, 1, 1)
         xt = sqrt_alpha_cumprod_t * x0 + sqrt_one_minus_alpha_cumprod_t * epsilon
-        
+
         # Predict noise using ControlNet
         epsilon_pred = model(xt, t.float(), c)  # [B, C, H, W]
-        
+
         # Compute diffusion loss
-        loss_diffusion = mse_loss(epsilon_pred, epsilon)
+        loss_diffusion = mse_loss_fn(epsilon_pred, epsilon)
+
+        # Optional: Compute perceptual loss
+        # Generate image from predicted noise
+        # Here, we perform a single reverse step for demonstration
+        with torch.no_grad():
+            x_generated = (xt - (beta[t-1].sqrt()) * epsilon_pred) / alpha[t-1].sqrt()
         
-        # Compute generated image (optional for perceptual loss)
-        # For simplicity, we'll skip generating the image here
-        # Alternatively, implement a reverse diffusion step to get generated images
-        
-        # If using perceptual loss, you'd need to implement reverse diffusion
-        # Here, we'll assume it's not used for simplicity
-        loss_total = loss_diffusion  # + lambda_perceptual * loss_perceptual
-        
+        loss_perceptual = perceptual_loss_fn(x_generated, x0)
+
+        # Total loss
+        loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
+
         # Backpropagation
         optimizer.zero_grad()
         loss_total.backward()
         optimizer.step()
-        
+
         epoch_loss += loss_total.item()
-    
+
     avg_loss = epoch_loss / len(dataloader)
-    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {avg_loss:.4f}")
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {avg_loss:.6f}")
 ```
 
-**Explanation:**
+**Key Components Explained:**
 
-1. **Dataset Preparation:**
-   - **CustomDataset:** A placeholder class for loading your dataset of images and corresponding control signals. Replace the `images` and `control_signals` lists with your actual data.
-   - **RandomDataset:** For demonstration purposes, a random dataset is used. Replace this with your actual dataset.
+1. **ZeroConv2d:**
+    - Ensures that the controller does not influence the model initially by initializing convolutional weights to zero.
 
-2. **Perceptual Loss:**
-   - **PerceptualLoss Class:** Utilizes a pre-trained VGG16 network to extract features for computing the perceptual loss.
-   - **Feature Extractor:** VGG16 is used up to a certain layer to extract meaningful features from images.
+2. **ResidualBlock and ControlNet Classes:**
+    - **ResidualBlock:** Implements a residual connection with optional conditioning on time and control embeddings.
+    - **ControlNet:** Integrates the controller into the U-Net architecture, processing control signals and fusing them with the main network.
 
-3. **Hyperparameters:**
-   - **Batch Size, Learning Rate, Epochs, etc.:** Set according to your computational resources and dataset size.
+3. **PerceptualLoss:**
+    - Utilizes a pre-trained VGG16 network to compute feature-based losses, ensuring perceptual similarity between generated and target images.
 
-4. **Precompute Constants:**
-   - **$$ \beta $$, $$ \alpha $$, $$ \bar{\alpha}_t $$, and $$ 1 - \bar{\alpha}_t $$:** These are crucial for the diffusion process and are precomputed for efficiency.
+4. **CustomSegmentationDataset:**
+    - Placeholder for datasets consisting of images and corresponding segmentation masks.
 
 5. **Training Loop:**
-   - **Sampling Time Steps:** Randomly samples a time step $$ t $$ for each image in the batch.
-   - **Adding Noise:** Computes the noisy image $$ \mathbf{x}_t $$ using the forward diffusion formula.
-   - **Predicting Noise:** Uses ControlNet to predict the noise $$ \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) $$.
-   - **Computing Loss:** Calculates the diffusion loss (and optionally the perceptual loss).
-   - **Backpropagation:** Updates the model parameters to minimize the loss.
+    - **Time Step Sampling:** Randomly samples a time step $$t$$ for each image in the batch.
+    - **Noise Addition:** Generates $$x_t$$ by adding noise to $$x_0$$ based on the sampled $$t$$.
+    - **Noise Prediction:** ControlNet predicts the noise component.
+    - **Loss Computation:** Calculates the diffusion loss (MSE between predicted and actual noise) and the perceptual loss.
+    - **Optimization:** Updates model parameters to minimize the combined loss.
 
-**Note:** This is a simplified training loop. For a complete implementation, especially when incorporating perceptual loss, you would need to perform reverse diffusion to generate the image and then compute the perceptual loss based on the generated image. Additionally, proper data handling, validation, and checkpointing should be implemented as per your project requirements.
+**Notes:**
+- **Perceptual Loss Integration:** For enhanced image quality, incorporate the perceptual loss by performing a reverse diffusion step to obtain $$x_{\text{generated}}$$ and computing $$\mathcal{L}_{\text{perceptual}}$$.
+- **Data Loading:** Replace the `RandomSegmentationDataset` with actual data loading logic tailored to your dataset.
 
-### ControlNet Inference Code in PyTorch
+---
 
-The inference process involves generating images by iteratively denoising from pure noise while adhering to the control signals. Below is a comprehensive PyTorch implementation for performing inference with ControlNet.
+## 6. Inference Procedure
+
+After training, ControlNet can generate images conditioned on control signals (e.g., segmentation masks) by performing an iterative denoising process starting from pure noise.
+
+### Step-by-Step Guide
+
+1. **Model Preparation:**
+    - Load the trained ControlNet model.
+    - Set the model to evaluation mode.
+
+2. **Control Signal Preparation:**
+    - Prepare the control signals (e.g., segmentation masks) corresponding to the desired output.
+
+3. **Noise Initialization:**
+    - Initialize $$x_T$$ with pure Gaussian noise.
+
+4. **Iterative Denoising:**
+    - For each time step $$t = T, T-1, \dots, 1$$:
+        - Predict the noise $$\epsilon_\theta(x_t, t, c)$$ using ControlNet.
+        - Compute $$x_{t-1}$$ using the reverse diffusion formula.
+        - Optionally, add noise $$\sigma_t z$$ to maintain stochasticity.
+
+5. **Output Generation:**
+    - The final $$x_0$$ after denoising is the generated image.
+
+### PyTorch Implementation Example
 
 ```python
 import torch
 import torch.nn.functional as F
 import torchvision.utils as vutils
 
-# Assume ControlNet model is defined and trained as in Section 7
+# Assume ControlNet and ZeroConv2d are defined as before
 
 # Function to perform a single reverse diffusion step
 def reverse_diffusion_step(model, xt, t, c, beta, alpha_cumprod, one_minus_alpha_cumprod):
@@ -592,8 +525,9 @@ def reverse_diffusion_step(model, xt, t, c, beta, alpha_cumprod, one_minus_alpha
     """
     B, C, H, W = xt.size()
     
-    # Predict noise
-    epsilon_pred = model(xt, torch.full((B,), t, device=xt.device, dtype=torch.float), c)  # [B, C, H, W]
+    # Predict noise using ControlNet
+    t_tensor = torch.full((B,), t, device=xt.device, dtype=torch.float)
+    epsilon_pred = model(xt, t_tensor, c)  # [B, C, H, W]
     
     # Compute coefficients
     sqrt_alpha_cumprod_t = alpha_cumprod[t-1].sqrt()
@@ -612,14 +546,20 @@ def reverse_diffusion_step(model, xt, t, c, beta, alpha_cumprod, one_minus_alpha
     return x_prev
 
 # Inference Function
-def generate_image(model, c, T=1000, beta=torch.linspace(0.0001, 0.02, 1000)):
+def generate_image(model, c, T=1000, beta_schedule=None):
     """
     model: Trained ControlNet model
     c: Control signal tensor [B, C', H, W]
     T: Number of diffusion steps
-    beta: Tensor of beta values [T]
+    beta_schedule: Tensor of beta values [T]
     """
     device = next(model.parameters()).device
+    
+    if beta_schedule is None:
+        beta = torch.linspace(0.0001, 0.02, T).to(device)
+    else:
+        beta = beta_schedule.to(device)
+    
     alpha = 1.0 - beta
     alpha_cumprod = torch.cumprod(alpha, dim=0).to(device)
     one_minus_alpha_cumprod = 1.0 - alpha_cumprod
@@ -656,12 +596,13 @@ if __name__ == "__main__":
         base_channels=64
     ).cuda()
     
-    model.load_state_dict(torch.load('controlnet_trained.pth'))  # Path to trained model weights
+    # Load trained weights
+    model.load_state_dict(torch.load('controlnet_trained.pth'))
     model.eval()
     
-    # Prepare control signals
-    # c = ...  # Your control signals tensor [B, C', H, W]
-    # For demonstration, using random tensors
+    # Prepare control signals (segmentation masks)
+    # Replace with actual segmentation masks
+    # For demonstration, using random masks
     c = torch.randn(batch_size, C_cond, H, W).cuda()
     
     # Generate images
@@ -669,62 +610,365 @@ if __name__ == "__main__":
         generated_images = generate_image(model, c, T=T)
     
     # Save or visualize generated images
-    # Example: Save using torchvision
-    vutils.save_image(generated_images, 'generated_images.png', normalize=True)
-    print("Generated images saved to 'generated_images.png'")
+    vutils.save_image(generated_images, 'generated_segmentation.png', normalize=True)
+    print("Generated images saved to 'generated_segmentation.png'")
 ```
 
-**Explanation:**
+**Key Components Explained:**
 
-1. **Reverse Diffusion Step Function (`reverse_diffusion_step`):**
-   - **Purpose:** Performs a single step of the reverse diffusion process.
-   - **Inputs:**
-     - **`model`:** The trained ControlNet model.
-     - **`xt`:** The current noisy image at time step $$ t $$.
-     - **`t`:** The current time step.
-     - **`c`:** The control signal associated with the image.
-     - **`beta`, `alpha_cumprod`, `one_minus_alpha_cumprod`:** Precomputed constants for the diffusion process.
-   - **Process:**
-     - Predicts the noise using ControlNet.
-     - Computes $$ \mathbf{x}_{t-1} $$ using the reverse diffusion formula.
-     - Adds Gaussian noise if not at the final step to maintain stochasticity.
+1. **reverse_diffusion_step Function:**
+    - Performs a single step of the reverse diffusion process.
+    - Predicts the noise using ControlNet.
+    - Computes the previous time step's image $$x_{t-1}$$.
+    - Adds Gaussian noise $$\sigma_t z$$ if not at the final step to maintain stochasticity.
 
-2. **Inference Function (`generate_image`):**
-   - **Purpose:** Generates images by iteratively denoising from pure noise using ControlNet.
-   - **Inputs:**
-     - **`model`:** The trained ControlNet model.
-     - **`c`:** The control signal tensor.
-     - **`T`:** Number of diffusion steps.
-     - **`beta`:** Tensor of beta values defining the noise schedule.
-   - **Process:**
-     - Initializes with random noise.
-     - Iteratively applies the reverse diffusion step for each time step from $$ T $$ to 1.
-     - Clamps the final image to ensure pixel values are within a valid range.
-     - Returns the generated image tensor.
+2. **generate_image Function:**
+    - Initializes the process with pure noise $$x_T$$.
+    - Iteratively applies the reverse diffusion step from $$t = T$$ down to $$t = 1$$.
+    - Clamps the final image to ensure valid pixel values.
+    - Returns the generated image tensor.
 
 3. **Example Usage:**
-   - **Model Initialization:** Creates an instance of ControlNet and loads the trained weights.
-   - **Control Signal Preparation:** Prepares the control signals. Replace the random tensor with your actual control signals.
-   - **Image Generation:** Calls the `generate_image` function to produce images.
-   - **Saving Images:** Saves the generated images using `torchvision.utils.save_image`.
+    - Loads the trained ControlNet model.
+    - Prepares control signals (segmentation masks).
+    - Generates images by conditioning on the control signals.
+    - Saves the generated images for visualization.
 
 **Notes:**
+- **Control Signals:** Replace the random tensors with actual segmentation masks relevant to your application.
+- **Trained Weights:** Ensure that `controlnet_trained.pth` contains the trained model weights.
+- **Optimization:** During inference, the model is set to evaluation mode, and gradient computations are disabled for efficiency.
 
-- **Model Weights:** Ensure that you have trained the ControlNet model and saved the weights (e.g., `controlnet_trained.pth`) before running the inference code.
-- **Control Signals:** Replace the random tensors with actual control signals relevant to your application (e.g., edge maps, segmentation masks).
-- **Efficiency:** In practice, consider optimizing the inference process, potentially reducing the number of diffusion steps for faster generation with minimal quality loss.
+---
+
+## 7. Segmentation Task: Sample Code
+
+In this section, we provide a complete example of using ControlNet for an image segmentation task. The goal is to generate images conditioned on segmentation masks, ensuring that the generated content adheres to the specified segmentation structure.
+
+### Step-by-Step Implementation
+
+1. **Dataset Preparation:**
+    - Use a dataset consisting of images and their corresponding segmentation masks.
+    - Apply necessary transformations to both images and masks.
+
+2. **Model Initialization:**
+    - Instantiate the ControlNet model.
+    - Optionally, incorporate zero convolutions to stabilize training.
+
+3. **Training Loop:**
+    - For each batch:
+        - Add noise to the original images.
+        - Use ControlNet to predict the noise based on noisy images and segmentation masks.
+        - Compute the diffusion loss.
+        - Optionally, compute the perceptual loss.
+        - Update model parameters.
+
+4. **Inference:**
+    - Generate new images by providing segmentation masks and performing the reverse diffusion process.
+
+### Complete PyTorch Code Example
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, Dataset
+import torchvision.transforms as transforms
+from torchvision import models
+import torchvision.utils as vutils
+from PIL import Image
+import os
+
+# Define ZeroConv2d
+class ZeroConv2d(nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size=1, padding=0):
+        super(ZeroConv2d, self).__init__()
+        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size, padding=padding)
+        nn.init.constant_(self.conv.weight, 0)
+        nn.init.constant_(self.conv.bias, 0)
+
+    def forward(self, x):
+        return self.conv(x)
+
+# Define ResidualBlock
+class ResidualBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, time_emb_dim, cond_emb_dim=None):
+        super(ResidualBlock, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
+        self.time_emb = nn.Linear(time_emb_dim, out_channels)
+        self.cond_emb = nn.Linear(cond_emb_dim, out_channels) if cond_emb_dim else None
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1)
+        self.relu = nn.ReLU()
+        self.residual_conv = nn.Conv2d(in_channels, out_channels, kernel_size=1) if in_channels != out_channels else nn.Identity()
+    
+    def forward(self, x, t_emb, c_emb=None):
+        out = self.conv1(x)
+        out += self.time_emb(t_emb).unsqueeze(-1).unsqueeze(-1)  # Broadcast time embedding
+        if self.cond_emb and c_emb is not None:
+            out += self.cond_emb(c_emb).unsqueeze(-1).unsqueeze(-1)  # Broadcast condition embedding
+        out = self.relu(out)
+        out = self.conv2(out)
+        return self.relu(out + self.residual_conv(x))
+
+# Define ControlNet
+class ControlNet(nn.Module):
+    def __init__(self, in_channels=3, cond_channels=3, out_channels=3, time_emb_dim=256, cond_emb_dim=256, base_channels=64):
+        super(ControlNet, self).__init__()
+        # Time embedding MLP
+        self.time_mlp = nn.Sequential(
+            nn.Linear(1, time_emb_dim),
+            nn.ReLU(),
+            nn.Linear(time_emb_dim, time_emb_dim)
+        )
+        
+        # Control signal processing
+        self.cond_conv = ZeroConv2d(cond_channels, cond_emb_dim, kernel_size=3, padding=1)
+        
+        # U-Net Encoder
+        self.encoder1 = ResidualBlock(in_channels, base_channels, time_emb_dim, cond_emb_dim)
+        self.encoder2 = ResidualBlock(base_channels, base_channels*2, time_emb_dim, cond_emb_dim)
+        self.encoder3 = ResidualBlock(base_channels*2, base_channels*4, time_emb_dim, cond_emb_dim)
+        
+        # Bottleneck
+        self.bottleneck = ResidualBlock(base_channels*4, base_channels*4, time_emb_dim, cond_emb_dim)
+        
+        # U-Net Decoder
+        self.decoder3 = ResidualBlock(base_channels*4 + base_channels*2, base_channels*2, time_emb_dim, cond_emb_dim)
+        self.decoder2 = ResidualBlock(base_channels*2 + base_channels, base_channels, time_emb_dim, cond_emb_dim)
+        self.decoder1 = ResidualBlock(base_channels + in_channels, base_channels, time_emb_dim, cond_emb_dim)
+        
+        # Final output convolution
+        self.final_conv = nn.Conv2d(base_channels, out_channels, kernel_size=1)
+    
+    def forward(self, x, t, c):
+        """
+        x: Noisy image tensor of shape [B, C, H, W]
+        t: Time step tensor of shape [B]
+        c: Control signal tensor of shape [B, C', H, W]
+        """
+        # Embed time
+        t_emb = self.time_mlp(t.unsqueeze(-1))  # Shape: [B, time_emb_dim]
+        
+        # Process control signal
+        c_emb = self.cond_conv(c)               # Shape: [B, cond_emb_dim, H, W]
+        c_emb = F.adaptive_avg_pool2d(c_emb, (1,1))  # Shape: [B, cond_emb_dim, 1, 1]
+        c_emb = c_emb.view(c_emb.size(0), -1)      # Shape: [B, cond_emb_dim]
+        
+        # Encoder path
+        e1 = self.encoder1(x, t_emb, c_emb)        # Shape: [B, base_channels, H, W]
+        e2 = self.encoder2(F.max_pool2d(e1, 2), t_emb, c_emb)  # Shape: [B, base_channels*2, H/2, W/2]
+        e3 = self.encoder3(F.max_pool2d(e2, 2), t_emb, c_emb)  # Shape: [B, base_channels*4, H/4, W/4]
+        
+        # Bottleneck
+        b = self.bottleneck(F.max_pool2d(e3, 2), t_emb, c_emb)  # Shape: [B, base_channels*4, H/8, W/8]
+        
+        # Decoder path
+        d3 = F.interpolate(b, scale_factor=2, mode='nearest')  # Shape: [B, base_channels*4, H/4, W/4]
+        d3 = torch.cat([d3, e3], dim=1)                      # Shape: [B, base_channels*8, H/4, W/4]
+        d3 = self.decoder3(d3, t_emb, c_emb)                 # Shape: [B, base_channels*2, H/4, W/4]
+        
+        d2 = F.interpolate(d3, scale_factor=2, mode='nearest')  # Shape: [B, base_channels*2, H/2, W/2]
+        d2 = torch.cat([d2, e2], dim=1)                        # Shape: [B, base_channels*4, H/2, W/2]
+        d2 = self.decoder2(d2, t_emb, c_emb)                   # Shape: [B, base_channels, H/2, W/2]
+        
+        d1 = F.interpolate(d2, scale_factor=2, mode='nearest')  # Shape: [B, base_channels, H, W]
+        d1 = torch.cat([d1, e1], dim=1)                        # Shape: [B, base_channels + in_channels, H, W]
+        d1 = self.decoder1(d1, t_emb, c_emb)                   # Shape: [B, base_channels, H, W]
+        
+        # Final output
+        out = self.final_conv(d1)                               # Shape: [B, out_channels, H, W]
+        return out
+
+# Define PerceptualLoss
+class PerceptualLoss(nn.Module):
+    def __init__(self, feature_extractor):
+        super(PerceptualLoss, self).__init__()
+        self.feature_extractor = feature_extractor
+        # Freeze feature extractor parameters
+        for param in self.feature_extractor.parameters():
+            param.requires_grad = False
+
+    def forward(self, generated, target):
+        gen_features = self.feature_extractor(generated)
+        target_features = self.feature_extractor(target)
+        loss = nn.MSELoss()(gen_features, target_features)
+        return loss
+
+# Example Feature Extractor (VGG16)
+vgg = models.vgg16(pretrained=True).features[:16].eval().cuda()
+for param in vgg.parameters():
+    param.requires_grad = False
+
+perceptual_loss_fn = PerceptualLoss(vgg).cuda()
+
+# Define Custom Dataset
+class SegmentationDataset(Dataset):
+    def __init__(self, image_dir, mask_dir, transform=None):
+        """
+        image_dir: Directory containing images.
+        mask_dir: Directory containing segmentation masks.
+        transform: Transformations to apply.
+        """
+        self.image_dir = image_dir
+        self.mask_dir = mask_dir
+        self.transform = transform
+        self.images = sorted(os.listdir(image_dir))
+        self.masks = sorted(os.listdir(mask_dir))
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        img_path = os.path.join(self.image_dir, self.images[idx])
+        mask_path = os.path.join(self.mask_dir, self.masks[idx])
+        image = Image.open(img_path).convert('RGB')
+        mask = Image.open(mask_path).convert('RGB')  # Assuming mask is RGB
+        
+        if self.transform:
+            image = self.transform(image)
+            mask = self.transform(mask)
+        return {'image': image, 'control_signal': mask}
+
+# Hyperparameters
+batch_size = 16
+learning_rate = 1e-4
+num_epochs = 100
+lambda_perceptual = 0.1
+T = 1000  # Number of diffusion steps
+
+# Define Beta Schedule
+beta = torch.linspace(0.0001, 0.02, T).cuda()
+alpha = 1.0 - beta
+alpha_cumprod = torch.cumprod(alpha, dim=0).cuda()
+one_minus_alpha_cumprod = 1.0 - alpha_cumprod
+
+# Define Transformations
+transform = transforms.Compose([
+    transforms.Resize((256, 256)),
+    transforms.ToTensor()
+])
+
+# Initialize Dataset and DataLoader
+# Replace 'path_to_images' and 'path_to_masks' with actual paths
+# image_dir = 'path_to_images'
+# mask_dir = 'path_to_masks'
+# dataset = SegmentationDataset(image_dir, mask_dir, transform=transform)
+# dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+# For demonstration, using random tensors
+class RandomSegmentationDataset(Dataset):
+    def __init__(self, num_samples, channels, height, width):
+        self.num_samples = num_samples
+        self.channels = channels
+        self.height = height
+        self.width = width
+
+    def __len__(self):
+        return self.num_samples
+
+    def __getitem__(self, idx):
+        image = torch.randn(self.channels, self.height, self.width)
+        mask = torch.randint(0, 2, (self.channels, self.height, self.width)).float()  # Binary mask
+        return {'image': image, 'control_signal': mask}
+
+dataset = RandomSegmentationDataset(num_samples=1000, channels=3, height=256, width=256)
+dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+# Initialize ControlNet Model
+model = ControlNet(
+    in_channels=3,
+    cond_channels=3,
+    out_channels=3,
+    time_emb_dim=256,
+    cond_emb_dim=256,
+    base_channels=64
+).cuda()
+
+# Initialize Optimizer
+optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+
+# Define Loss Functions
+mse_loss_fn = nn.MSELoss()
+
+# Training Loop
+for epoch in range(num_epochs):
+    model.train()
+    epoch_loss = 0.0
+    for batch in dataloader:
+        x0 = batch['image'].cuda()              # Original images
+        c = batch['control_signal'].cuda()      # Segmentation masks
+
+        B, C, H, W = x0.size()
+
+        # Sample random time steps
+        t = torch.randint(1, T+1, (B,)).cuda()  # [B]
+
+        # Sample noise
+        epsilon = torch.randn_like(x0).cuda()
+
+        # Compute x_t using the forward diffusion process
+        sqrt_alpha_cumprod_t = alpha_cumprod[t-1].sqrt().view(B, 1, 1, 1)
+        sqrt_one_minus_alpha_cumprod_t = one_minus_alpha_cumprod[t-1].sqrt().view(B, 1, 1, 1)
+        xt = sqrt_alpha_cumprod_t * x0 + sqrt_one_minus_alpha_cumprod_t * epsilon
+
+        # Predict noise using ControlNet
+        epsilon_pred = model(xt, t.float(), c)  # [B, C, H, W]
+
+        # Compute diffusion loss
+        loss_diffusion = mse_loss_fn(epsilon_pred, epsilon)
+
+        # Optional: Compute perceptual loss
+        # Generate image from predicted noise
+        # Here, we perform a single reverse step for demonstration
+        with torch.no_grad():
+            x_generated = (xt - (beta[t-1].sqrt()) * epsilon_pred) / alpha[t-1].sqrt()
+        
+        loss_perceptual = perceptual_loss_fn(x_generated, x0)
+
+        # Total loss
+        loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
+
+        # Backpropagation
+        optimizer.zero_grad()
+        loss_total.backward()
+        optimizer.step()
+
+        epoch_loss += loss_total.item()
+
+    avg_loss = epoch_loss / len(dataloader)
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {avg_loss:.6f}")
+```
+
+**Key Components Explained:**
+
+1. **SegmentationDataset Class:**
+    - Handles loading of images and their corresponding segmentation masks.
+    - Applies necessary transformations.
+
+2. **Training Loop Enhancements:**
+    - **Perceptual Loss Computation:**
+        - Generates an intermediate image $$x_{\text{generated}}$$ using a single reverse diffusion step.
+        - Computes the perceptual loss between $$x_{\text{generated}}$$ and the ground truth $$x_0$$.
+    - **Total Loss Calculation:**
+        - Combines diffusion loss and perceptual loss, weighted by $$\lambda_{\text{perceptual}}$$.
+
+3. **Notes:**
+    - **Perceptual Loss Integration:** For more accurate image generation, consider performing a full reverse diffusion process before computing perceptual loss, albeit at increased computational cost.
+    - **Data Loading:** Replace the `RandomSegmentationDataset` with actual data paths to utilize real images and segmentation masks.
 
 ---
 
 ## 8. Comparison with Other Guided Diffusion Algorithms
+
+ControlNet distinguishes itself among various guided diffusion methodologies through its unique integration of control signals. Below is a comparative analysis highlighting key differences and advantages.
 
 | **Aspect**                  | **ControlNet**                                                    | **Stable Diffusion**                                           | **Classifier Guidance**                                       | **Classifier-Free Guidance**                                 |
 |-----------------------------|-------------------------------------------------------------------|----------------------------------------------------------------|---------------------------------------------------------------|--------------------------------------------------------------|
 | **Guidance Method**         | Uses explicit control signals (e.g., edge maps, segmentation masks) | Conditions on textual or other embeddings                      | Utilizes gradients from an external classifier                | Combines conditional and unconditional model predictions      |
 | **Model Complexity**        | Adds additional parameters and pathways for control signals         | Operates in a latent space for efficiency                      | Requires training and integrating a separate classifier      | Single model architecture without external classifiers       |
 | **Intuition**               | Provides direct structural or semantic control over generation     | Generates images based on latent representations and conditions | Steers generation by modifying gradients based on classifier feedback | Balances conditional adherence and diversity without a classifier |
-| **Mathematical Formulation**| $$ \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) $$               | $$ \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) $$            | Modifies $$ \epsilon_\theta $$ using classifier gradients    | $$ \epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) + s (\epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null})) $$ |
-| **Training Complexity**     | Requires paired data of images and control signals                  | Standard training with conditioning data                        | More complex due to dual-model training                       | Simpler as it avoids training an external classifier          |
+| **Mathematical Formulation**| $$ \epsilon_\theta(x_t, t, c) $$                                 | $$ \epsilon_\theta(x_t, t, c) $$                               | Modifies $$ \epsilon_\theta $$ using classifier gradients    | $$ \epsilon_{\text{guided}} = \epsilon_\theta(x_t, t, c) + s (\epsilon_\theta(x_t, t, c) - \epsilon_\theta(x_t, t, \text{null})) $$ |
+| **Training Complexity**     | Requires paired data of images and control signals                  | Standard training with conditioning data                      | More complex due to dual-model training                       | Simpler as it avoids training an external classifier          |
 | **Control Precision**       | High precision with explicit control inputs                         | Moderate precision based on condition embeddings                | Depends on classifier accuracy and guidance strength          | Offers adjustable precision through guidance scaling        |
 | **Flexibility**             | Highly flexible with various types of control signals               | Primarily text-based or similar high-level conditions           | Limited to classifier-defined conditions                      | Flexible through internal conditional mechanisms             |
 | **Use Cases**               | Image editing, pose-guided generation, architectural design         | Text-to-image generation, creative content creation              | Conditional image synthesis based on classifier categories    | General-purpose conditional image generation without specific structural controls |
@@ -732,54 +976,64 @@ if __name__ == "__main__":
 ### Detailed Insights
 
 - **ControlNet vs. Stable Diffusion:**
-  - **ControlNet** provides explicit structural control, enabling applications like pose-guided image generation or inpainting with precise structural adherence.
-  - **Stable Diffusion** focuses on efficiency by operating in a latent space and primarily uses textual embeddings for conditioning, offering high-quality image generation but with less structural control.
+    - **ControlNet** provides explicit structural control, enabling applications like pose-guided image generation or inpainting with precise structural adherence.
+    - **Stable Diffusion** focuses on efficiency by operating in a latent space and primarily uses textual embeddings for conditioning, offering high-quality image generation but with less structural control.
 
 - **ControlNet vs. Classifier Guidance:**
-  - **Classifier Guidance** relies on an external classifier to influence the diffusion model's generation process, which can introduce additional computational overhead and potential biases.
-  - **ControlNet** integrates control signals directly, providing more direct and efficient guidance without the need for separate classifiers.
+    - **Classifier Guidance** relies on an external classifier to influence the diffusion model's generation process, which can introduce additional computational overhead and potential biases.
+    - **ControlNet** integrates control signals directly, providing more direct and efficient guidance without the need for separate classifiers.
 
 - **ControlNet vs. Classifier-Free Guidance:**
-  - **Classifier-Free Guidance** simplifies the architecture by merging conditional and unconditional predictions within a single model, allowing for flexible guidance scaling.
-  - **ControlNet** offers more precise control by incorporating explicit control signals, which can be advantageous for applications requiring strict adherence to structural conditions.
+    - **Classifier-Free Guidance** simplifies the architecture by merging conditional and unconditional predictions within a single model, allowing for flexible guidance scaling.
+    - **ControlNet** offers more precise control by incorporating explicit control signals, which can be advantageous for applications requiring strict adherence to structural conditions.
 
 ---
 
 ## 9. Conclusion
 
-ControlNet represents a significant advancement in the realm of diffusion models by introducing explicit control mechanisms that enhance the precision and flexibility of generated content. By integrating control signals directly into the diffusion process, ControlNet enables applications that require strict adherence to specific structural or semantic guidelines, such as image inpainting, pose-guided generation, and architectural design.
+ControlNet represents a significant advancement in the field of generative models, particularly within the framework of diffusion models. By introducing controllers that process explicit control signals, ControlNet bridges the gap between high-fidelity image generation and precise structural or semantic control. This capability unlocks a plethora of applications, including but not limited to image editing, pose-guided generation, and architectural design.
 
-The incorporation of additional loss functions, such as perceptual or feature matching losses, further refines the model's ability to generate high-fidelity images that conform to user-defined controls. Compared to other guided diffusion methods, ControlNet offers a balanced combination of precision, flexibility, and efficiency, making it a valuable tool for a wide range of generative tasks.
+**Key Takeaways:**
 
-Understanding the mathematical foundations, training procedures, and architectural nuances of ControlNet equips practitioners with the knowledge to effectively leverage this technology in their projects, pushing the boundaries of what is achievable with generative models.
+- **Precision Control:** ControlNet allows for fine-grained control over the generation process, ensuring that outputs adhere to specific constraints.
+- **Architectural Innovations:** The integration of controllers and zero convolutions ensures stability and flexibility during training and inference.
+- **Versatility:** ControlNet's architecture is adaptable to various control signals, making it a versatile tool for diverse applications.
+- **Enhanced Quality:** By potentially incorporating perceptual losses, ControlNet maintains high image quality while adhering to control constraints.
+
+Understanding the architectural nuances and training procedures of ControlNet equips practitioners with the tools to harness its full potential, pushing the boundaries of what is achievable with diffusion-based generative models.
 
 ---
 
 ## 10. References
 
 1. **Diffusion Models:**
-   - Ho, J., Jain, A., & Abbeel, P. (2020). *Denoising Diffusion Probabilistic Models*. [arXiv:2006.11239](https://arxiv.org/abs/2006.11239)
+    - Ho, J., Jain, A., & Abbeel, P. (2020). *Denoising Diffusion Probabilistic Models*. [arXiv:2006.11239](https://arxiv.org/abs/2006.11239)
 
 2. **ControlNet Paper:**
-   - Zhang, L., et al. (2023). *Adding Conditional Control to Text-to-Image Diffusion Models*. [arXiv:2302.05543](https://arxiv.org/abs/2302.05543)
+    - Zhang, L., et al. (2023). *Adding Conditional Control to Text-to-Image Diffusion Models*. [arXiv:2302.05543](https://arxiv.org/abs/2302.05543)
 
 3. **Stable Diffusion:**
-   - Rombach, R., Blattmann, A., Lorenz, D., Esser, P., & Ommer, B. (2022). *High-Resolution Image Synthesis with Latent Diffusion Models*. [arXiv:2112.10752](https://arxiv.org/abs/2112.10752)
+    - Rombach, R., Blattmann, A., Lorenz, D., Esser, P., & Ommer, B. (2022). *High-Resolution Image Synthesis with Latent Diffusion Models*. [arXiv:2112.10752](https://arxiv.org/abs/2112.10752)
 
 4. **Classifier Guidance:**
-   - Dhariwal, P., & Nichol, A. (2021). *Diffusion Models Beat GANs on Image Synthesis*. [arXiv:2105.05233](https://arxiv.org/abs/2105.05233)
+    - Dhariwal, P., & Nichol, A. (2021). *Diffusion Models Beat GANs on Image Synthesis*. [arXiv:2105.05233](https://arxiv.org/abs/2105.05233)
 
 5. **Classifier-Free Guidance:**
-   - Ho, J., & Salimans, T. (2022). *Classifier-Free Diffusion Guidance*. [arXiv:2207.12598](https://arxiv.org/abs/2207.12598)
+    - Ho, J., & Salimans, T. (2022). *Classifier-Free Diffusion Guidance*. [arXiv:2207.12598](https://arxiv.org/abs/2207.12598)
 
 6. **Perceptual Losses for Real-Time Style Transfer and Super-Resolution:**
-   - Johnson, J., Alahi, A., & Fei-Fei, L. (2016). *Perceptual Losses for Real-Time Style Transfer and Super-Resolution*. [arXiv:1603.08155](https://arxiv.org/abs/1603.08155)
+    - Johnson, J., Alahi, A., & Fei-Fei, L. (2016). *Perceptual Losses for Real-Time Style Transfer and Super-Resolution*. [arXiv:1603.08155](https://arxiv.org/abs/1603.08155)
 
 7. **Understanding GANs and Diffusion Models:**
-   - Radford, A., Metz, L., & Chintala, S. (2015). *Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks*. [arXiv:1511.06434](https://arxiv.org/abs/1511.06434)
+    - Radford, A., Metz, L., & Chintala, S. (2015). *Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks*. [arXiv:1511.06434](https://arxiv.org/abs/1511.06434)
 
 8. **Hugging Face Diffusers Library:**
-   - Hugging Face. *Diffusers: State-of-the-Art Diffusion Models*. [GitHub Repository](https://github.com/huggingface/diffusers)
+    - Hugging Face. *Diffusers: State-of-the-Art Diffusion Models*. [GitHub Repository](https://github.com/huggingface/diffusers)
 
 ---
 
+# End of Tutorial
+
+This comprehensive guide has walked you through the fundamental concepts, architectural innovations, loss functions, and practical implementations of ControlNet within diffusion models. By integrating controllers and leveraging mechanisms like zero convolutions, ControlNet empowers developers and researchers to generate images with precise structural and semantic control, broadening the horizons of generative modeling applications.
+
+If you have further questions or need additional clarifications on any section, feel free to reach out!
