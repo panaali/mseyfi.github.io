@@ -1,5 +1,5 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
-# ControlNet: A Comprehensive Professional Tutorial 5
+# ControlNet: A Comprehensive Professional Tutorial
 ## **Table of Contents**
 
 1. [Introduction to Diffusion Models](#1-introduction-to-diffusion-models)
