@@ -52,8 +52,8 @@ $$
 q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I})
 $$
 
-- **$\beta_t$:** A variance schedule parameter controlling the amount of noise added at each step.
-- **Cumulative Product $\bar{\alpha}_t$:** Defined as $\bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s)$.
+- $\beta_t$: A variance schedule parameter controlling the amount of noise added at each step.
+- **Cumulative Product** $\bar{\alpha}_t$: Defined as $\bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s)$.
 
 After many steps, $\mathbf{x}_T$ becomes nearly pure noise, effectively erasing the original data structure.
 
@@ -65,7 +65,7 @@ $$
 p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \mu_\theta(\mathbf{x}_t, t), \Sigma_\theta(\mathbf{x}_t, t))
 $$
 
-- **$\mu_\theta$ and $\Sigma_\theta$:** Learnable parameters representing the mean and covariance of the reverse distribution.
+- $\mu_\theta$ and $\Sigma_\theta$: Learnable parameters representing the mean and covariance of the reverse distribution.
 - **Objective:** Learn $\mu_\theta$ and $\Sigma_\theta$ such that the reverse process can accurately denoise $\mathbf{x}_t$ back to $\mathbf{x}_{t-1}$.
 
 ### **Diffusion Loss Function**
