@@ -26,7 +26,7 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <p></p>
 <p></p>
 
-## [![ControlNet](https://img.shields.io/badge/ControlNet-Adding Conditional Control to Text-to-Image Diffusion Models-blue?style=for-the-badge&logo=github)](posts/ControlNet)
+## [![ControlNet](https://img.shields.io/badge/ControlNet-Adding_Conditional_Control_to_Text_to_Image_Diffusion_Models-blue?style=for-the-badge&logo=github)](posts/ControlNet)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 ControlNet is an advanced extension of diffusion models that introduces additional control mechanisms, allowing for precise guidance over the generation process. By integrating control signals (e.g., edge maps, segmentation masks, poses), ControlNet enables the generation of images that adhere to specific structural or semantic constraints provided by the user.
 <p></p>
