@@ -2,7 +2,7 @@
 
 
 
-# Quantizing Machine Learning Models: A Comprehensive Tutorial
+# Quantizing Machine Learning Models: A Comprehensive Tutorial:
 
 **Table of Contents**
 
