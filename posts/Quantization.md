@@ -304,7 +304,7 @@ $$
 **Process:**
 
 1. **Model Conversion:** Replace floating-point operations with quantized equivalents.
-2. **Calibration:** Use a calibration dataset to collect activation statistics.
+2. **Calibration:** Use a calibration dataset to collect activation statistics. This is needed to quantize the activations. The weights are simply quantized based on the maximum and minimum values(per channel or per tensor). But to quantize the activations we need a calibration step to find the max and min of the activations by feeding the model with different inputs. 
 3. **Parameter Assignment:** Compute and assign quantization parameters based on collected statistics.
 
 ### 4.2 Mathematical Formulation
