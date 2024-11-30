@@ -107,10 +107,10 @@ This tutorial provides an in-depth exploration of quantizing machine learning mo
   The zero-point $$z$$ is set to align the mean of the data distribution with the zero level of the quantized integer range, minimizing the quantization error around the mean value.
 
  $$
-  z = -\frac{\mu}{s} + \text{zero}_\text{level}
+  z = -\frac{\mu}{s} + \text{zero}\_\text{level}
  $$
 
-  - $$\text{zero}_\text{level}$$ is typically $$\frac{q_{\text{min}} + q_{\text{max}}}{2}$$ for symmetric quantization ranges.
+  - $$\text{zero}\_\text{level}$$ is typically $$\frac{q_{\text{min}} + q_{\text{max}}}{2}$$ for symmetric quantization ranges.
 
 **Explanation:**
 
