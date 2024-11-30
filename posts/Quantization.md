@@ -105,7 +105,11 @@ This tutorial provides an in-depth exploration of quantizing machine learning mo
 - **Zero-Point ($$z$$) and Mean ($$\mu$$)**
 
   The zero-point $$z$$ is set to align the mean of the data distribution with the zero level of the quantized integer range, minimizing the quantization error around the mean value.
-
+  $$
+  q_{\text{max}\approx \frac{\mu + k\sigma}{s} + z\\
+  q_{\text{min}\approx \frac{\mu - k\sigma}{s} + z
+  $$
+  therefore,
  $$
   z = -\frac{\mu}{s} + \text{zero}\_\text{level}
  $$
