@@ -1,3 +1,5 @@
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
 # Quantizing Machine Learning Models: A Comprehensive Tutorial
 
 **Table of Contents**
