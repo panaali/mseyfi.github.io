@@ -1,5 +1,7 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
+
+
 # Quantizing Machine Learning Models: A Comprehensive Tutorial
 
 **Table of Contents**
@@ -37,8 +39,10 @@
 10. [Common Issues and Debugging Techniques](#10-common-issues-and-debugging-techniques)
     - [10.1 Common Quantization Issues](#101-common-quantization-issues)
     - [10.2 Debugging Strategies](#102-debugging-strategies)
-11. [Conclusion](#11-conclusion)
-12. [References](#12-references)
+11. [Quantizing Weights vs. Activations](#11-quantizing-weights-vs-activations)
+    - [11.1 Impact on Model Size Reduction](#111-impact-on-model-size-reduction)
+12. [Conclusion](#12-conclusion)
+13. [References](#13-references)
 
 ---
 
@@ -83,6 +87,77 @@ This tutorial provides an in-depth exploration of quantizing machine learning mo
 
 - **Scale Factor ($$s$$)** determines the mapping between floating-point and quantized values.
 - **Zero-Point ($$z$$)** aligns the zero between the two representations, allowing for asymmetric ranges.
+
+**Relationship Between Zero-Point, Scale, Mean, and Standard Deviation:**
+
+- **Scale Factor ($$s$$) and Standard Deviation ($$\sigma$$)**
+
+  The scale factor $$s$$ is often related to the spread of the data, which is captured by the standard deviation $$\sigma$$. A common approach is to set the scale factor based on the standard deviation to ensure that the quantization bins cover the significant data distribution.
+
+  For instance:
+
+ $$
+  s = \frac{2k \sigma}{q_{\text{max}} - q_{\text{min}}}
+ $$
+
+  - $$k$$ is a constant (e.g., $$k = 3$$) to cover a certain confidence interval of the data (e.g., 99.7% for $$\pm 3\sigma$$).
+
+- **Zero-Point ($$z$$) and Mean ($$\mu$$)**
+
+  The zero-point $$z$$ is set to align the mean of the data distribution with the zero level of the quantized integer range, minimizing the quantization error around the mean value.
+
+ $$
+  z = -\frac{\mu}{s} + \text{zero\_level}
+ $$
+
+  - $$\text{zero\_level}$$ is typically $$\frac{q_{\text{min}} + q_{\text{max}}}{2}$$ for symmetric quantization ranges.
+
+**Explanation:**
+
+- By relating the scale factor to the standard deviation, we ensure that the quantization levels are appropriately spaced to capture the variability in the data.
+- Aligning the zero-point with the mean centers the quantization range around the most frequently occurring values, reducing the average quantization error.
+
+**Practical Implementation:**
+
+- **Scale Calculation:**
+
+  Assuming the data range is $$[A_{\text{min}}, A_{\text{max}}]$$, where:
+
+ $$
+  A_{\text{min}} = \mu - k\sigma, \quad A_{\text{max}} = \mu + k\sigma
+ $$
+
+  The scale factor $$s$$ is:
+
+ $$
+  s = \frac{A_{\text{max}} - A_{\text{min}}}{q_{\text{max}} - q_{\text{min}}}
+ $$
+
+- **Zero-Point Calculation:**
+
+ $$
+  z = -\frac{\mu}{s} + \frac{q_{\text{min}} + q_{\text{max}}}{2}
+ $$
+
+- **Example:**
+
+  Suppose we have:
+
+  - Mean $$\mu = 0$$
+  - Standard deviation $$\sigma = 0.1$$
+  - $$q_{\text{min}} = -128$$, $$q_{\text{max}} = 127$$ (for signed 8-bit integers)
+  - $$k = 3$$ (to cover $$\pm 3\sigma$$)
+
+  Then:
+
+  - $$A_{\text{min}} = -0.3$$, $$A_{\text{max}} = 0.3$$
+  - $$s = \frac{0.3 - (-0.3)}{127 - (-128)} = \frac{0.6}{255} \approx 0.00235$$
+  - $$z = -\frac{0}{0.00235} + 0 = 0$$ (since mean is zero)
+
+**Conclusion:**
+
+- The scale factor $$s$$ is proportional to the standard deviation $$\sigma$$, determining the granularity of quantization levels.
+- The zero-point $$z$$ is related to the mean $$\mu$$, aligning the quantization levels with the data distribution.
 
 ### 2.2 Mean and Variance of Tensors
 
