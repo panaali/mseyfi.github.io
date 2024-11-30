@@ -109,12 +109,13 @@ This tutorial provides an in-depth exploration of quantizing machine learning mo
 $$
 \begin{aligned}
   q_{\text{max}}&\approx \frac{\mu + k\sigma}{s} + z\\
-  q_{\text{min}}&\approx \frac{\mu - k\sigma}{s} + z
-\end{aligned}
-$$
-  therefore,
- $$
-  z = -\frac{\mu}{s} + \text{zero}\_\text{level}
+  q_{\text{min}}&\approx \frac{\mu - k\sigma}{s} + z\\
+
+
+  thus,
+ 
+  z &= -\frac{\mu}{s} + \text{zero}\_\text{level}
+  \end{aligned}
  $$
 
   - $$\text{zero}\_\text{level}$$ is typically $$\frac{q_{\text{min}} + q_{\text{max}}}{2}$$ for symmetric quantization ranges.
