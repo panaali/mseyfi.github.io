@@ -236,9 +236,9 @@ These statistics help in:
 
 For each output channel $$k$$:
 
-\[
+$$
 q_{W_k} = \text{Quantize}(W_k, s_k, z_k)
-\]
+$$
 
 - $$W_k$$: Weights for channel $$k$$
 - $$s_k$$, $$z_k$$: Scale and zero-point for channel $$k$$
@@ -273,9 +273,9 @@ q_{W_k} = \text{Quantize}(W_k, s_k, z_k)
 
 **Activation Quantization Formula:**
 
-\[
+$$
 q_A = \text{Quantize}(A, s_A, z_A)
-\]
+$$
 
 - $$A$$: Activation tensor
 - $$s_A$$, $$z_A$$: Scale and zero-point for activations
