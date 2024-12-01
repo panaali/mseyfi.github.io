@@ -854,8 +854,8 @@ Quantization-Aware Training is a powerful technique to train neural networks tha
 
 ---
 
-**Note:** When implementing QAT, it's important to carefully manage quantization parameters and ensure that the training process accurately reflects the conditions under which the model will be deployed. Testing and validation on the target hardware are essential to confirm that performance gains are realized in practice.
----
+**Note:** **When implementing QAT, it's important to carefully manage quantization parameters and ensure that the training process accurately reflects the conditions under which the model will be deployed. Testing and validation on the target hardware are essential to confirm that performance gains are realized in practice.
+**---
 
 ## 6. Comparing PTQ and QAT
 
