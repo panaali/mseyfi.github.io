@@ -433,15 +433,15 @@ def evaluate(model, data_loader):
 # evaluate(model_int8, test_loader)
 ```
 
-##5. Detailed Explanation of Quantization-Aware Training (QAT)
+## 5. Detailed Explanation of Quantization-Aware Training (QAT)
 
-### Introduction
+### **Introduction**
 
 Quantization-Aware Training (QAT) is a technique used to simulate the effects of quantization during the training of a neural network. The goal is to prepare the model to better handle the reduced precision of quantized representations (such as 8-bit integers) when deployed on hardware that supports lower-precision arithmetic. By incorporating quantization effects into the training process, QAT helps mitigate the accuracy loss that typically accompanies post-training quantization methods.
 
 ---
 
-### What is Quantization-Aware Training?
+### **What is Quantization-Aware Training**?
 
 **Quantization-Aware Training** integrates quantization operations into the training graph of a neural network. It does this by:
 
@@ -453,7 +453,7 @@ The result is a model that has learned to be robust to the quantization errors t
 
 ---
 
-### Understanding Fake Quantization
+### **Understanding Fake Quantization**
 
 *** What is Fake Quantization?***
 
@@ -462,7 +462,7 @@ The result is a model that has learned to be robust to the quantization errors t
 - **Simulating Quantization Errors:** The model experiences the quantization effects during training.
 - **Maintaining Floating-Point Precision for Updates:** The parameters are updated using high-precision floating-point values during backpropagation.
 
-### How Fake Quantization Works
+### **How Fake Quantization Works**
 
 In practice, fake quantization involves:
 
@@ -498,7 +498,7 @@ Given a floating-point tensor $$x$$, fake quantization is applied as:
 
 ---
 
-## Computational Graphs in QAT
+## **Computational Graphs in QAT**
 
 ### How Many Graphs are Used?
 
@@ -518,9 +518,9 @@ In QAT, the computational graph consists of:
 
 ---
 
-### Detailed Explanation of the Forward and Backward Passes in QAT
+### **Detailed Explanation of the Forward and Backward Passes in QAT**
 
-### Forward Pass with Fake Quantization
+### **Forward Pass with Fake Quantization**
 
 1. **Input Quantization:**
 
@@ -582,7 +582,7 @@ $$
 - **Assumption:** $$\frac{\partial q}{\partial x} \approx 1$$ within the quantization range.
 - **Result:** Allows gradients to pass through the quantization nodes unchanged during backpropagation.
 
-### Intuition Behind STE
+### **Intuition Behind STE**
 
 - **Idea:** Treat the quantization operation as if it were the identity function during backpropagation.
 - **Purpose:** Enables the model to learn how to adjust weights despite the non-differentiable quantization steps.
@@ -592,7 +592,7 @@ $$
 
 ## Detailed Steps in Quantization-Aware Training
 
-### 1. Model Preparation
+### **1. Model Preparation**
 
 - **Insert Fake Quantization Nodes:**
 
@@ -604,7 +604,7 @@ $$
   - Define scale factors and zero-points for weights and activations.
   - Can be learned during training or set based on calibration data.
 
-### 2. Training Loop
+### **2. Training Loop**
 
 - **Forward Pass:**
 
@@ -621,7 +621,7 @@ $$
   - Compute gradients using STE through fake quantization nodes.
   - Update model parameters using an optimizer.
 
-### 3. Convergence and Fine-Tuning
+### **3. Convergence and Fine-Tuning**
 
 - **Convergence:**
 
@@ -633,7 +633,7 @@ $$
   - Optional phase to further adjust quantization parameters.
   - Can involve additional calibration or adjustment of scale factors.
 
-### 4. Model Conversion for Inference
+### **4. Model Conversion for Inference**
 
 - **Replace Fake Quantization Nodes:**
 
@@ -651,7 +651,7 @@ $$
 
 **Note:** This example assumes familiarity with PyTorch's quantization APIs.
 
-### Step 1: Define the Model with Quantization Stubs
+### **Step 1: Define the Model with Quantization Stubs**
 
 ```python
 import torch
@@ -682,7 +682,7 @@ class QATModel(nn.Module):
 model = QATModel()
 ```
 
-### Step 2: Prepare the Model for QAT
+### **Step 2: Prepare the Model for QAT**
 
 - **Fuse Modules:**
 
@@ -707,7 +707,7 @@ model = QATModel()
   quantization.prepare_qat(model, inplace=True)
   ```
 
-### Step 3: Train the Model
+### **Step 3: Train the Model**
 
 - **Training Loop:**
 
@@ -725,7 +725,7 @@ model = QATModel()
           optimizer.step()
   ```
 
-### Step 4: Convert to a Quantized Model
+### **Step 4: Convert to a Quantized Model**
 
 - **Convert for Inference:**
 
@@ -742,17 +742,17 @@ model = QATModel()
 
 ## Intuitions Behind Quantization-Aware Training
 
-### 1. Learning to Compensate for Quantization Errors
+### **1. Learning to Compensate for Quantization Errors**
 
 - By exposing the model to quantization effects during training, it can adjust its parameters to minimize the impact of quantization.
 - Weights and biases are optimized to produce accurate results even when quantized.
 
-### 2. Smooth Transition from Training to Inference
+### **2. Smooth Transition from Training to Inference**
 
 - Since the model experiences quantization during training, the transition to the quantized inference model is smoother.
 - Reduces the discrepancy between training and inference behaviors.
 
-### 3. Preserving Model Capacity
+### **3. Preserving Model Capacity**
 
 - Unlike aggressive post-training quantization, QAT allows the model to retain more of its representational capacity.
 - The model learns representations that are inherently more robust to reduced precision.
@@ -761,12 +761,12 @@ model = QATModel()
 
 ## Backpropagation in Quantization-Aware Training
 
-### Handling Non-Differentiable Operations
+### **Handling Non-Differentiable Operations**
 
 - **Problem:** Quantization functions involve rounding, which is non-differentiable.
 - **Solution:** Use the Straight-Through Estimator (STE) to approximate gradients.
 
-### Mathematical Formulation
+### **Mathematical Formulation**
 
 - **Forward Pass:**
 
@@ -787,7 +787,7 @@ model = QATModel()
 
   - **Assumption:** $$\frac{\partial \hat{x}}{\partial x} \approx 1$$ within the quantization range.
 
-### Practical Implications
+### **Practical Implications**
 
 - **Gradient Flow:** Allows gradients to pass through fake quantization nodes as if they were identity functions.
 - **Weight Updates:** Parameters are updated based on the loss computed with quantization effects included.
@@ -812,27 +812,27 @@ model = QATModel()
 
 ## Considerations and Best Practices
 
-### Calibration
+### **Calibration**
 
 - **Importance:** Accurate scale factors and zero-points are critical.
 - **Method:** Use a representative calibration dataset to collect statistics.
 
-### Learning Quantization Parameters
+### **Learning Quantization Parameters**
 
 - Some frameworks allow the scale factors to be learned during training.
 - This can lead to better alignment between quantization parameters and data distribution.
 
-### Choosing Quantization Bits
+### **Choosing Quantization Bits**
 
 - **Common Practice:** Use 8-bit quantization for a balance between efficiency and accuracy.
 - **Lower Bit-Widths:** More aggressive quantization (e.g., 4-bit) may require more careful tuning and can benefit more from QAT.
 
-### Layer Fusion
+### **Layer Fusion**
 
 - **Purpose:** Combining layers (e.g., Conv + BatchNorm + ReLU) reduces quantization errors between layers.
 - **Impact:** Simplifies the computation graph and improves efficiency.
 
-### Avoiding Saturation and Clipping
+### **Avoiding Saturation and Clipping**
 
 - **Issue:** Activations may saturate the quantization range, leading to information loss.
 - **Solution:** Adjust the quantization ranges or use techniques like quantile-based scaling.
@@ -849,26 +849,6 @@ Quantization-Aware Training is a powerful technique to train neural networks tha
 - **Backpropagation with STE:** Allows gradients to flow through non-differentiable quantization operations.
 - **Model Adaptation:** The model learns to adjust parameters to mitigate quantization errors.
 - **Deployment Readiness:** Results in a quantized model that performs well on hardware with lower-precision arithmetic.
-
----
-
-## Further Reading and References
-
-- **PyTorch Quantization Documentation:**
-
-  [https://pytorch.org/docs/stable/quantization.html](https://pytorch.org/docs/stable/quantization.html)
-
-- **TensorFlow Quantization Aware Training:**
-
-  [https://www.tensorflow.org/model_optimization/guide/quantization/training](https://www.tensorflow.org/model_optimization/guide/quantization/training)
-
-- **Research Paper:**
-
-  *Jacob, Benoit, et al. "Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference."* (2018). [https://arxiv.org/abs/1712.05877](https://arxiv.org/abs/1712.05877)
-
-- **Blog Post on QAT:**
-
-  [https://heartbeat.fritz.ai/quantization-aware-training-for-deep-learning-model-compression-65de9d51a75c](https://heartbeat.fritz.ai/quantization-aware-training-for-deep-learning-model-compression-65de9d51a75c)
 
 ---
 
