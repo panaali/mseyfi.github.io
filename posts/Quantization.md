@@ -742,6 +742,301 @@ model = QATModel()
 
 ---
 
+## Understanding Fake Quantization Through a Numerical Example
+
+## Introduction
+
+To help you understand how **fake quantization** during training simulates the **quantized inference model**, I'll provide a detailed numerical example. We'll use the same numerical data for both training and inference. This example will demonstrate:
+
+- How fake quantization introduces quantization errors during training.
+- How these errors simulate the actual quantization effects during inference.
+- How the model learns to compensate for these errors.
+
+---
+
+## Example Setup
+
+We'll consider a simple neural network with a **single linear layer** (fully connected layer) without any activation function for simplicity. The network performs the following computation:
+
+$$
+y = W x + b
+$$
+
+Where:
+
+- $$x$$ is the input vector.
+- $$W$$ is the weight matrix.
+- $$b$$ is the bias vector.
+- $$y$$ is the output vector.
+
+### Given Numerical Data
+
+- **Input vector** $$x = \begin{bmatrix} 1.5 \\ -2.3 \end{bmatrix}$$
+- **Weight matrix** $$W = \begin{bmatrix} 0.8 & -0.5 \\ 1.2 & 0.3 \end{bmatrix}$$
+- **Bias vector** $$b = \begin{bmatrix} 0.1 \\ -0.2 \end{bmatrix}$$
+
+### Quantization Parameters
+
+- **Scale factor** $$s = 0.2$$
+- **Zero-point** $$z = 0$$
+- **Quantization bit-width**: 8 bits (values range from \(-128\) to \(127\) for signed integers)
+
+---
+
+## Part 1: Training with Fake Quantization
+
+During training, we simulate quantization effects using fake quantization. The computations remain in floating-point precision, but quantization errors are introduced.
+
+### Step 1: Fake Quantize the Input Activations
+
+**Quantize $$x$$:**
+
+$$
+q_x = \left\lfloor \dfrac{x}{s} \right\rceil + z = \left\lfloor \dfrac{\begin{bmatrix} 1.5 \\ -2.3 \end{bmatrix}}{0.2} \right\rceil + 0 = \left\lfloor \begin{bmatrix} 7.5 \\ -11.5 \end{bmatrix} \right\rceil = \begin{bmatrix} 8 \\ -12 \end{bmatrix}
+$$
+
+**Dequantize $$q_x$$ to get $$\hat{x}$$:**
+
+$$
+\hat{x} = s (q_x - z) = 0.2 \times \begin{bmatrix} 8 \\ -12 \end{bmatrix} = \begin{bmatrix} 1.6 \\ -2.4 \end{bmatrix}
+$$
+
+**Quantization Error in $$x$$:**
+
+$$
+\Delta x = \hat{x} - x = \begin{bmatrix} 1.6 - 1.5 \\ -2.4 - (-2.3) \end{bmatrix} = \begin{bmatrix} 0.1 \\ -0.1 \end{bmatrix}
+$$
+
+### Step 2: Fake Quantize the Weights
+
+**Quantize $$W$$:**
+
+$$
+q_W = \left\lfloor \dfrac{W}{s} \right\rceil + z = \left\lfloor \dfrac{\begin{bmatrix} 0.8 & -0.5 \\ 1.2 & 0.3 \end{bmatrix}}{0.2} \right\rceil + 0 = \left\lfloor \begin{bmatrix} 4 & -2.5 \\ 6 & 1.5 \end{bmatrix} \right\rceil = \begin{bmatrix} 4 & -2 \\ 6 & 2 \end{bmatrix}
+$$
+
+**Dequantize $$q_W$$ to get $$\hat{W}$$:**
+
+$$
+\hat{W} = s (q_W - z) = 0.2 \times \begin{bmatrix} 4 & -2 \\ 6 & 2 \end{bmatrix} = \begin{bmatrix} 0.8 & -0.4 \\ 1.2 & 0.4 \end{bmatrix}
+$$
+
+**Quantization Error in $$W$$:**
+
+$$
+\Delta W = \hat{W} - W = \begin{bmatrix} 0.8 - 0.8 & -0.4 - (-0.5) \\ 1.2 - 1.2 & 0.4 - 0.3 \end{bmatrix} = \begin{bmatrix} 0 & 0.1 \\ 0 & 0.1 \end{bmatrix}
+$$
+
+### Step 3: Compute Output Using Fake Quantized Values
+
+**Compute $$\hat{y} = \hat{W} \hat{x} + b$$:**
+
+1. **Matrix Multiplication:**
+
+   $$
+   \hat{W} \hat{x} = \begin{bmatrix} 0.8 & -0.4 \\ 1.2 & 0.4 \end{bmatrix} \begin{bmatrix} 1.6 \\ -2.4 \end{bmatrix} = \begin{bmatrix} (0.8)(1.6) + (-0.4)(-2.4) \\ (1.2)(1.6) + (0.4)(-2.4) \end{bmatrix} = \begin{bmatrix} 1.28 + 0.96 \\ 1.92 - 0.96 \end{bmatrix} = \begin{bmatrix} 2.24 \\ 0.96 \end{bmatrix}
+   $$
+
+2. **Add Bias:**
+
+   $$
+   \hat{y} = \hat{W} \hat{x} + b = \begin{bmatrix} 2.24 \\ 0.96 \end{bmatrix} + \begin{bmatrix} 0.1 \\ -0.2 \end{bmatrix} = \begin{bmatrix} 2.34 \\ 0.76 \end{bmatrix}
+   $$
+
+### Step 4: Compute Original Output Without Quantization
+
+**Compute $$y = W x + b$$:**
+
+1. **Matrix Multiplication:**
+
+   $$
+   W x = \begin{bmatrix} 0.8 & -0.5 \\ 1.2 & 0.3 \end{bmatrix} \begin{bmatrix} 1.5 \\ -2.3 \end{bmatrix} = \begin{bmatrix} (0.8)(1.5) + (-0.5)(-2.3) \\ (1.2)(1.5) + (0.3)(-2.3) \end{bmatrix} = \begin{bmatrix} 1.2 + 1.15 \\ 1.8 - 0.69 \end{bmatrix} = \begin{bmatrix} 2.35 \\ 1.11 \end{bmatrix}
+   $$
+
+2. **Add Bias:**
+
+   $$
+   y = W x + b = \begin{bmatrix} 2.35 \\ 1.11 \end{bmatrix} + \begin{bmatrix} 0.1 \\ -0.2 \end{bmatrix} = \begin{bmatrix} 2.45 \\ 0.91 \end{bmatrix}
+   $$
+
+### Step 5: Quantization Error in Output
+
+**Quantization Error in $$y$$:**
+
+$$
+\Delta y = \hat{y} - y = \begin{bmatrix} 2.34 - 2.45 \\ 0.76 - 0.91 \end{bmatrix} = \begin{bmatrix} -0.11 \\ -0.15 \end{bmatrix}
+$$
+
+**Interpretation During Training:**
+
+- The model experiences quantization errors in inputs, weights, and outputs.
+- During backpropagation, gradients flow through the fake quantization nodes using the **Straight-Through Estimator (STE)**.
+- The model adjusts its weights and biases to minimize the loss, learning to compensate for quantization errors.
+
+---
+
+## Part 2: Inference with Actual Quantization
+
+During inference, the model uses quantized weights and activations, and computations are performed using integer arithmetic where possible.
+
+### Step 1: Quantize the Weights (Already Done)
+
+- **Quantized Weights:** $$q_W = \begin{bmatrix} 4 & -2 \\ 6 & 2 \end{bmatrix}$$ (stored as integers)
+
+### Step 2: Quantize the Input Activations
+
+Assuming the same input:
+
+$$
+x_{\text{inference}} = \begin{bmatrix} 1.5 \\ -2.3 \end{bmatrix}
+$$
+
+**Quantize $$x_{\text{inference}}$$:**
+
+$$
+q_x = \left\lfloor \dfrac{x_{\text{inference}}}{s} \right\rceil + z = \left\lfloor \dfrac{\begin{bmatrix} 1.5 \\ -2.3 \end{bmatrix}}{0.2} \right\rceil + 0 = \begin{bmatrix} 8 \\ -12 \end{bmatrix}
+$$
+
+### Step 3: Compute Output Using Quantized Values
+
+**Compute $$q_y = q_W q_x$$ Using Integer Arithmetic:**
+
+$$
+q_y = q_W q_x = \begin{bmatrix} 4 & -2 \\ 6 & 2 \end{bmatrix} \begin{bmatrix} 8 \\ -12 \end{bmatrix} = \begin{bmatrix} (4)(8) + (-2)(-12) \\ (6)(8) + (2)(-12) \end{bmatrix} = \begin{bmatrix} 32 + 24 \\ 48 - 24 \end{bmatrix} = \begin{bmatrix} 56 \\ 24 \end{bmatrix}
+$$
+
+**Compute the Output Scale Factor $$s_y$$:**
+
+$$
+s_y = s_W \times s_x = 0.2 \times 0.2 = 0.04
+$$
+
+**Dequantize $$q_y$$ to Get $$\hat{y}$$:**
+
+$$
+\hat{y} = s_y q_y + b = 0.04 \times \begin{bmatrix} 56 \\ 24 \end{bmatrix} + \begin{bmatrix} 0.1 \\ -0.2 \end{bmatrix} = \begin{bmatrix} 2.24 + 0.1 \\ 0.96 - 0.2 \end{bmatrix} = \begin{bmatrix} 2.34 \\ 0.76 \end{bmatrix}
+$$
+
+### Step 4: Quantization Error in Output
+
+**Compare with Original Output $$y$$:**
+
+$$
+y = \begin{bmatrix} 2.45 \\ 0.91 \end{bmatrix}
+$$
+
+**Quantization Error in $$y$$:**
+
+$$
+\Delta y_{\text{inference}} = \hat{y} - y = \begin{bmatrix} 2.34 - 2.45 \\ 0.76 - 0.91 \end{bmatrix} = \begin{bmatrix} -0.11 \\ -0.15 \end{bmatrix}
+$$
+
+**Observation:**
+
+- The quantization errors during inference are **identical** to those experienced during training with fake quantization.
+- This shows that fake quantization during training accurately simulates the quantization effects during inference.
+
+---
+
+## Understanding the Simulation
+
+### How Fake Quantization Simulates Quantized Inference
+
+1. **Introduction of Quantization Errors:**
+
+   - During training, fake quantization quantizes and dequantizes the activations and weights, introducing quantization errors.
+   - These errors affect the outputs, just like actual quantization during inference.
+
+2. **Learning to Compensate:**
+
+   - The model learns to adjust its parameters to minimize the loss, despite the presence of quantization errors.
+   - This results in a model that is robust to quantization.
+
+3. **Consistency Between Training and Inference:**
+
+   - Since the quantization errors are the same, the model's performance during inference closely matches its performance during training.
+   - This minimizes the accuracy drop typically seen when quantizing a model post-training without QAT.
+
+---
+
+## Key Points
+
+- **Fake Quantization:**
+
+  - Simulates quantization effects during training without changing the data types.
+  - Introduces quantization errors by quantizing and dequantizing tensors.
+
+- **Quantization Errors:**
+
+  - Errors introduced due to the limited precision of quantized representations.
+  - Affect the outputs of computations.
+
+- **Straight-Through Estimator (STE):**
+
+  - Used during backpropagation to approximate gradients through non-differentiable quantization operations.
+  - Assumes the derivative of the quantization function is 1 within the quantization range.
+
+- **Model Adaptation:**
+
+  - The model adjusts its weights and biases to minimize the loss in the presence of quantization errors.
+  - This leads to better performance when the model is quantized for inference.
+
+---
+
+## Conclusion
+
+By using the same numerical data for both training and inference, we've demonstrated how fake quantization during training simulates the quantized inference model. The model experiences quantization errors during training, learns to compensate for them, and therefore performs better during quantized inference.
+
+- **During Training:**
+
+  - Fake quantization introduces quantization errors.
+  - The model learns to adapt to these errors.
+
+- **During Inference:**
+
+  - Actual quantization is applied.
+  - The quantization errors are similar to those during training.
+  - The model maintains high performance.
+
+---
+
+## Additional Notes
+
+- **Quantization Parameters:**
+
+  - The choice of scale factor $$s$$ and zero-point $$z$$ is crucial.
+  - In practice, these parameters are determined based on the data distribution.
+
+- **Complexity in Real Models:**
+
+  - Real-world models are more complex, involving multiple layers and non-linear activations.
+  - The principles demonstrated here apply, but additional considerations are needed (e.g., per-channel quantization, layer fusion).
+
+- **Quantization-Aware Training Benefits:**
+
+  - Reduces the accuracy gap between floating-point and quantized models.
+  - Enables efficient deployment on hardware that supports lower-precision arithmetic.
+
+---
+
+## Visual Analogy
+
+Think of fake quantization as training a driver with simulated obstacles:
+
+- **Training Environment:**
+
+  - The driver practices on a course with simulated obstacles.
+  - They learn to navigate challenges that are similar to real-world conditions.
+
+- **Real-World Driving:**
+
+  - When faced with actual obstacles, the driver is better prepared.
+  - The prior experience helps maintain performance under real conditions.
+
+Similarly, fake quantization prepares the model for the "obstacles" introduced by quantization during inference.
+
+---
+
 ## Intuitions Behind Quantization-Aware Training
 
 ### **1. Learning to Compensate for Quantization Errors**
