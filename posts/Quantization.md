@@ -548,10 +548,12 @@ For a linear layer:
 The computation is:
 
 $$
-\hat{x} = \text{FakeQuantize}(x) \\
-\hat{W} = \text{FakeQuantize}(W) \\
-y = \hat{x} \cdot \hat{W} + b \\
-\hat{y} = \text{FakeQuantize}(y)
+\begin{aligned}
+\hat{x} &= \text{FakeQuantize}(x) \\
+\hat{W} &= \text{FakeQuantize}(W) \\
+y &= \hat{x} \cdot \hat{W} + b \\
+\hat{y} &= \text{FakeQuantize}(y)
+\end{aligned}
 $$
 
 ### Backward Pass with Straight-Through Estimator (STE)
