@@ -341,7 +341,7 @@ Let's implement PTQ on a simple convolutional neural network.
 
 **Step 1: Define the Model**
 
-```python
+```
 import torch
 import torch.nn as nn
 
@@ -368,7 +368,7 @@ model_fp32 = PTQModel()
 
 **Step 2: Prepare the Model for Quantization**
 
-```python
+```
 from torch.quantization import fuse_modules
 
 model_fp32.eval()
@@ -383,7 +383,7 @@ fuse_modules(model_fp32, [['conv1', 'bn1', 'relu1']], inplace=True)
 
 **Step 3: Specify Quantization Configuration**
 
-```python
+```
 import torch.quantization as quantization
 
 model_fp32.qconfig = quantization.default_qconfig  # Use default quantization configuration
@@ -394,7 +394,7 @@ quantization.prepare(model_fp32, inplace=True)
 
 **Step 4: Calibration**
 
-```python
+```
 # Define a calibration function
 def calibrate(model, data_loader):
     model.eval()
@@ -408,14 +408,14 @@ def calibrate(model, data_loader):
 
 **Step 5: Convert to Quantized Model**
 
-```python
+```
 # Convert the model to quantized version
 model_int8 = quantization.convert(model_fp32)
 ```
 
 **Step 6: Evaluate the Quantized Model**
 
-```python
+```
 # Evaluate the quantized model on a test dataset
 def evaluate(model, data_loader):
     model.eval()
@@ -1076,7 +1076,7 @@ for fuse_pair in model.fuse_modules:
 torch.quantization.prepare_qat(model, inplace=True)
 
 # The model is now ready for QAT training
-'''
+```
 
 
 ## Intuitions Behind Quantization-Aware Training
