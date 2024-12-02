@@ -983,59 +983,99 @@ $$
 
 ---
 
-## Conclusion
-
-By using the same numerical data for both training and inference, we've demonstrated how fake quantization during training simulates the quantized inference model. The model experiences quantization errors during training, learns to compensate for them, and therefore performs better during quantized inference.
-
-- **During Training:**
-
-  - Fake quantization introduces quantization errors.
-  - The model learns to adapt to these errors.
-
-- **During Inference:**
-
-  - Actual quantization is applied.
-  - The quantization errors are similar to those during training.
-  - The model maintains high performance.
-
----
-
 ## Additional Notes
+1. In Quantization Aware Training (QAT), bias terms are typically **not** quantized and are instead maintained in higher precision, such as floating-point (e.g., FP32). This practice ensures that the addition of biases during the forward pass remains accurate, as quantizing biases can introduce significant errors that may degrade the model's performance. By keeping biases in higher precision, QAT effectively balances the benefits of reduced precision for weights and activations with the need for precise bias calculations, thereby maintaining overall model accuracy while still leveraging the efficiency gains from quantization.
+2. In Quantization Aware Training (QAT), QuantStub and DeQuantStub are generally placed at the very beginning and end of the model, respectively, to quantize the input tensors and dequantize the output tensors. However, there are exceptions, especially in complex architectures with multiple branches or residual connections. In such cases, additional QuantStub and DeQuantStub instances may be needed within the network to ensure that intermediate tensors are correctly quantized and dequantized.
+   import torch
+import torch.nn as nn
+import torch.quantization
 
-- **Quantization Parameters:**
+class MultiBranchModel(nn.Module):
+    def __init__(self):
+        super(MultiBranchModel, self).__init__()
+        # Quantization stubs
+        self.quant = torch.quantization.QuantStub()
+        self.dequant = torch.quantization.DeQuantStub()
+        
+        # Branch 1
+        self.branch1 = nn.Sequential(
+            nn.Conv2d(3, 16, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(16, 16, kernel_size=3, padding=1)
+        )
+        
+        # Branch 2
+        self.branch2 = nn.Sequential(
+            nn.Conv2d(3, 16, kernel_size=5, padding=2),
+            nn.ReLU(),
+            nn.Conv2d(16, 16, kernel_size=5, padding=2)
+        )
+        
+        # Fusion layer
+        self.fuse = nn.Conv2d(32, 32, kernel_size=1)
+        self.relu = nn.ReLU()
+        
+        # Output layer
+        self.output = nn.Linear(32 * 32 * 32, 10)  # Assuming input images are 32x32
 
-  - The choice of scale factor $$s$$ and zero-point $$z$$ is crucial.
-  - In practice, these parameters are determined based on the data distribution.
+        # Additional Quant/DeQuant stubs for branches
+        self.quant_branch1 = torch.quantization.QuantStub()
+        self.dequant_branch1 = torch.quantization.DeQuantStub()
+        self.quant_branch2 = torch.quantization.QuantStub()
+        self.dequant_branch2 = torch.quantization.DeQuantStub()
 
-- **Complexity in Real Models:**
+    def forward(self, x):
+        # Quantize the input
+        x = self.quant(x)
+        
+        # Branch 1
+        b1 = self.quant_branch1(x)
+        b1 = self.branch1(b1)
+        b1 = self.dequant_branch1(b1)
+        
+        # Branch 2
+        b2 = self.quant_branch2(x)
+        b2 = self.branch2(b2)
+        b2 = self.dequant_branch2(b2)
+        
+        # Concatenate branches
+        fused = torch.cat([b1, b2], dim=1)
+        fused = self.fuse(fused)
+        fused = self.relu(fused)
+        
+        # Flatten and output
+        fused = fused.view(fused.size(0), -1)
+        out = self.output(fused)
+        
+        # Dequantize the output
+        out = self.dequant(out)
+        return out
 
-  - Real-world models are more complex, involving multiple layers and non-linear activations.
-  - The principles demonstrated here apply, but additional considerations are needed (e.g., per-channel quantization, layer fusion).
+# Instantiate the model
+model = MultiBranchModel()
 
-- **Quantization-Aware Training Benefits:**
+# Specify quantization configuration
+model.qconfig = torch.quantization.get_default_qat_qconfig('fbgemm')
 
-  - Reduces the accuracy gap between floating-point and quantized models.
-  - Enables efficient deployment on hardware that supports lower-precision arithmetic.
+# Fuse modules if applicable (e.g., Conv + ReLU)
+# In this example, fusion is done manually for branches
+model.fuse_modules = [
+    ['branch1.0', 'branch1.1'],
+    ['branch1.1', 'branch1.2'],
+    ['branch2.0', 'branch2.1'],
+    ['branch2.1', 'branch2.2']
+]
 
----
+# Apply fusion
+for fuse_pair in model.fuse_modules:
+    torch.quantization.fuse_modules(model, fuse_pair, inplace=True)
 
-## Visual Analogy
+# Prepare the model for QAT
+torch.quantization.prepare_qat(model, inplace=True)
 
-Think of fake quantization as training a driver with simulated obstacles:
+# The model is now ready for QAT training
 
-- **Training Environment:**
 
-  - The driver practices on a course with simulated obstacles.
-  - They learn to navigate challenges that are similar to real-world conditions.
-
-- **Real-World Driving:**
-
-  - When faced with actual obstacles, the driver is better prepared.
-  - The prior experience helps maintain performance under real conditions.
-
-Similarly, fake quantization prepares the model for the "obstacles" introduced by quantization during inference.
-
----
 
 ## Intuitions Behind Quantization-Aware Training
 
