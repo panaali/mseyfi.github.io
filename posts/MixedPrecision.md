@@ -53,7 +53,7 @@ Modern GPUs, such as NVIDIA's Tensor Cores, are optimized for half-precision com
 
 ### Understanding Gradient Underflow
 
-**Gradient underflow** occurs when gradient values become so small that they fall below the minimum representable number in `FP16` (approximately \(6 \times 10^{-8}\)). When this happens, the gradients effectively become zero, impeding the learning process because the weights no longer receive meaningful updates.
+**Gradient underflow** occurs when gradient values become so small that they fall below the minimum representable number in `FP16` (approximately $$6 \times 10^{-8}$$). When this happens, the gradients effectively become zero, impeding the learning process because the weights no longer receive meaningful updates.
 
 **Mathematically**, if $$g$$ is a gradient value and $$g \le\text{FP16}_\text{min}$$, then in `FP16`, $$g = 0$$. This loss of information halts training progress.
 
