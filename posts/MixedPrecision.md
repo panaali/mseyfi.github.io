@@ -1,4 +1,7 @@
-## Mixed precision training is a technique in deep learning where computations are performed using different numerical precisions—typically a mix of **16-bit floating point (FP16)** and **32-bit floating point (FP32)**—to accelerate training and reduce memory usage while maintaining model accuracy. 
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+# Mixed precision training
+Mixed precision training is a technique in deep learning where computations are performed using different numerical precisions—typically a mix of **16-bit floating point (FP16)** and **32-bit floating point (FP32)**—to accelerate training and reduce memory usage while maintaining model accuracy. 
 
 ### Key Components of Mixed Precision Training
 
