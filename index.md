@@ -119,9 +119,6 @@ This tutorial provides an in-depth exploration of quantizing machine learning mo
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
-
-
-
 ## [![Quantization](https://img.shields.io/badge/Optimization_Series-Quantization-blue?style=for-the-badge&logo=github)](posts/Quantization)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 With the proliferation of deep learning models in various applications, deploying these models on resource-constrained devices like mobile phones, embedded systems, and IoT devices has become essential. Quantization is a key technique that reduces the model size and computational requirements by converting floating-point numbers to lower-precision representations, such as integers.
