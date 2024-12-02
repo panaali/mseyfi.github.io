@@ -986,6 +986,7 @@ $$
 ## Additional Notes
 1. In Quantization Aware Training (QAT), bias terms are typically **not** quantized and are instead maintained in higher precision, such as floating-point (e.g., FP32). This practice ensures that the addition of biases during the forward pass remains accurate, as quantizing biases can introduce significant errors that may degrade the model's performance. By keeping biases in higher precision, QAT effectively balances the benefits of reduced precision for weights and activations with the need for precise bias calculations, thereby maintaining overall model accuracy while still leveraging the efficiency gains from quantization.
 2. In Quantization Aware Training (QAT), QuantStub and DeQuantStub are generally placed at the very beginning and end of the model, respectively, to quantize the input tensors and dequantize the output tensors. However, there are exceptions, especially in complex architectures with multiple branches or residual connections. In such cases, additional QuantStub and DeQuantStub instances may be needed within the network to ensure that intermediate tensors are correctly quantized and dequantized.
+```python
    import torch
 import torch.nn as nn
 import torch.quantization
@@ -1074,7 +1075,7 @@ for fuse_pair in model.fuse_modules:
 torch.quantization.prepare_qat(model, inplace=True)
 
 # The model is now ready for QAT training
-
+'''
 
 
 ## Intuitions Behind Quantization-Aware Training
