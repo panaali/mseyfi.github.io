@@ -26,6 +26,15 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <p></p>
 <p></p>
 
+## [![GenAI](https://img.shields.io/badge/GenAI-Selected_Topics_in_GenAI-green?style=for-the-badge&logo=github)](main_page/GenAI)
+## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](main_page/CV)
+## [![CP](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography?style=for-the-badge&logo=github)](main_page/CP)
+## [![ML](https://img.shields.io/badge/ML-Selected_Topics_in_Machine_Learning?style=for-the-badge&logo=github)](main_page/ML)
+
+<p></p>
+<p></p>
+
+
 ## [![ControlNet](https://img.shields.io/badge/ControlNet-Adding_Conditional_Control_to_Text_to_Image_Diffusion_Models-blue?style=for-the-badge&logo=github)](posts/ControlNet)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 ControlNet is an advanced extension of diffusion models that introduces additional control mechanisms, allowing for precise guidance over the generation process. By integrating control signals (e.g., edge maps, segmentation masks, poses), ControlNet enables the generation of images that adhere to specific structural or semantic constraints provided by the user.
