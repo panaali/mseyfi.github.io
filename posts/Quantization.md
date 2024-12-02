@@ -1177,22 +1177,6 @@ torch.quantization.prepare_qat(model, inplace=True)
 
 ---
 
-## Summary
-
-Quantization-Aware Training is a powerful technique to train neural networks that are robust to quantization effects. By incorporating fake quantization nodes into the training graph and using the Straight-Through Estimator during backpropagation, the model learns to maintain high accuracy even when weights and activations are quantized for inference.
-
-**Key Takeaways:**
-
-- **Fake Quantization:** Simulates quantization during training without changing data types.
-- **Backpropagation with STE:** Allows gradients to flow through non-differentiable quantization operations.
-- **Model Adaptation:** The model learns to adjust parameters to mitigate quantization errors.
-- **Deployment Readiness:** Results in a quantized model that performs well on hardware with lower-precision arithmetic.
-
----
-
-**Note:** **When implementing QAT, it's important to carefully manage quantization parameters and ensure that the training process accurately reflects the conditions under which the model will be deployed. Testing and validation on the target hardware are essential to confirm that performance gains are realized in practice.
-**---
-
 ## 6. Comparing PTQ and QAT
 
 ### 6.1 Pros and Cons
