@@ -55,7 +55,7 @@ Modern GPUs, such as NVIDIA's Tensor Cores, are optimized for half-precision com
 
 **Gradient underflow** occurs when gradient values become so small that they fall below the minimum representable number in `FP16` (approximately \(6 \times 10^{-8}\)). When this happens, the gradients effectively become zero, impeding the learning process because the weights no longer receive meaningful updates.
 
-**Mathematically**, if \( g \) is a gradient value and \( g < \text{FP16\_min} \), then in `FP16`, \( g = 0 \). This loss of information halts training progress.
+**Mathematically**, if $$g$$ is a gradient value and $$g < \text{FP16\_min}$$, then in `FP16`, $$g = 0$$. This loss of information halts training progress.
 
 ---
 
@@ -67,27 +67,27 @@ Modern GPUs, such as NVIDIA's Tensor Cores, are optimized for half-precision com
 
 Let:
 
-- \( L \): Original loss value.
-- \( S \): Scaling factor (e.g., 1024, 65536).
-- \( \tilde{L} = L \times S \): Scaled loss.
+- $$L$$: Original loss value.
+- $$S$$: Scaling factor (e.g., 1024, 65536).
+- $$\tilde{L} = L \times S$$: Scaled loss.
 
 **Backpropagation with Scaled Loss**:
 
 1. **Compute Scaled Gradients**:
 
-   \[
+   $$
    \tilde{g} = \frac{\partial \tilde{L}}{\partial w} = S \times \frac{\partial L}{\partial w} = S \times g
-   \]
+   $$
 
-   Where \( g \) is the original gradient.
+   Where $$g$$ is the original gradient.
 
 2. **Unscale Gradients**:
 
-   Before the optimizer step, divide the gradients by \( S \) to bring them back to the correct scale:
+   Before the optimizer step, divide the gradients by $$S$$ to bring them back to the correct scale:
 
-   \[
+   $$
    g_{\text{unscaled}} = \frac{\tilde{g}}{S} = \frac{S \times g}{S} = g
-   \]
+   $$
 
 ### Why Is This Necessary?
 
