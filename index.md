@@ -29,6 +29,7 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 ## [![GenAI](https://img.shields.io/badge/GenAI-Selected_Topics_in_GenAI-green?style=for-the-badge&logo=github)](main_page/GenAI)
 
 ## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](main_page/CV)
+## [![CP](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](main_page/CP)
 
 ## [![CP](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography?style=for-the-badge&logo=github)](main_page/CP)
 
