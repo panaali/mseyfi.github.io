@@ -13,19 +13,26 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 
 <p>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 </p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
 
 
 [<img src="images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en) [<img src="images/github.png"  width="40" height="40">](https://github.com/mseyfi)
 <p></p>
 <p></p>
-<p align="center">
 
 [<img src="images/GenAI.png"  width="150" height="150">](main_page/GenAI) | [<img src="images/CV.png"  width="150" height="150">](main_page/CV)
 |:--:|:--:| 
@@ -34,7 +41,6 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 [<img src="images/ML.png"  width="150" height="150">](main_page/ML) | [<img src="images/CP.png"  width="150" height="150">](main_page/CP)
 |:--:|:--:| 
 **Machine Learning**|**Computational Photography**|
-</p>
 
 ## [![GenAI](https://img.shields.io/badge/GenAI-Selected_Topics_in_GenAI-green?style=for-the-badge&logo=github)](main_page/GenAI)
 ## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](main_page/CV)
