@@ -5,16 +5,6 @@
 ## The content of this page is related to the topics of Computation Photography and Image and Video processing 🚀.
 
 
-
-  
-</p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-
-
 [<img src="../images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="../images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en) [<img src="../images/github.png"  width="40" height="40">](https://github.com/mseyfi)
 <p></p>
 <p></p>
