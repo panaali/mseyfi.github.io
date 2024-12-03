@@ -29,12 +29,12 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 [<img src="images/ML.png"  width="150" height="150">](main_page/ML) | [<img src="images/CP.png"  width="150" height="150">](main_page/CP)
 |:--:|:--:| 
 **Machine Learning**|**Computational Photography**|
-
+<!---
 [//]: ## [![GenAI](https://img.shields.io/badge/GenAI-Selected_Topics_in_GenAI-green?style=for-the-badge&logo=github)](main_page/GenAI)
 [//]: ## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](main_page/CV)
 [//]: ## [![CP](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](main_page/CP)
 [//]: ## [![ML](https://img.shields.io/badge/ML-Selected_Topics_in_Machine_Learning-green?style=for-the-badge&logo=github)](main_page/ML)
-
+--->
 
 
 ## [![ControlNet](https://img.shields.io/badge/ControlNet-Adding_Conditional_Control_to_Text_to_Image_Diffusion_Models-blue?style=for-the-badge&logo=github)](posts/ControlNet)
