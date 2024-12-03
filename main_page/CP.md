@@ -1,6 +1,6 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-[//]: ## [![CP](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](CP)
+## [![CP](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](CP)
 
 ## The content of this page is related to the topics of Computation Photography and Image and Video processing 🚀.
 
