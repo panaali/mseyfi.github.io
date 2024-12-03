@@ -17,11 +17,11 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <br>
 <br>
 <br>
-<br>
-<br>
 
 [<img src="images/GenAI.png"  width="150" height="150">](main_page/GenAI) [<img src="images/CV.png"  width="150" height="150">](main_page/CV)
 [<img src="images/ML.png"  width="150" height="150">](main_page/ML) [<img src="images/CP.png"  width="150" height="150">](main_page/CP)
+<br>
+<br>
 <br>
 <br>
 
