@@ -16,9 +16,11 @@ This tutorial explains the entire workflow of traditional video compression, com
 
 #### **Mathematical Representation**
 Let $$X_t$$ be the frame at time $$t$$. The predicted frame, $$\hat{X}_t$$, is derived from a reference frame $$X_{t-1}$$:
+
 $$
 \hat{X}_t = \text{Warp}(X_{t-1}, V_t)
 $$
+
 Where $$V_t$$ represents the motion vectors (derived during motion estimation).
 
 ---
@@ -27,18 +29,22 @@ Where $$V_t$$ represents the motion vectors (derived during motion estimation).
 - Motion estimation identifies how blocks in the current frame $$X_t$$ move relative to a reference frame $$X_{t-1}$$.
 - Frames are divided into non-overlapping blocks (e.g., $$B_{i,j}$$, a block at position \((i, j)\)).
 - For each block in $$X_t$$, find the best match in $$X_{t-1}$$ using a **block matching algorithm**:
+
   $$
   V_{i,j} = \arg \min_{(dx, dy)} \| B_{i,j} - B_{i+dx,j+dy} \|^2
   $$
+
   where $$V_{i,j} = (dx, dy)$$ is the motion vector for block $$B_{i,j}$$.
 
 ---
 
 #### **3. Motion Compensation (with Warping)**
 - Using motion vectors $$V_{i,j}$$, motion compensation generates a **predicted frame $$\hat{X}_t$$**:
+
   $$
   \hat{B}_{i,j} = X_{t-1}(i+dx, j+dy)
   $$
+
   where $$X_{t-1}(i+dx, j+dy)$$ is the block in the reference frame displaced by the motion vector.
 
 - **Warping:** For more complex motion (e.g., rotation or scaling), apply geometric transformations:
@@ -51,9 +57,11 @@ Where $$V_t$$ represents the motion vectors (derived during motion estimation).
 
 #### **4. Residual Calculation**
 - The **residual frame** captures the difference between the actual frame $$X_t$$ and the predicted frame $$\hat{X}_t$$:
+
   $$
   R_t = X_t - \hat{X}_t
   $$
+
 - The residual frame contains the information that motion compensation cannot capture (e.g., occlusions, texture changes).
 
 ---
@@ -63,18 +71,22 @@ Where $$V_t$$ represents the motion vectors (derived during motion estimation).
   - **Low-frequency components:** Represent large-scale features.
   - **High-frequency components:** Represent fine details.
 - For each block $$B_{i,j}$$ in $$R_t$$, the DCT transformation is:
+
   $$
   D(u, v) = \frac{1}{4} \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} R_t(x, y) \cdot \cos\left[\frac{(2x+1)u\pi}{2N}\right] \cdot \cos\left[\frac{(2y+1)v\pi}{2N}\right]
   $$
+
   where $$N$$ is the block size (e.g., $$8 \times 8$$).
 
 ---
 
 #### **6. Quantization**
 - The DCT coefficients $$D(u, v)$$ are quantized to reduce precision, making the data more compressible:
+
   $$
   Q(u, v) = \text{round}\left(\frac{D(u, v)}{Q_{\text{matrix}}(u, v)}\right)
   $$
+
   where $$Q_{\text{matrix}}(u, v)$$ is the quantization matrix (e.g., JPEG standard matrix). Higher frequencies (small details) are quantized more aggressively.
 
 ---
@@ -92,30 +104,40 @@ Where $$V_t$$ represents the motion vectors (derived during motion estimation).
    - Frames $$X_t$$ and $$X_{t-1}$$.
 2. **Motion Estimation:**
    - Compute motion vectors $$V_t$$ for all blocks.
-   $$
+
+    $$
    V_t = \arg \min_{(dx, dy)} \| B_t - B_{t-1} \|^2
    $$
-3. **Motion Compensation (Warping):**
+
+4. **Motion Compensation (Warping):**
    - Generate predicted frame:
+
    $$
    \hat{X}_t(x, y) = X_{t-1}(M \cdot [x, y]^T)
    $$
-4. **Residual Calculation:**
+
+5. **Residual Calculation:**
    - Compute residual:
+
    $$
    R_t = X_t - \hat{X}_t
    $$
-5. **DCT Transformation:**
+
+6. **DCT Transformation:**
    - Transform residual to frequency domain:
+
    $$
    D(u, v) = \frac{1}{4} \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} R_t(x, y) \cdot \cos\left[\frac{(2x+1)u\pi}{2N}\right] \cdot \cos\left[\frac{(2y+1)v\pi}{2N}\right]
    $$
-6. **Quantization:**
+
+7. **Quantization:**
    - Quantize the DCT coefficients:
+
    $$
    Q(u, v) = \text{round}\left(\frac{D(u, v)}{Q_{\text{matrix}}(u, v)}\right)
    $$
-7. **Entropy Encoding:**
+
+8. **Entropy Encoding:**
    - Compress quantized coefficients using Huffman coding.
 
 ---
