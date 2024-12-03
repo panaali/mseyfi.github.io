@@ -1,26 +1,9 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-<div style="background-color: #f3f3f3; color: #512; font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
-  <h2>Preface:</h2>
-  <p>
-Hi, I’m Mehdi, and I use this blog to document my learning journey.
-I am a research scientist at Meta <img src="../images/Meta.png"  width="30" height="30"> | Exploring computer vision, computational photography, and Gen-AI 🚀.
+## [![ML](https://img.shields.io/badge/ML-Selected_Topics_in_Machine_Learning-orange?style=for-the-badge&logo=github)](ML)
 
-I’ve discovered that I grasp concepts more effectively when I understand a simple code example associated with them. Therefore, in this blog, I explore new concepts through coding!|
+<br>
 
-I try to use simple scenarios and of course, I never use ChatGPT🤥.
-</p>
-</div>
-
-<p>
-
-
-</p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
 
 [<img src="../images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="../images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en) [<img src="../images/github.png"  width="40" height="40">](https://github.com/mseyfi)
 
