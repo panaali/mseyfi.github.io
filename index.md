@@ -10,18 +10,23 @@ I’ve discovered that I grasp concepts more effectively when I understand a sim
 I try to use simple scenarios and of course, I never use ChatGPT🤥.
 </p>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 [<img src="images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en) [<img src="images/github.png"  width="40" height="40">](https://github.com/mseyfi)
-<p></p>
-<p></p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 [<img src="images/GenAI.png"  width="150" height="150">](main_page/GenAI) | [<img src="images/CV.png"  width="150" height="150">](main_page/CV)
 |:--:|:--:| 
