@@ -8,6 +8,12 @@
 [<img src="../images/LinkedIn_logo_initials.png"  width="40" height="40">](https://www.linkedin.com/in/mehdi-seyfi-38189220/)   [<img src="../images/googlescholar.png"  width="40" height="40">](https://scholar.google.ca/citations?user=6l0PmOEAAAAJ&hl=en) [<img src="../images/github.png"  width="40" height="40">](https://github.com/mseyfi)
 <p></p>
 <p></p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ## [![MC](https://img.shields.io/badge/MC-Motion_Compensation-blue?style=for-the-badge&logo=github)](../posts/MotionCompensation)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
