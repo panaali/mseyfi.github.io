@@ -5,9 +5,6 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
 
 ## [![MC](https://img.shields.io/badge/MC-Motion_Compensation-blue?style=for-the-badge&logo=github)](../posts/MotionCompensation)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
