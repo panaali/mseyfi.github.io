@@ -1,3 +1,9 @@
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+## [![GenAI](https://img.shields.io/badge/CP-Selected_Topics_in_Generative_AIy-yellow?style=for-the-badge&logo=github)](GenAI)
+
+<br>
+
 
 ## [![ControlNet](https://img.shields.io/badge/ControlNet-Adding_Conditional_Control_to_Text_to_Image_Diffusion_Models-blue?style=for-the-badge&logo=github)](../posts/ControlNet)
 
