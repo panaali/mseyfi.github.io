@@ -22,11 +22,11 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 
 [<img src="images/GenAI.png"  width="150" height="150">](main_page/GenAI) | [<img src="images/CV.png"  width="150" height="150">](main_page/CV)
 |:--:|:--:| 
-**Generative AI**|**Computer Vision**|
+**$~~~~~~$Generative AI$~~~~~~$**|**$~~~~~~$Computer Vision$~~~~$**|
 
 [<img src="images/ML.png"  width="150" height="150">](main_page/ML) | [<img src="images/CP.png"  width="150" height="150">](main_page/CP)
 |:--:|:--:| 
-**Machine Learning**|**Computational Photography**|
+**$~~~~$Machine Learning$~~~~~$**|**Computational Photography**|
 <!---
 [//]: ## [![GenAI](https://img.shields.io/badge/GenAI-Selected_Topics_in_GenAI-green?style=for-the-badge&logo=github)](main_page/GenAI)
 [//]: ## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](main_page/CV)
