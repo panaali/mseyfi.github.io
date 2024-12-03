@@ -7,11 +7,6 @@ This tutorial explains the entire workflow of traditional video compression, com
 ---
 ![imag2](../images/VideoCompression.png "Traditional Video compression,")
 
-### **Overview of Video Compression**
-The goal of video compression is to reduce the size of video data while preserving perceptual quality. This is achieved by exploiting spatial and temporal redundancies in video frames.
-
----
-
 ### **Step-by-Step Compression Workflow**
 
 #### **1. Frame Separation**
@@ -20,18 +15,18 @@ The goal of video compression is to reduce the size of video data while preservi
   - **Predicted Frames (Inter-frames):** Compressed using motion estimation and compensation to exploit temporal redundancy.
 
 #### **Mathematical Representation**
-Let $$F_t$$ be the frame at time $$t$$. The predicted frame, $$\hat{F}_t$$, is derived from a reference frame $$F_{t-1}$$:
+Let $$X_t$$ be the frame at time $$t$$. The predicted frame, $$\hat{X}_t$$, is derived from a reference frame $$X_{t-1}$$:
 $$
-\hat{F}_t = \text{Warp}(F_{t-1}, V_t)
+\hat{X}_t = \text{Warp}(X_{t-1}, V_t)
 $$
 Where $$V_t$$ represents the motion vectors (derived during motion estimation).
 
 ---
 
 #### **2. Motion Estimation**
-- Motion estimation identifies how blocks in the current frame $$F_t$$ move relative to a reference frame $$F_{t-1}$$.
-- Frames are divided into non-overlapping blocks (e.g., $$B_{i,j}$$, a block at position$$(i, j)\)).
-- For each block in $$F_t$$, find the best match in $$F_{t-1}$$ using a **block matching algorithm**:
+- Motion estimation identifies how blocks in the current frame $$X_t$$ move relative to a reference frame $$X_{t-1}$$.
+- Frames are divided into non-overlapping blocks (e.g., $$B_{i,j}$$, a block at position \((i, j)\)).
+- For each block in $$X_t$$, find the best match in $$X_{t-1}$$ using a **block matching algorithm**:
   $$
   V_{i,j} = \arg \min_{(dx, dy)} \| B_{i,j} - B_{i+dx,j+dy} \|^2
   $$
@@ -40,24 +35,24 @@ Where $$V_t$$ represents the motion vectors (derived during motion estimation).
 ---
 
 #### **3. Motion Compensation (with Warping)**
-- Using motion vectors $$V_{i,j}$$, motion compensation generates a **predicted frame $$\hat{F}_t$$**:
+- Using motion vectors $$V_{i,j}$$, motion compensation generates a **predicted frame $$\hat{X}_t$$**:
   $$
-  \hat{B}_{i,j} = F_{t-1}(i+dx, j+dy)
+  \hat{B}_{i,j} = X_{t-1}(i+dx, j+dy)
   $$
-  where $$F_{t-1}(i+dx, j+dy)$$ is the block in the reference frame displaced by the motion vector.
+  where $$X_{t-1}(i+dx, j+dy)$$ is the block in the reference frame displaced by the motion vector.
 
 - **Warping:** For more complex motion (e.g., rotation or scaling), apply geometric transformations:
   $$
-  \hat{F}_t(x, y) = F_{t-1}(M \cdot [x, y]^T)
+  \hat{X}_t(x, y) = X_{t-1}(M \cdot [x, y]^T)
   $$
   where $$M$$ is the transformation matrix representing scaling, rotation, or translation.
 
 ---
 
 #### **4. Residual Calculation**
-- The **residual frame** captures the difference between the actual frame $$F_t$$ and the predicted frame $$\hat{F}_t$$:
+- The **residual frame** captures the difference between the actual frame $$X_t$$ and the predicted frame $$\hat{X}_t$$:
   $$
-  R_t = F_t - \hat{F}_t
+  R_t = X_t - \hat{X}_t
   $$
 - The residual frame contains the information that motion compensation cannot capture (e.g., occlusions, texture changes).
 
@@ -94,7 +89,7 @@ Where $$V_t$$ represents the motion vectors (derived during motion estimation).
 
 #### **Overall Mathematical Workflow**
 1. **Input Video Frames:**
-   - Frames $$F_t$$ and $$F_{t-1}$$.
+   - Frames $$X_t$$ and $$X_{t-1}$$.
 2. **Motion Estimation:**
    - Compute motion vectors $$V_t$$ for all blocks.
    $$
@@ -103,12 +98,12 @@ Where $$V_t$$ represents the motion vectors (derived during motion estimation).
 3. **Motion Compensation (Warping):**
    - Generate predicted frame:
    $$
-   \hat{F}_t(x, y) = F_{t-1}(M \cdot [x, y]^T)
+   \hat{X}_t(x, y) = X_{t-1}(M \cdot [x, y]^T)
    $$
 4. **Residual Calculation:**
    - Compute residual:
    $$
-   R_t = F_t - \hat{F}_t
+   R_t = X_t - \hat{X}_t
    $$
 5. **DCT Transformation:**
    - Transform residual to frequency domain:
@@ -154,11 +149,11 @@ compressed_data = huffman_encode(quantized_coefficients)
 ---
 
 ### **Visualization of Workflow**
-1. **Input Frame:** Current and reference frames.
-2. **Motion Estimation:** Compute motion vectors.
-3. **Motion Compensation:** Warp reference frame to create predicted frame.
-4. **Residual Calculation:** Subtract predicted frame from actual frame.
-5. **Transform & Quantization:** Apply DCT and quantize coefficients.
+1. **Input Frame:** Current and reference frames ($$X_t$$ and $$X_{t-1}$$).
+2. **Motion Estimation:** Compute motion vectors $$V_t$$.
+3. **Motion Compensation:** Warp reference frame $$X_{t-1}$$ to create predicted frame $$\hat{X}_t$$.
+4. **Residual Calculation:** Subtract predicted frame $$\hat{X}_t$$ from actual frame $$X_t$$.
+5. **Transform & Quantization:** Apply DCT and quantize coefficients $$Q(u, v)$$.
 6. **Encoding:** Compress quantized coefficients.
 
-This comprehensive flow reduces video size while maintaining high perceptual quality, forming the foundation of codecs like MPEG, H.264, and H.265. Let me know if you'd like visual aids or additional explanations!
+This version uses $$X$$ for the frames and aligns the mathematical relationships accordingly. Let me know if you need further elaboration!
