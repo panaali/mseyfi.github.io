@@ -26,7 +26,7 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <p></p>
 <p></p>
 
-[<img src="images/GenAI.png"  width="70" height="70">](main_page/GenAI)
+[<img src="images/GenAI.png"  width="70" height="70">](main_page/GenAI)*GenAI*
 [<img src="images/CV.png"  width="70" height="70">](main_page/CV)
 
 [<img src="images/ML.png"  width="70" height="70">](main_page/ML)
