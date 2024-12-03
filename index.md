@@ -21,12 +21,7 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <br>
 
 [<img src="images/GenAI.png"  width="150" height="150">](main_page/GenAI) | [<img src="images/CV.png"  width="150" height="150">](main_page/CV)
-|:--:|:--:| 
-**Generative AI**|**Computer Vision**|
-
 [<img src="images/ML.png"  width="150" height="150">](main_page/ML) | [<img src="images/CP.png"  width="150" height="150">](main_page/CP)
-|:--:|:--:| 
-**Machine Learning**|**Computational Vision**|
 <br>
 <br>
 
