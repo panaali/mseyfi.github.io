@@ -1,17 +1,10 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-<div style="background-color: #f3f3f3; color: #512; font-weight: 500; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
-  <h2>Preface:</h2>
-  <p>
-The content of this page is related to the topics of Computation Photography and Image and Video processing 🚀.
+[//]: ## [![CP](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](CP)
 
-I’ve discovered that I grasp concepts more effectively when I understand a simple code example associated with them. Therefore, in this blog, I explore new concepts through coding!|
+## The content of this page is related to the topics of Computation Photography and Image and Video processing 🚀.
 
-I try to use simple scenarios and of course, I never use ChatGPT🤥.
-</p>
-</div>
 
-<p>
 
   
 </p>
