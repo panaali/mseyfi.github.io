@@ -18,8 +18,8 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <br>
 <br>
 
-[<img src="images/GenAI.png"  width="185" height="185">](main_page/GenAI) [<img src="images/CV.png"  width="185" height="185">](main_page/CV)
-[<img src="images/ML.png"  width="185" height="185">](main_page/ML) [<img src="images/CP.png"  width="185" height="185">](main_page/CP)
+[<img src="images/GenAI.png"  width="182" height="182">](main_page/GenAI) [<img src="images/CV.png"  width="182" height="182">](main_page/CV)
+[<img src="images/ML.png"  width="182" height="182">](main_page/ML) [<img src="images/CP.png"  width="182" height="182">](main_page/CP)
 <br>
 <br>
 <br>
