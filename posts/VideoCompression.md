@@ -1,9 +1,12 @@
-### **Comprehensive Tutorial on Traditional Video Compression**
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+## **Comprehensive Tutorial on Traditional Video Compression**
 
 This tutorial explains the entire workflow of traditional video compression, combining motion estimation, motion compensation (including warping), residual calculation, DCT transformation, quantization, and encoding. We'll add **mathematical relationships** between the blocks to provide a deeper understanding.
 
 ---
 
+ [<img src="../images/VideoCompression.png"  width="240" height="40">]
 ### **Overview of Video Compression**
 The goal of video compression is to reduce the size of video data while preserving perceptual quality. This is achieved by exploiting spatial and temporal redundancies in video frames.
 
