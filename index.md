@@ -20,8 +20,6 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <br>
 <br>
 
-
-
 [<img src="images/GenAI.png"  width="150" height="150">](main_page/GenAI) | [<img src="images/CV.png"  width="150" height="150">](main_page/CV)
 |:--:|:--:| 
 **Generative AI**|**Computer Vision**|
@@ -35,6 +33,8 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 [//]: ## [![CP](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](main_page/CP)
 [//]: ## [![ML](https://img.shields.io/badge/ML-Selected_Topics_in_Machine_Learning-green?style=for-the-badge&logo=github)](main_page/ML)
 --->
+<br>
+<br>
 
 
 ## [![ControlNet](https://img.shields.io/badge/ControlNet-Adding_Conditional_Control_to_Text_to_Image_Diffusion_Models-blue?style=for-the-badge&logo=github)](posts/ControlNet)
