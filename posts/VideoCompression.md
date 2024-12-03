@@ -6,7 +6,7 @@ This tutorial explains the entire workflow of traditional video compression, com
 
 ---
 
- [<img src="../images/VideoCompression.png"  width="240" height="40">]
+ [<img src="../images/VideoCompression.png"  width="440">]
 ### **Overview of Video Compression**
 The goal of video compression is to reduce the size of video data while preserving perceptual quality. This is achieved by exploiting spatial and temporal redundancies in video frames.
 
