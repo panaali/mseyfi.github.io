@@ -226,7 +226,7 @@ $$
 ## 7. Model Architecture Visualization
 
 ![DVC Framework](../images/flownet)
-![DVC Framework](../images/mc)
+![DVC Framework](../images/motionCompNet.png)
 
 
 ---
