@@ -236,26 +236,26 @@ Start
  |-- For each frame t in video sequence:
       |
       |-- Motion Estimation Network
-      |     Inputs: $$x_{t-1}, x_t$$
-      |     Output: $$v_t$$
+      |     Inputs: x_{t-1}, x_t
+      |     Output: v_t
       |
       |-- Motion Compression Network
-      |     Input: $$v_t$$
-      |     Outputs: $$\hat{v}_t$$, compressed bitstream
+      |     Input: v_t
+      |     Outputs: \hat{v}_t, compressed bitstream
       |
       |-- Motion Compensation Network
-      |     Inputs: $$\hat{x}_{t-1}, \hat{v}_t$$
-      |     Output: $$\hat{x}_t^{MC}$$
+      |     Inputs: \hat{x}_{t-1}, \hat{v}_t
+      |     Output: \hat{x}_t^{MC}
       |
       |-- Compute Residual
-      |     $$r_t = x_t - \hat{x}_t^{MC}$$
+      |     r_t = x_t - \hat{x}_t^{MC}
       |
       |-- Residual Compression Network
-      |     Input: $$r_t$$
-      |     Outputs: $$\hat{r}_t$$, compressed bitstream
+      |     Input: r_t
+      |     Outputs: \hat{r}_t, compressed bitstream
       |
       |-- Frame Reconstruction
-      |     $$\hat{x}_t = \hat{x}_t^{MC} + \hat{r}_t$$
+      |     \hat{x}_t = \hat{x}_t^{MC} + \hat{r}_t
       |
 End
 ```
@@ -271,28 +271,28 @@ def dvc_compress(x_prev, x_current):
     
     # Motion Compression
     y_v = motion_encoder(v_t)
-    $$\hat{y}_v = quantize(y_v)$$
+    \hat{y}_v = quantize(y_v)
     compressed_motion_bitstream = entropy_encode(\hat{y}_v)
-    $$\hat{y}_v = \text{entropy_decode}(\text{compressed_motion_bitstream})$$
-    $$\hat{v}_t = \text{motion_decoder}(\hat{y}_v)$$
+    \hat{y}_v = \text{entropy_decode}(\text{compressed_motion_bitstream})
+    \hat{v}_t = \text{motion_decoder}(\hat{y}_v)
     
     # Motion Compensation
-    $$\hat{x}_t^{MC} = warp(x_prev, \hat{v}_t)$$
+    \hat{x}_t^{MC} = warp(x_prev, \hat{v}_t)
     
     # Residual Computation
-    $$r_t = x_current - \hat{x}_t^{MC}$$
+    r_t = x_current - \hat{x}_t^{MC}
     
     # Residual Compression
-    $$y_r = residual_encoder(r_t)$$
-    $$\hat{y}_r = quantize(y_r)$$
+    y_r = residual_encoder(r_t)
+    \hat{y}_r = quantize(y_r)
     compressed_residual_bitstream = entropy_encode(\hat{y}_r)
-    $$\hat{y}_r = \text{entropy_decode}(\text{compressed_residual_bitstream})$$
-    $$\hat{r}_t = residual_decoder(\hat{y}_r)$$
+    \hat{y}_r = \text{entropy_decode}(\text{compressed_residual_bitstream})
+    \hat{r}_t = residual_decoder(\hat{y}_r)
     
     # Frame Reconstruction
-    $$\hat{x}_t = \hat{x}_t^{MC} + \hat{r}_t$$
+    \hat{x}_t = \hat{x}_t^{MC} + \hat{r}_t
     
-    return $$\hat{x}_t$$, compressed_motion_bitstream, compressed_residual_bitstream
+    return \hat{x}_t, compressed_motion_bitstream, compressed_residual_bitstream
 ```
 
 ---
