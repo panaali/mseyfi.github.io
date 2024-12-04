@@ -1,5 +1,6 @@
-# Deep Learning-Based Video Compression: A Comprehensive Tutorial
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+# Deep Learning-Based Video Compression: A Comprehensive Tutorial
 ---
 ![imag1](../images/DVC.png)
 
