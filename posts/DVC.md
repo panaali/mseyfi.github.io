@@ -1,4 +1,7 @@
 # Deep Learning-Based Video Compression: A Comprehensive Tutorial
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+---
+![imag1](../images/DVC.png)
 
 ## Introduction
 
@@ -222,9 +225,9 @@ $$
 
 ## 7. Model Architecture Visualization
 
-![DVC Framework](https://i.imgur.com/6cLCVj1.png)
+![DVC Framework](../images/flownet)
+![DVC Framework](../images/mc)
 
-**Figure**: Block diagram of the DVC framework.
 
 ---
 
