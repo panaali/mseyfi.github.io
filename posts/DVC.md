@@ -84,7 +84,7 @@ In this tutorial, we will focus on the **DVC framework** due to its comprehensiv
 
 ### 3.1. Problem Formulation
 
-Given a sequence of frames $$\{x_1, x_2, ..., x_T$$, the goal is to compress each frame $$x_t$$ using information from previous frames.
+Given a sequence of frames $$\{x_1, x_2, ..., x_T\}$$, the goal is to compress each frame $$x_t$$ using information from previous frames.
 
 **Compression Pipeline**:
 
@@ -170,7 +170,7 @@ $$
 
 ### 5.1. Ground Truth Creation
 
-- **Input**: Video sequences $$\{x_1, x_2, ..., x_T$$.
+- **Input**: Video sequences $$\{x_1, x_2, ..., x_T\}$$.
 - **Ground Truth**: The original frames $$x_t$$ serve as ground truth for reconstruction.
 - **Supervision**: Minimize the difference between $$x_t$$ and reconstructed $$\hat{x}_t$$.
 
@@ -223,15 +223,10 @@ $$
 
 ---
 
-## 7. Model Architecture Visualization
-
-![DVC Framework](../images/flownet.png)
-![DVC Framework](../images/motionCompNet.png)
-
 
 ---
 
-## 8. Flowchart of the DVC Framework
+## 7. Flowchart of the DVC Framework
 
 ```
 Start
@@ -265,7 +260,7 @@ End
 
 ---
 
-## 9. Pseudocode of the DVC Framework
+## 8. Pseudocode of the DVC Framework
 
 ```python
 def dvc_compress(x_prev, x_current):
@@ -300,11 +295,13 @@ def dvc_compress(x_prev, x_current):
 
 ---
 
-## 10. Code Implementation with Inline Comments
+## 9. Code Implementation with Inline Comments
 
 Below is a simplified implementation of key components in PyTorch.
 
-### 10.1. Motion Estimation Network
+![DVC Framework](../images/flownet.png)
+
+### 9.1. Motion Estimation Network
 
 ```python
 import torch
@@ -347,8 +344,9 @@ class MotionEstimationNet(nn.Module):
         flow_upsampled = F.interpolate(flow, scale_factor=2, mode='bilinear', align_corners=False)  # [B, 2, H, W]
         return flow_upsampled  # Optical flow [B, 2, H, W]
 ```
+![DVC Framework](../images/motionCompNet.png)
 
-### 10.2. Motion Compression Network
+### 9.2. Motion Compression Network
 
 ```python
 class MotionCompressor(nn.Module):
@@ -381,7 +379,7 @@ class MotionCompressor(nn.Module):
         return \hat{v}_t
 ```
 
-### 10.3. Motion Compensation (Warping Function)
+### 9.3. Motion Compensation (Warping Function)
 
 ```python
 def warp(x_prev, flow):
@@ -405,7 +403,7 @@ def warp(x_prev, flow):
     return x_t_MC  # Warped frame [B, C, H, W]
 ```
 
-### 10.4. Residual Compression Network
+### 9.4. Residual Compression Network
 
 ```python
 class ResidualCompressor(nn.Module):
@@ -438,7 +436,7 @@ class ResidualCompressor(nn.Module):
         return \hat{r}_t
 ```
 
-### 10.5. Overall Compression Function
+### 9.5. Overall Compression Function
 
 ```python
 def compress_frame(x_prev, x_current):
@@ -467,7 +465,7 @@ def compress_frame(x_prev, x_current):
     return \hat{x}_t
 ```
 
-### 10.6. Loss Function Implementation
+### 9.6. Loss Function Implementation
 
 ```python
 def compute_loss(x_current, \hat{x}_t, y_v, y_r, entropy_models):
@@ -490,7 +488,7 @@ def compute_loss(x_current, \hat{x}_t, y_v, y_r, entropy_models):
 
 ---
 
-## 11. Conclusion
+## 10. Conclusion
 
 Deep learning-based video compression methods like DVC offer a promising alternative to traditional codecs by leveraging data-driven approaches to optimize all components jointly. This tutorial provided an overview of the DVC framework, covering mathematical foundations, model architecture, training procedures, and implementation details.
 
@@ -498,7 +496,7 @@ By understanding and implementing such frameworks, researchers and engineers can
 
 ---
 
-## 12. References
+## 11. References
 
 1. **DVC: An End-to-end Deep Video Compression Framework**
    - Dong Liu, Haichuan Ma, Zhenghang Yuan, Yuchen Fan, Sibo Song, Houqiang Li, Feng Wu
