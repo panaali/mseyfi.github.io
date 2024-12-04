@@ -84,7 +84,7 @@ In this tutorial, we will focus on the **DVC framework** due to its comprehensiv
 
 ### 3.1. Problem Formulation
 
-Given a sequence of frames $$\{x_1, x_2, ..., x_T$$$$, the goal is to compress each frame $$x_t$$ using information from previous frames.
+Given a sequence of frames $$\{x_1, x_2, ..., x_T$$, the goal is to compress each frame $$x_t$$ using information from previous frames.
 
 **Compression Pipeline**:
 
@@ -170,7 +170,7 @@ $$
 
 ### 5.1. Ground Truth Creation
 
-- **Input**: Video sequences $$\{x_1, x_2, ..., x_T$$$$.
+- **Input**: Video sequences $$\{x_1, x_2, ..., x_T$$.
 - **Ground Truth**: The original frames $$x_t$$ serve as ground truth for reconstruction.
 - **Supervision**: Minimize the difference between $$x_t$$ and reconstructed $$\hat{x}_t$$.
 
@@ -225,7 +225,7 @@ $$
 
 ## 7. Model Architecture Visualization
 
-![DVC Framework](../images/flownet)
+![DVC Framework](../images/flownet.png)
 ![DVC Framework](../images/motionCompNet.png)
 
 
