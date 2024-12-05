@@ -85,6 +85,7 @@ Each encoder layer consists of:
    - $\mathbf{Q}, \mathbf{K}, \mathbf{V}$: Queries, keys, and values computed from $\mathbf{z}_{l-1}$.
    - $d_k$: Dimensionality of keys.
 
+
 2. **Feed-Forward Network (FFN):**
 
    $$\text{FFN}(\mathbf{z}) = \textrm{ReLU}(\mathbf{z}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2$$
