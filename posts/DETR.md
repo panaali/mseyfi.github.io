@@ -164,9 +164,9 @@ Let $\mathbf{q} \in \mathbb{R}^{M \times C}$ be the learned object queries, wher
 Each decoder layer consists of:
 
 1. **Masked Multi-Head Self-Attention (MMHSA) on Object Queries:**
-```math
+$$
    \mathbf{q}'_l = \text{LayerNorm}(\mathbf{q}_{l-1} + \text{MMHSA}(\mathbf{q}_{l-1}))
-```
+$$
 2. **Multi-Head Cross-Attention (MHCA) between Object Queries and Encoder Output:**
 
    $\mathbf{q}''_l = \text{LayerNorm}(\mathbf{q}'_l + \text{MHCA}(\mathbf{q}'_l, \mathbf{z}))$
@@ -232,9 +232,9 @@ class TransformerDecoder(nn.Module):
 ### Mathematical Expressions
 
 **Cross-Attention Computation:**
-```math
+$$
 \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Softmax}\left( \frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}} \right)\mathbf{V}
-```
+$$
 - $\mathbf{Q}$: Projected object queries.
 - $\mathbf{K}, \mathbf{V}$: Projected encoder outputs.
 
@@ -254,9 +254,9 @@ DETR uses a set-based global loss that forces unique predictions via bipartite m
 ### Matching Cost Computation
 
 For each prediction $\hat{y}_i$ and ground truth $y_j$:
-```math
+$$
 \text{Cost}_{i,j} = -\mathbb{1}_{\{c_j \neq \varnothing\}} \hat{p}_i(c_j) + \mathbb{1}_{\{c_j = \varnothing\}} \alpha
-```
+$$
 - $\hat{p}_i(c_j)$: Predicted probability of class $c_j$.
 - Additional terms for bounding box matching using $\ell_1$ loss and GIoU loss.
 
@@ -280,9 +280,9 @@ For each prediction $\hat{y}_i$ and ground truth $y_j$:
 
 
 3. **Total Loss:**
-```math
+$$
    \mathcal{L} = \lambda_{\text{class}} \mathcal{L}_{\text{class}} + \lambda_{\text{bbox}} \mathcal{L}_{\text{bbox}} + \lambda_{\text{giou}} \mathcal{L}_{\text{giou}}
-```
+$$
    - $\lambda$ are hyperparameters to balance the losses.
 
 ### Intuition Behind the Loss Function
