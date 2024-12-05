@@ -392,13 +392,13 @@ DETR's loss function and training procedure differ from traditional object detec
    Formally, the final loss $$\mathcal{L}$$ is:
 
    $$
-   \mathcal{L} = \sum_{j=1}^{M} [\mathcal{L}_{\text{class}}(y_j, \hat{y}_{\sigma(j)}) + \lambda_{\text{box}}\mathcal{L}_{\text{box}}(y_j, \hat{y}_{\sigma(j)})] + \sum_{i \notin \{\sigma(1), \ldots, \sigma(M)\}} \mathcal{L}_{\text{class\_noobj}}(\hat{y}_{i})
+   \mathcal{L} = \sum_{j=1}^{M} [\mathcal{L}_{\text{class}}(y_j, \hat{y}_{\sigma(j)}) + \lambda_{\text{box}}\mathcal{L}_{\text{box}}(y_j, \hat{y}_{\sigma(j)})] + \sum_{i \notin \{\sigma(1), \ldots, \sigma(M)\}} \mathcal{L}_{\text{class}_\text{noobj}}(\hat{y}_{i})
    $$
 
    Where:
    - $$\mathcal{L}_{\text{class}}$$ is the cross-entropy loss for the correct class.
    - $$\mathcal{L}_{\text{box}}$$ includes both L1 and GIoU losses.
-   - $$\mathcal{L}_{\text{class\_noobj}}$$ is the loss that encourages predictions that aren't matched to a real object to predict the "no object" class.
+   - $$\mathcal{L}_{\text{class}_\text{noobj}}$$ is the loss that encourages predictions that aren't matched to a real object to predict the "no object" class.
 
 **Summary:**
 - **Ground Truth Constitution:** The ground truth is simply the set of annotated bounding boxes and their classes for each image.
