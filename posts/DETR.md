@@ -171,13 +171,13 @@ $$
 
 2. **Multi-Head Cross-Attention (MHCA) between Object Queries and Encoder Output:**
 
-   $\mathbf{q}^{''}_l = \text{LayerNorm}(\mathbf{q}'_l + \text{MHCA}(\mathbf{q}'_l, \mathbf{z}))$
+   $\mathbf{q}^{\prime\prime}_l = \text{LayerNorm}(\mathbf{q}'_l + \text{MHCA}(\mathbf{q}'_l, \mathbf{z}))$
 
    Where $\mathbf{z}$ is the encoder output.
 
 3. **Feed-Forward Network (FFN):**
 
-   $\mathbf{q}_l = \text{LayerNorm}(\mathbf{q}^{''}_l + \text{FFN}(\mathbf{q}^{''}_l))$
+   $\mathbf{q}_l = \text{LayerNorm}(\mathbf{q}^{\prime\prime}_l + \text{FFN}(\mathbf{q}^{\prime\prime}_l))$
 
 ### Intuition Behind the Decoder
 
