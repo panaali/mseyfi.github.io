@@ -58,112 +58,195 @@ Input Image --> Backbone CNN --> Transformer Encoder --> Transformer Decoder -->
 
 The encoder processes the feature map from the backbone and outputs a sequence of context-rich feature representations. It models the relationships between all positions in the feature map, capturing global information.
 
-### Mathematical Formulation
+Below is a detailed, step-by-step breakdown of the DETR encoder. The DETR encoder is essentially a stack of standard Transformer encoder layers, each composed of:
 
-Let $X \in \mathbb{R}^{H \times W \times C}$ be the feature map from the backbone, where:
+1. **Self-Attention** (attention over the input sequence itself)
+2. **Feed-Forward Network (FFN)**
 
-- $H$, $W$: Height and width of the feature map.
-- $C$: Number of channels.
+We will detail the mathematical operations, their dimensions, and provide a PyTorch-like pseudo-code snippet with inline comments. We will assume the following for simplicity:
 
-We flatten $X$ to $\mathbf{x} \in \mathbb{R}^{N \times C}$, where $N = H \times W$.
+- **Model dimension:** $$D$$ (e.g., 256)  
+- **Number of heads:** $$H$$ (e.g., 8)  
+- **Per-head dimension:** $$d_{head} = D/H$$ (e.g., 256/8 = 32)  
+- **Number of encoder tokens:** $$N_{enc} = H' \times W'$$, where $$H'$$ and $$W'$$ are spatial dims of the feature map after the backbone and projection (for instance, $$N_{enc} = 2000$$).  
+- **Batch size:** $$B$$ (e.g., 2 or 4, etc.)  
+- **Number of encoder layers:** $$L$$ (e.g., 6)
 
-**Positional Encoding:**
+**Input to the Encoder:**
 
-Since Transformers lack inherent positional awareness, we add positional encodings $\mathbf{p}$ to $\mathbf{x}$:
+- The DETR encoder receives as input a 2D feature map from a CNN backbone, flattened into a sequence of feature vectors. After positional encoding and a linear projection:
 
-$$\mathbf{z}_0 = \mathbf{x} + \mathbf{p}$$
+  $$
+  \text{enc\_inp} \in \mathbb{R}^{B \times N_{enc} \times D}
+  $$
 
-**Encoder Layers:**
+  Each element is a $$D$$-dim vector representing a specific spatial location in the feature map.
+
+**Encoder Layer Workflow:**
 
 Each encoder layer consists of:
 
-1. **Multi-Head Self-Attention (MHSA):**
+1. **Self-Attention**: The encoder attends to itself. Each token in the input sequence attends to all others (including itself).
+2. **Feed-Forward Network**: A two-layer MLP applied to each token independently.
 
-   $\text{MHSA}(\mathbf{z}_{l-1}) = \textrm{Softmax}\left( \frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}} \right)\mathbf{V}$
+**Mathematical Formulation:**
 
-   Where:
+Let $$\mathbf{X}^{(l)}$$ be the input to the $$l$$-th encoder layer. Initially, $$\mathbf{X}^{(0)} = \text{enc\_inp}$$.
 
-   - $\mathbf{Q}, \mathbf{K}, \mathbf{V}$: Queries, keys, and values computed from $\mathbf{z}_{l-1}$.
-   - $d_k$: Dimensionality of keys.
+1. **Multi-Head Self-Attention:**
 
+   Compute queries, keys, and values from $$\mathbf{X}^{(l)}$$:
 
-2. **Feed-Forward Network (FFN):**
+   $$
+   Q = \mathbf{X}^{(l)}W_Q, \quad K = \mathbf{X}^{(l)}W_K, \quad V = \mathbf{X}^{(l)}W_V
+   $$
 
-   $$\text{FFN}(\mathbf{z}) = \textrm{ReLU}(\mathbf{z}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2$$
+   Dimensions:
+   - $$\mathbf{X}^{(l)}, Q, K, V \in \mathbb{R}^{B \times N_{enc} \times D}$$.
 
-**Layer Normalization and Residual Connections:**
+   Reshape for multi-heads:
 
-Each sub-layer is wrapped with residual connections and layer normalization:
+   $$
+   Q' = \text{reshape}(Q, [B, N_{enc}, H, d_{head}]) \rightarrow \mathbb{R}^{B \times H \times N_{enc} \times d_{head}}
+   $$
+   Similarly for $$K', V'$$.
 
-$$
-\mathbf{z}'_l = \textrm{LayerNorm}\left(\mathbf{z}_{l-1} + \textrm{MHSA}(\mathbf{z}_{l-1})\right)
-$$
+   Compute attention scores:
 
-$$
-\mathbf{z}_l = \textrm{LayerNorm}(\mathbf{z}'_l + \textrm{FFN}(\mathbf{z}'_l))
-$$
+   $$
+   A = \text{softmax}\left(\frac{Q'K'^{T}}{\sqrt{d_{head}}}\right) \in \mathbb{R}^{B \times H \times N_{enc} \times N_{enc}}
+   $$
 
-### Intuition Behind the Encoder
+   Apply attention to values:
 
-The encoder allows each position in the feature map to attend to every other position, capturing global relationships. This is crucial for understanding complex scenes where objects might interact.
+   $$
+   O' = A V' \in \mathbb{R}^{B \times H \times N_{enc} \times d_{head}}
+   $$
 
-![DetTrans](../images/DetTrans.png)
+   Reshape back:
 
+   $$
+   O = \text{reshape}(O', [B, N_{enc}, D])W_{O}
+   $$
 
-### Code Snippet
+   Residual + LayerNorm:
+
+   $$
+   \mathbf{X}^{(l)} := \text{LayerNorm}(\mathbf{X}^{(l)} + O)
+   $$
+
+3. **Feed-Forward Network (FFN):**
+
+   The FFN is typically two linear layers with a ReLU in between:
+
+   $$
+   \mathbf{X}^{(l)} := \mathbf{X}^{(l)} + \text{Dropout}( \text{ReLU}(\mathbf{X}^{(l)}W_1 + b_1)W_2 + b_2 )
+   $$
+
+   Then another LayerNorm:
+
+   $$
+   \mathbf{X}^{(l)} := \text{LayerNorm}(\mathbf{X}^{(l)})
+   $$
+
+After $$L$$ encoder layers, the output $$\mathbf{X}^{(L)}$$ is used by the decoder as “memory”.
+
+---
+
+### Pseudo-Code in PyTorch-Like Style
 
 ```python
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
-class TransformerEncoder(nn.Module):
-    def __init__(self, d_model=256, nhead=8, num_layers=6):
+class TransformerEncoderLayer(nn.Module):
+    def __init__(self, d_model=256, nhead=8, dim_feedforward=2048, dropout=0.1):
         super().__init__()
-        encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead)
-        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
-        self.pos_encoder = PositionalEncoding(d_model)
-    
-    def forward(self, src):
-        # src shape: (N, C) where N = H * W
-        src = self.pos_encoder(src)  # Add positional encoding
-        memory = self.encoder(src)   # Output shape: (N, C)
-        return memory
+        
+        # Multi-head self-attention
+        self.self_attn = nn.MultiheadAttention(embed_dim=d_model, num_heads=nhead, dropout=dropout)
+        
+        # Feed-forward network
+        self.linear1 = nn.Linear(d_model, dim_feedforward)
+        self.linear2 = nn.Linear(dim_feedforward, d_model)
+        
+        self.norm1 = nn.LayerNorm(d_model)
+        self.norm2 = nn.LayerNorm(d_model)
+        
+        self.dropout1 = nn.Dropout(dropout)
+        self.dropout2 = nn.Dropout(dropout)
 
-class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=5000):
-        super().__init__()
-        # Implementation of positional encoding
-        # ...
-    
-    def forward(self, x):
-        # x shape: (N, C)
-        # ...
-        return x + self.pe[:x.size(0), :]
+    def forward(self, src):  
+        # src: (B, N_enc, D)
+        
+        # PyTorch's MultiheadAttention expects (N_enc, B, D)
+        src_transposed = src.transpose(0, 1)  # (N_enc, B, D)
+        
+        # Self-attention
+        # Query=Key=Value=src itself
+        attn_output, _ = self.self_attn(src_transposed, src_transposed, src_transposed)
+        # attn_output: (N_enc, B, D)
+        
+        # Residual + LayerNorm
+        src = src + self.dropout1(attn_output.transpose(0, 1))  # back to (B, N_enc, D)
+        src = self.norm1(src)  # (B, N_enc, D)
+        
+        # Feed-Forward Network
+        ff_output = self.linear2(F.relu(self.linear1(src)))  # (B, N_enc, D)
+        
+        # Residual + LayerNorm
+        src = src + self.dropout2(ff_output)
+        src = self.norm2(src)  # (B, N_enc, D)
+        
+        return src
+
+
+# Example usage:
+B = 2
+N_enc = 2000
+D = 256
+
+enc_input = torch.randn(B, N_enc, D)  # (B, N_enc, D)
+
+encoder_layer = TransformerEncoderLayer(d_model=D, nhead=8, dim_feedforward=2048)
+
+# Pass through one encoder layer
+out = encoder_layer(enc_input)
+# out: (B, N_enc, D)
 ```
 
-**Tensor Sizes:**
+**Inline Comments and Dimensions:**
 
-- Input `src`: $N \times C$
-- Output `memory`: $N \times C$
+- `enc_input`: Shape `(B, N_enc, D)`. The flattened feature map with positional encodings added.
+- Internally, before passing to `nn.MultiheadAttention`, we transpose to `(N_enc, B, D)` because PyTorch’s multi-head attention layer expects `(sequence_length, batch_size, embed_dim)` format.
+
+**Multi-head Self-Attention Step-by-Step:**
+
+- `src_transposed`: `(N_enc, B, D)`
+- Attention is computed across `N_enc` tokens.
+- `attn_output`: `(N_enc, B, D)`
+
+After attention, we transpose back to `(B, N_enc, D)` and apply residual + LayerNorm.
+
+**Feed-Forward Network:**
+
+- Apply linear layers: `(B, N_enc, D) -> (B, N_enc, dim_feedforward) -> ReLU -> (B, N_enc, D)`
+- Residual + LayerNorm.
+
+You stack `L` such layers to form the full encoder. The final encoder output is `(B, N_enc, D)` and is fed into the DETR decoder as the "memory".
 
 ---
 
-## Decoder Detailed Explanation
-Below is a detailed step-by-step breakdown of the DETR decoder workflow. The DETR decoder is a stack of Transformer decoder layers. Each decoder layer has three main sub-layers:
+**Summary:**
 
-1. **Self-Attention** (on the queries themselves)
-2. **Cross-Attention** (queries attending to the encoder outputs)
-3. **Feed-Forward Network (FFN)**
+This provides a detailed workflow of a single DETR encoder layer:
 
-We will describe the mathematical operations, their dimensions, and give a pseudo-code snippet in PyTorch-like style with inline comments. For simplicity, we assume:
-
-- **Number of queries:** $$N_{query}$$ (e.g., 100)  
-- **Model dimension:** $$D$$ (e.g., 256)  
-- **Number of heads:** $$H$$ (e.g., 8)  
-- **Per-head dimension:** $$d_{head} = D/H$$ (e.g., 256/8 = 32)  
-- **Number of encoder output tokens:** $$N_{enc} = H' \times W'$$ (the flattened spatial dimension, e.g., 2000)  
-- **Batch size:** $$B$$ (e.g., 2 or 4, etc.)
-
+- Receives a batch of sequences `(B, N_enc, D)`.
+- Applies multi-head self-attention over the sequence.
+- Applies a feed-forward network to each token independently.
+- Each sub-layer is followed by residual connection and LayerNorm.
+- After `L` layers, we get the final encoder output that represents the transformed image features.
 **Input Shapes to the Decoder:**
 
 - **Encoder Output:** $$\text{enc\_out} \in \mathbb{R}^{B \times N_{enc} \times D}$$  
