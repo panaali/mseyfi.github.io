@@ -289,6 +289,7 @@ For each decoder layer, given the current query embeddings $$\mathbf{Q}^{(l)}$$:
    $$
    Q = \mathbf{Q}^{(l)}W_{Q}^{self}, \quad K = \mathbf{Q}^{(l)}W_{K}^{self}, \quad V = \mathbf{Q}^{(l)}W_{V}^{self}
    $$
+   
    Dimensions:
    - $$Q, K, V \in \mathbb{R}^{B \times N_{query} \times D}$$
 
@@ -297,27 +298,28 @@ For each decoder layer, given the current query embeddings $$\mathbf{Q}^{(l)}$$:
    $$
    Q' = \text{reshape}(Q, [B, N_{query}, H, d_{head}]) \rightarrow \mathbb{R}^{B \times H \times N_{query} \times d_{head}}
    $$
+   
    Similarly for $$K', V'$$.
 
-4. Compute attention weights:
+5. Compute attention weights:
 
    $$
    A = \text{softmax}\left(\frac{Q'K'^{T}}{\sqrt{d_{head}}}\right) \in \mathbb{R}^{B \times H \times N_{query} \times N_{query}}
    $$
 
-5. Weighted sum:
+6. Weighted sum:
 
    $$
    O' = A V' \in \mathbb{R}^{B \times H \times N_{query} \times d_{head}}
    $$
 
-6. Reshape and project back:
+7. Reshape and project back:
 
    $$
    O = \text{reshape}(O', [B, N_{query}, D])W_{O}^{self}
    $$
 
-7. Residual + LayerNorm:
+8. Residual + LayerNorm:
 
    $$
    \mathbf{Q}^{(l)} := \text{LayerNorm}(\mathbf{Q}^{(l)} + O)
