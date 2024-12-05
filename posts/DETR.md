@@ -10,8 +10,9 @@
 4. [Encoder Detailed Explanation](#encoder-detailed-explanation)
 5. [Decoder Detailed Explanation](#decoder-detailed-explanation)
 6. [Remarks on the Tensor Size and architecture wrap up](Remarks-on-the-Tensor-Size-and-architecture-wrap-up)
-7. [Loss Functions and Bipartite Matching](#loss-functions-and-bipartite-matching)
-8. [Conclusion](#conclusion)
+7. [Remarks on the positional embedding](remarks-on-the-positional-embedding)
+8. [Loss Functions and Bipartite Matching](#loss-functions-and-bipartite-matching)
+9. [Conclusion](#conclusion)
 
 ---
 
@@ -573,6 +574,45 @@ In the `forward` call of `TransformerDecoderLayer`:
 
 This is the general scheme for the DETR architecture’s cross-attention dimensions.
 
+## Remarks on the positional embedding
+Positional embeddings are re-applied to the keys during the decoder’s cross-attention to ensure that positional information is explicitly available when computing attention weights. Only the keys (and queries) get positional embeddings because the attention mechanism relies on the Q–K interaction to determine “where” to attend. Adding positional information to the values is not necessary for establishing spatial correspondence, and could distort the content features.
+
+**Detailed Explanation:**
+
+1. **Positional Embeddings in Transformer Attention:**
+   In a Transformer, attention weights are computed using the queries (Q) and keys (K):
+
+   $$
+   A = \text{softmax}\left( \frac{QK^T}{\sqrt{d_{head}}} \right).
+   $$
+
+   The values (V) are then aggregated using these attention weights. Thus, the determination of "where to attend" comes from the similarity of Q and K. By encoding positional information into K (and Q), the model can factor spatial position directly into the attention score calculation.
+
+3. **Why Add Positional Embeddings Again to Keys in the Decoder?**
+   - **Encoder Output Already Contains Positional Information, Right?**  
+     The encoder output ("memory") is influenced by the positional embeddings that were added at the encoder input stage. After passing through multiple self-attention layers, the encoder’s output features do carry implicit positional structure. However, the positional information is no longer explicitly represented as a simple additive signal. It's been "distributed" throughout the representations by self-attention mixing.  
+     
+     In the decoder’s cross-attention, we explicitly add positional embeddings again to the keys. This ensures the positional cues are directly and cleanly available at the point of computing attention weights. The decoder’s cross-attention mechanism can then straightforwardly use these embeddings to differentiate locations. This step reinforces positional cues so that the decoder’s object queries (queries Q) can latch onto spatial locations (keys K) more easily and accurately.
+
+4. **Why Not Add Positional Embeddings to Values?**
+   The attention step involves:
+
+   $$
+   \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_{head}}}\right) V.
+   $$
+
+   - **Position is About “Where,” Not “What”:**  
+     The queries and keys are responsible for determining the attention weights — in other words, "where" to focus. Positional information guides this "where" by helping the model pick out relevant spatial locations. Thus, including positional embeddings in Q and K is sufficient to influence the attention weights spatially.
+   
+   - **Values Represent Content Features:**  
+     The values (V) contain the "what" information — the semantic content of each position. If we add positional embeddings to V, we’d be mixing positional signals into the final aggregated representation. This might unnecessarily entangle positional information with the actual content features. The model already knows where to attend from Q and K; once the location is selected, we just need to retrieve the raw content from V. Keeping V free of additional positional signals prevents overwriting or distorting the semantic information.
+
+6. **Design Choice Backed by Practice:**
+   This approach (adding positional embeddings to Q and K but not V) is a standard design in many Transformer variants. Position is crucial for attention weight calculation, but not necessary for the value aggregation step. This ensures a clean separation: Q and K handle “where,” while V focuses on “what.”
+
+**Summary:**
+- Re-applying positional embeddings to the keys in the decoder’s cross-attention explicitly reintroduces clear positional cues during the attention step, ensuring robust spatial reasoning.
+- Positional embeddings are not added to values because it’s unnecessary for determining “where” to attend and could dilute the content information.
 ## Loss Functions and Bipartite Matching
 
 **Overview:**  
