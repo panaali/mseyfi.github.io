@@ -93,12 +93,14 @@ Each encoder layer consists of:
 
 Each sub-layer is wrapped with residual connections and layer normalization:
 
-```math
+$$
 \mathbf{z}'_l = \textrm{LayerNorm}\left(\mathbf{z}_{l-1} + \textrm{MHSA}(\mathbf{z}_{l-1})\right)
-```
-```math
+$$
+
+$$
 \mathbf{z}_l = \textrm{LayerNorm}(\mathbf{z}'_l + \textrm{FFN}(\mathbf{z}'_l))
-```
+$$
+
 ### Intuition Behind the Encoder
 
 The encoder allows each position in the feature map to attend to every other position, capturing global relationships. This is crucial for understanding complex scenes where objects might interact.
