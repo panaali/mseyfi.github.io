@@ -9,8 +9,9 @@
 3. [DETR Architecture Overview](#detr-architecture-overview)
 4. [Encoder Detailed Explanation](#encoder-detailed-explanation)
 5. [Decoder Detailed Explanation](#decoder-detailed-explanation)
-6. [Loss Functions and Bipartite Matching](#loss-functions-and-bipartite-matching)
-7. [Conclusion](#conclusion)
+6. [Remarks on the Tensor Size and architecture wrap up](Remarks-on-the-Tensor-Size-and-architecture-wrap-up)
+7. [Loss Functions and Bipartite Matching](#loss-functions-and-bipartite-matching)
+8. [Conclusion](#conclusion)
 
 ---
 
@@ -327,9 +328,11 @@ DETR uses a set-based global loss that forces unique predictions via bipartite m
 ### Matching Cost Computation
 
 For each prediction $\hat{y}_i$ and ground truth $y_j$:
+
 $$
 \text{Cost}_{i,j} = -\mathbb{1}_{\{c_j \neq \varnothing\}} \hat{p}_i(c_j) + \mathbb{1}_{\{c_j = \varnothing\}} \alpha
 $$
+
 - $\hat{p}_i(c_j)$: Predicted probability of class $c_j$.
 - Additional terms for bounding box matching using $\ell_1$ loss and GIoU loss.
 
