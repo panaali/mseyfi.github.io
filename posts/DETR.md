@@ -9,8 +9,8 @@
 3. [DETR Architecture Overview](#detr-architecture-overview)
 4. [Encoder Detailed Explanation](#encoder-detailed-explanation)
 5. [Decoder Detailed Explanation](#decoder-detailed-explanation)
-6. [Remarks on the Tensor Size and architecture wrap up](Remarks-on-the-Tensor-Size-and-architecture-wrap-up)
-7. [Remarks on the positional embedding](remarks-on-the-positional-embedding)
+6. [Remarks on the Tensor Size, and Architecture Wrap up](#remarks-on-the-tensor-size-and-architecture-wrap-up)
+7. [Remarks on the Positional Embedding](#remarks-on-the-positional-embedding)
 8. [Loss Functions and Bipartite Matching](#loss-functions-and-bipartite-matching)
 9. [Conclusion](#conclusion)
 
@@ -494,7 +494,7 @@ In the `forward` call of `TransformerDecoderLayer`:
 
 ---
 
-## Remarks on the Tensor Size and architecture wrap up:
+## Remarks on the Tensor Size, and Architecture Wrap Up:
 
 - The cross-attention in the DETR decoder is computed between a set of **N_query**(here **N_query = M**) queries and **N_enc** (here **N_enc = N**) encoder output tokens. Therefore, the cross-attention weight matrix has dimensions **(N_query × N_enc)**.  
 - The encoder outputs a sequence of shape **(N_enc, D)**, where **N_enc** is typically the flattened spatial dimension of the image features and **D** is the model dimension.  
@@ -574,7 +574,7 @@ In the `forward` call of `TransformerDecoderLayer`:
 
 This is the general scheme for the DETR architecture’s cross-attention dimensions.
 
-## Remarks on the positional embedding
+##  Remarks on the Positional Embedding
 Positional embeddings are re-applied to the keys during the decoder’s cross-attention to ensure that positional information is explicitly available when computing attention weights. Only the keys (and queries) get positional embeddings because the attention mechanism relies on the Q–K interaction to determine “where” to attend. Adding positional information to the values is not necessary for establishing spatial correspondence, and could distort the content features.
 
 **Detailed Explanation:**
