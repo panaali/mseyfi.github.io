@@ -77,7 +77,7 @@ We will detail the mathematical operations, their dimensions, and provide a PyTo
 - The DETR encoder receives as input a 2D feature map from a CNN backbone, flattened into a sequence of feature vectors. After positional encoding and a linear projection:
 
   $$
-  \text{enc\_inp} \in \mathbb{R}^{B \times N_{enc} \times D}
+  \text{enc}_\text{inp} \in \mathbb{R}^{B \times N_{enc} \times D}
   $$
 
   Each element is a $$D$$-dim vector representing a specific spatial location in the feature map.
@@ -91,7 +91,7 @@ Each encoder layer consists of:
 
 **Mathematical Formulation:**
 
-Let $$\mathbf{X}^{(l)}$$ be the input to the $$l$$-th encoder layer. Initially, $$\mathbf{X}^{(0)} = \text{enc\_inp}$$.
+Let $$\mathbf{X}^{(l)}$$ be the input to the $$l$$-th encoder layer. Initially, $$\mathbf{X}^{(0)} = \text{enc}_\text{inp}$$.
 
 1. **Multi-Head Self-Attention:**
 
@@ -238,7 +238,7 @@ You stack `L` such layers to form the full encoder. The final encoder output is 
 
 ---
 
-**Summary:**
+**Summary of Encoder:**
 
 This provides a detailed workflow of a single DETR encoder layer:
 
@@ -257,7 +257,7 @@ This provides a detailed workflow of a single DETR encoder layer:
 
 ![DetTrans](../images/DetTrans)
 
-**Decoder Layer Workflow:**
+## Decoder Layer Workflow:
 
 A single decoder layer takes queries and the encoder output and does:
 
