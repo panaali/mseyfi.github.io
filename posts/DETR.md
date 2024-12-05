@@ -149,101 +149,256 @@ class PositionalEncoding(nn.Module):
 ---
 
 ## Decoder Detailed Explanation
+Below is a detailed step-by-step breakdown of the DETR decoder workflow. The DETR decoder is a stack of Transformer decoder layers. Each decoder layer has three main sub-layers:
 
-### Role of the Decoder
+1. **Self-Attention** (on the queries themselves)
+2. **Cross-Attention** (queries attending to the encoder outputs)
+3. **Feed-Forward Network (FFN)**
 
-The decoder generates object predictions by querying the encoded image features. It uses a fixed set of learned object queries to produce a set of predictions in parallel.
+We will describe the mathematical operations, their dimensions, and give a pseudo-code snippet in PyTorch-like style with inline comments. For simplicity, we assume:
+
+- **Number of queries:** $$N_{query}$$ (e.g., 100)  
+- **Model dimension:** $$D$$ (e.g., 256)  
+- **Number of heads:** $$H$$ (e.g., 8)  
+- **Per-head dimension:** $$d_{head} = D/H$$ (e.g., 256/8 = 32)  
+- **Number of encoder output tokens:** $$N_{enc} = H' \times W'$$ (the flattened spatial dimension, e.g., 2000)  
+- **Batch size:** $$B$$ (e.g., 2 or 4, etc.)
+
+**Input Shapes to the Decoder:**
+
+- **Encoder Output:** $$\text{enc\_out} \in \mathbb{R}^{B \times N_{enc} \times D}$$  
+  This is the output from the Transformer encoder. It represents a set of $$N_{enc}$$ feature vectors, each of dimension $$D$$.
+
+- **Query Embeddings:** $$\text{queries} \in \mathbb{R}^{B \times N_{query} \times D}$$  
+  These are learned positional embeddings (object queries) that serve as the initial input to the decoder. Initially, at the first decoder layer, these queries are usually a set of learned parameters (not dependent on the image content). For subsequent layers, they are the output of the previous decoder layer.
+
+**Decoder Layer Workflow:**
+
+A single decoder layer takes queries and the encoder output and does:
+
+1. **Self-Attention (on queries):**  
+   - Compute $$Q, K, V$$ for self-attention from the current queries.
+   - Perform multi-head attention.
+   - Add & normalize (residual connection + LayerNorm).
+
+2. **Cross-Attention (queries attend to encoder output):**  
+   - Compute $$Q$$ from queries, $$K, V$$ from encoder output.
+   - Perform multi-head cross-attention.
+   - Add & normalize (residual connection + LayerNorm).
+
+3. **Feed-Forward Network (FFN):**  
+   - A two-layer MLP (linear -> ReLU -> linear).
+   - Add & normalize (residual connection + LayerNorm).
+
+The output of the last decoder layer is used to produce object class predictions and bounding box predictions.
+
+---
 
 ### Mathematical Formulation
 
-**Object Queries:**
+**Self-Attention:**  
+For each decoder layer, given the current query embeddings $$\mathbf{Q}^{(l)}$$:
 
-Let $\mathbf{q} \in \mathbb{R}^{M \times C}$ be the learned object queries, where $M$ is the number of object queries (e.g., 100).
+1. Project to queries, keys, and values for self-attention:
 
-**Decoder Layers:**
+   $$
+   Q = \mathbf{Q}^{(l)}W_{Q}^{self}, \quad K = \mathbf{Q}^{(l)}W_{K}^{self}, \quad V = \mathbf{Q}^{(l)}W_{V}^{self}
+   $$
+   Dimensions:
+   - $$Q, K, V \in \mathbb{R}^{B \times N_{query} \times D}$$
 
-Each decoder layer consists of:
+3. Reshape for multi-heads:
 
-1. **Masked Multi-Head Self-Attention (MMHSA) on Object Queries:**
+   $$
+   Q' = \text{reshape}(Q, [B, N_{query}, H, d_{head}]) \rightarrow \mathbb{R}^{B \times H \times N_{query} \times d_{head}}
+   $$
+   Similarly for $$K', V'$$.
 
-$$
-   \mathbf{q}'_l = \text{LayerNorm}(\mathbf{q}_{l-1} + \text{MMHSA}(\mathbf{q}_{l-1}))
-$$
+4. Compute attention weights:
 
-2. **Multi-Head Cross-Attention (MHCA) between Object Queries and Encoder Output:**
+   $$
+   A = \text{softmax}\left(\frac{Q'K'^{T}}{\sqrt{d_{head}}}\right) \in \mathbb{R}^{B \times H \times N_{query} \times N_{query}}
+   $$
 
-   $\mathbf{q}^{\prime\prime}_l = \text{LayerNorm}(\mathbf{q}'_l + \text{MHCA}(\mathbf{q}'_l, \mathbf{z}))$
+5. Weighted sum:
 
-   Where $\mathbf{z}$ is the encoder output.
+   $$
+   O' = A V' \in \mathbb{R}^{B \times H \times N_{query} \times d_{head}}
+   $$
 
-3. **Feed-Forward Network (FFN):**
+6. Reshape and project back:
 
-   $\mathbf{q}_l = \text{LayerNorm}(\mathbf{q}^{\prime\prime}_l + \text{FFN}(\mathbf{q}^{\prime\prime}_l))$
+   $$
+   O = \text{reshape}(O', [B, N_{query}, D])W_{O}^{self}
+   $$
 
-### Intuition Behind the Decoder
+7. Residual + LayerNorm:
 
-- **Object Queries:** Act as slots that the model fills with detected objects. They attend to relevant parts of the encoder output to gather object-specific information.
-- **Cross-Attention:** Enables object queries to focus on different parts of the image, effectively learning where objects are located.
+   $$
+   \mathbf{Q}^{(l)} := \text{LayerNorm}(\mathbf{Q}^{(l)} + O)
+   $$
 
-### Code Snippet
+**Cross-Attention:**  
+Now using the updated queries $$\mathbf{Q}^{(l)}$$:
 
-```python
-class TransformerDecoder(nn.Module):
-    def __init__(self, d_model=256, nhead=8, num_layers=6, num_queries=100):
-        super().__init__()
-        decoder_layer = nn.TransformerDecoderLayer(d_model=d_model, nhead=nhead)
-        self.decoder = nn.TransformerDecoder(decoder_layer, num_layers=num_layers)
-        self.query_pos = nn.Parameter(torch.randn(num_queries, d_model))  # Object queries
-    
-    def forward(self, tgt, memory):
-        # tgt shape: (num_queries, C)
-        # memory shape: (N, C)
-        tgt2 = self.decoder(tgt, memory)  # Output shape: (num_queries, C)
-        return tgt2
-```
+1. Project queries, keys, values for cross-attention:
 
-**Tensor Sizes:**
+   $$
+   Q = \mathbf{Q}^{(l)} W_{Q}^{cross}, \quad K = \text{enc\_out}W_{K}^{cross}, \quad V = \text{enc\_out}W_{V}^{cross}
+   $$
 
-- Input `tgt`: $M \times C$ (object queries)
-- Input `memory`: $N \times C$ (encoder output)
-- Output `tgt2`: $M \times C$ (decoder output)
+   Dimensions:
+   - $$Q \in \mathbb{R}^{B \times N_{query} \times D}$$
+   - $$K, V \in \mathbb{R}^{B \times N_{enc} \times D}$$
 
-### Detailed Workflow of the Decoder
+3. Reshape for multi-heads and compute attention similarly:
 
-1. **Initialization:**
+   $$
+   A = \text{softmax}\left(\frac{Q'K'^{T}}{\sqrt{d_{head}}}\right) \in \mathbb{R}^{B \times H \times N_{query} \times N_{enc}}
+   $$
+   
+   Here $$Q' \in \mathbb{R}^{B \times H \times N_{query} \times d_{head}}$$  
+   and $$K' \in \mathbb{R}^{B \times H \times N_{enc} \times d_{head}}$$.
 
-   - Start with learned object queries $\mathbf{q}_0$.
+4. Compute:
 
-2. **Self-Attention on Object Queries:**
+   $$
+   O' = A V' \in \mathbb{R}^{B \times H \times N_{query} \times d_{head}}
+   $$
+   
+   Reshape and project back to $$D$$:
 
-   - Each object query attends to other queries to capture dependencies among predicted objects.
-   - Helps in modeling mutual exclusivity and interactions.
+   $$
+   O = \text{reshape}(O', [B, N_{query}, D])W_{O}^{cross}
+   $$
 
-3. **Cross-Attention between Queries and Encoder Output:**
+5. Residual + LayerNorm:
 
-   - Object queries attend to the encoder output to gather relevant image features.
-   - Cross-attention weights determine which parts of the image each query focuses on.
+   $$
+   \mathbf{Q}^{(l)} := \text{LayerNorm}(\mathbf{Q}^{(l)} + O)
+   $$
 
-4. **Feed-Forward Network:**
+**Feed-Forward Network:**
 
-   - Applies non-linear transformations to enhance feature representations.
+1. Two-layer MLP:
 
-5. **Output Layers:**
+   $$
+   \mathbf{Q}^{(l)} := \mathbf{Q}^{(l)} + \text{Dropout}(\text{ReLU}(\mathbf{Q}^{(l)}W_1 + b_1)W_2 + b_2)
+   $$
 
-   - Apply linear layers to predict bounding boxes and class labels for each query.
+3. LayerNorm again:
 
-### Mathematical Expressions
+   $$
+   \mathbf{Q}^{(l)} := \text{LayerNorm}(\mathbf{Q}^{(l)})
+   $$
 
-**Cross-Attention Computation:**
-
-$$
-\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Softmax}\left( \frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}} \right)\mathbf{V}
-$$
-
-- $\mathbf{Q}$: Projected object queries.
-- $\mathbf{K}, \mathbf{V}$: Projected encoder outputs.
+This completes one decoder layer. The decoder stacks $$L$$ such layers.
 
 ---
+
+### Pseudo-Code in PyTorch-Like Style
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class TransformerDecoderLayer(nn.Module):
+    def __init__(self, d_model=256, nhead=8, dim_feedforward=2048, dropout=0.1):
+        super().__init__()
+        
+        # Multi-head attention layers
+        self.self_attn = nn.MultiheadAttention(embed_dim=d_model, num_heads=nhead, dropout=dropout)
+        self.cross_attn = nn.MultiheadAttention(embed_dim=d_model, num_heads=nhead, dropout=dropout)
+        
+        # Feed-forward network
+        self.linear1 = nn.Linear(d_model, dim_feedforward)
+        self.linear2 = nn.Linear(dim_feedforward, d_model)
+        
+        self.norm1 = nn.LayerNorm(d_model)
+        self.norm2 = nn.LayerNorm(d_model)
+        self.norm3 = nn.LayerNorm(d_model)
+        
+        self.dropout1 = nn.Dropout(dropout)
+        self.dropout2 = nn.Dropout(dropout)
+        self.dropout3 = nn.Dropout(dropout)
+
+    def forward(self, 
+                tgt,        # (B, N_query, D) queries to be decoded
+                memory):    # (B, N_enc, D) from encoder
+        # Self-attention block
+        # tgt: (B, N_query, D)
+        # we need to transpose to (N_query, B, D) for nn.MultiheadAttention
+        q = k = tgt.transpose(0, 1)  # (N_query, B, D)
+        v = q
+        tgt2, _ = self.self_attn(q, k, v)  # attn over queries themselves
+        # tgt2: (N_query, B, D)
+        tgt = tgt + self.dropout1(tgt2)  # residual
+        tgt = self.norm1(tgt)  # (N_query, B, D)
+
+        # Cross-attention block
+        # Query: tgt, Key+Value: memory
+        # memory: (B, N_enc, D) -> (N_enc, B, D)
+        q = tgt
+        k = memory.transpose(0, 1)    # (N_enc, B, D)
+        v = memory.transpose(0, 1)    # (N_enc, B, D)
+        tgt2, _ = self.cross_attn(q, k, v)  
+        tgt = tgt + self.dropout2(tgt2)
+        tgt = self.norm2(tgt)  # (N_query, B, D)
+
+        # Feed-Forward Network
+        # tgt: (N_query, B, D)
+        tgt2 = self.linear2(F.relu(self.linear1(tgt)))
+        tgt = tgt + self.dropout3(tgt2)
+        tgt = self.norm3(tgt)  # (N_query, B, D)
+        
+        # return (B, N_query, D)
+        return tgt.transpose(0, 1)
+
+# Example usage:
+B = 2
+N_query = 100
+N_enc = 2000
+D = 256
+
+queries = torch.randn(B, N_query, D)     # (B, N_query, D)
+enc_out = torch.randn(B, N_enc, D)       # (B, N_enc, D)
+
+decoder_layer = TransformerDecoderLayer(d_model=D, nhead=8, dim_feedforward=2048)
+
+# Pass through one decoder layer
+out = decoder_layer(queries, enc_out)
+# out: (B, N_query, D)
+```
+
+**Inline Comments and Dimensions:**
+
+- `queries`: Shape `(B, N_query, D)`. The queries for objects we want to detect.
+- `enc_out`: Shape `(B, N_enc, D)`. The memory from the encoder (flattened image features).
+
+In the `forward` call of `TransformerDecoderLayer`:
+
+- First self-attention:
+  - Input: `tgt` of shape `(B, N_query, D)`.
+  - `nn.MultiheadAttention` expects `(N_query, B, D)`, so we transpose: now `(N_query, B, D)`.
+  - Self-attention keys/values are the same queries.
+  - Output `tgt2`: `(N_query, B, D)`.
+  - Residual + LayerNorm: still `(N_query, B, D)`.
+
+- Cross-attention:
+  - `q = tgt`: `(N_query, B, D)`
+  - `k, v = memory.transpose(0,1)`: `(N_enc, B, D)`
+  - Output `tgt2`: `(N_query, B, D)`
+  - Residual + LayerNorm: `(N_query, B, D)`
+
+- FFN:
+  - Two linear layers: `(N_query, B, D) -> (N_query, B, dim_feedforward) -> ReLU -> (N_query, B, D)`
+  - Residual + LayerNorm: `(N_query, B, D)`
+
+- Finally, transpose back to `(B, N_query, D)`.
+
+---
+
 ## Remarks on the Tensor Size and architecture wrap up:
 
 - The cross-attention in the DETR decoder is computed between a set of **N_query**(here **N_query = M**) queries and **N_enc** (here **N_enc = N**) encoder output tokens. Therefore, the cross-attention weight matrix has dimensions **(N_query × N_enc)**.  
@@ -300,7 +455,6 @@ $$
    $$
 
    Here, `QK^T` results in a `(N_query, N_enc)` matrix:
-
    - `Q` has shape `(N_query, D)`.
    - `K^T` has shape `(D, N_enc)`.
 
