@@ -105,6 +105,9 @@ $$
 
 The encoder allows each position in the feature map to attend to every other position, capturing global relationships. This is crucial for understanding complex scenes where objects might interact.
 
+![DetTrans](../images/DetTrans.png)
+
+
 ### Code Snippet
 
 ```python
