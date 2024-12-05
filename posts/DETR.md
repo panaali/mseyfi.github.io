@@ -19,6 +19,7 @@
 The **Detection Transformer (DETR)** is a novel approach to object detection that leverages Transformers, which were originally designed for sequence-to-sequence tasks like machine translation. Introduced by Carion et al. in 2020, DETR simplifies the object detection pipeline by eliminating the need for hand-crafted components like anchor generation and non-maximum suppression (NMS).
 
 ---
+![DetPipeline](../images/DetrPipeline.png)
 
 ## Why Transformers for Object Detection?
 
@@ -47,6 +48,8 @@ Input Image --> Backbone CNN --> Transformer Encoder --> Transformer Decoder -->
 ```
 
 ---
+
+![DetPipeline](../images/Detr.png)
 
 ## Encoder Detailed Explanation
 
