@@ -255,7 +255,7 @@ This provides a detailed workflow of a single DETR encoder layer:
 - **Query Embeddings:** $$\text{queries} \in \mathbb{R}^{B \times N_{query} \times D}$$  
   These are learned positional embeddings (object queries) that serve as the initial input to the decoder. Initially, at the first decoder layer, these queries are usually a set of learned parameters (not dependent on the image content). For subsequent layers, they are the output of the previous decoder layer.
 
-![DetTrans](../images/DetTrans)
+![DetTrans](../images/DetTrans.png)
 
 ## Decoder Layer Workflow:
 
