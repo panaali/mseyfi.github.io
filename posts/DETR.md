@@ -98,7 +98,7 @@ Let $$\mathbf{X}^{(l)}$$ be the input to the $$l$$-th encoder layer. Initially, 
 1. The input layer adds positional embedding to $$\mathbf{X}^{(0)}$$ therefore we have
 
 $$
-\mathbf{X}^{(0)} = \mathbf{X}^{(0)} + \mathbf{P}} 
+\mathbf{X}^{(0)} = \mathbf{X}^{(0)} + \mathbf{P} 
 $$
    
 2. **Multi-Head Self-Attention:**
