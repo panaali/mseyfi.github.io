@@ -249,7 +249,7 @@ This provides a detailed workflow of a single DETR encoder layer:
 - After `L` layers, we get the final encoder output that represents the transformed image features.
 **Input Shapes to the Decoder:**
 
-- **Encoder Output:** $$\text{enc\_out} \in \mathbb{R}^{B \times N_{enc} \times D}$$  
+- **Encoder Output:** $$\text{enc}_\text{out} \in \mathbb{R}^{B \times N_{enc} \times D}$$  
   This is the output from the Transformer encoder. It represents a set of $$N_{enc}$$ feature vectors, each of dimension $$D$$.
 
 - **Query Embeddings:** $$\text{queries} \in \mathbb{R}^{B \times N_{query} \times D}$$  
@@ -329,7 +329,7 @@ Now using the updated queries $$\mathbf{Q}^{(l)}$$:
 1. Project queries, keys, values for cross-attention:
 
    $$
-   Q = \mathbf{Q}^{(l)} W_{Q}^{cross}, \quad K = \text{enc\_out}W_{K}^{cross}, \quad V = \text{enc\_out}W_{V}^{cross}
+   Q = \mathbf{Q}^{(l)} W_{Q}^{cross}, \quad K = \text{enc}_\text{out}W_{K}^{cross}, \quad V = \text{enc}_\text{out}W_{V}^{cross}
    $$
 
    Dimensions:
