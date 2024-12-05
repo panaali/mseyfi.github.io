@@ -81,6 +81,7 @@ We will detail the mathematical operations, their dimensions, and provide a PyTo
   $$
 
   Each element is a $$D$$-dim vector representing a specific spatial location in the feature map.
+  
 
 **Encoder Layer Workflow:**
 
@@ -93,7 +94,13 @@ Each encoder layer consists of:
 
 Let $$\mathbf{X}^{(l)}$$ be the input to the $$l$$-th encoder layer. Initially, $$\mathbf{X}^{(0)} = \text{enc}_\text{inp}$$.
 
-1. **Multi-Head Self-Attention:**
+1. The input layer adds positional embedding to $$\mathbf{X}^{(0)}$$ therefore we have
+
+$$
+\mathbf{X}^{(0)} = \mathbf{X}^{(0)} + \mathbf{P}} 
+$$
+   
+2. **Multi-Head Self-Attention:**
 
    Compute queries, keys, and values from $$\mathbf{X}^{(l)}$$:
 
