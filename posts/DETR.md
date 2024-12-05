@@ -235,16 +235,18 @@ class TransformerDecoder(nn.Module):
 ### Mathematical Expressions
 
 **Cross-Attention Computation:**
+
 $$
 \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Softmax}\left( \frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}} \right)\mathbf{V}
 $$
+
 - $\mathbf{Q}$: Projected object queries.
 - $\mathbf{K}, \mathbf{V}$: Projected encoder outputs.
 
 ---
 ## Remarks on the Tensor Size and architecture wrap up:
 
-- The cross-attention in the DETR decoder is computed between a set of **N_query** queries and **N_enc** encoder output tokens. Therefore, the cross-attention weight matrix has dimensions **(N_query × N_enc)**.  
+- The cross-attention in the DETR decoder is computed between a set of **N_query**(here **N_query = M**) queries and **N_enc** (here **N_enc = N**) encoder output tokens. Therefore, the cross-attention weight matrix has dimensions **(N_query × N_enc)**.  
 - The encoder outputs a sequence of shape **(N_enc, D)**, where **N_enc** is typically the flattened spatial dimension of the image features and **D** is the model dimension.  
 - The decoder queries consist of **N_query** learned embeddings, each of dimension **D**.  
 - For cross-attention, the query (Q) matrix is of shape **(N_query, D)**, and the key (K) and value (V) matrices derived from the encoder output are of shape **(N_enc, D)**.
@@ -258,49 +260,58 @@ $$
    - Each position is represented by a `D`-dimensional vector after linear projection.
 
    Thus, after positional encoding and passing through the Transformer encoder (with multiple layers), the **encoder output** is a sequence of shape:
+
    $$
    \text{Encoder Output} \in \mathbb{R}^{N_{\text{enc}} \times D}, \quad \text{where } N_{\text{enc}} = H'W'
    $$
 
-2. **Decoder Queries:**  
+3. **Decoder Queries:**  
    The DETR decoder uses a fixed set of **N_query** learned object queries. Each query is a `D`-dimensional embedding. These queries are independent of the input image content; they are trained to attend to different parts of the encoder output to detect objects. So the query set is:
+
    $$
    \text{Decoder Queries} \in \mathbb{R}^{N_{\text{query}} \times D}, \quad \text{where } N_{\text{query}} \text{ is often set to 100}
    $$
 
    Each decoder layer uses these queries to attend to the encoder outputs and produce refined queries (representations) that eventually lead to object predictions.
 
-3. **Cross-Attention in the Decoder:**
+4. **Cross-Attention in the Decoder:**
    In a standard Transformer cross-attention module, you have three key matrices: Q (query), K (key), and V (value). For cross-attention in the DETR decoder:
    - **Q (Query):** Derived from the decoder queries. After a linear projection, these will still have dimension `(N_query, D)`.
    - **K (Key) and V (Value):** Derived from the encoder output. After linear projections, these remain `(N_enc, D)`.
 
    Concretely:
    - Q is obtained by applying a linear transformation to the decoder queries:  
+
      $$
      Q \in \mathbb{R}^{N_{\text{query}} \times D}
      $$
+   
    - K and V are obtained by applying linear transformations to the encoder output:  
+   
      $$
      K \in \mathbb{R}^{N_{\text{enc}} \times D}, \quad V \in \mathbb{R}^{N_{\text{enc}} \times D}
      $$
 
-4. **Cross-Attention Computation:**
+5. **Cross-Attention Computation:**
    The attention weights are computed as:
+
    $$
    \text{Attention} = \text{softmax}\left(\frac{QK^T}{\sqrt{D}}\right) V
    $$
 
    Here, `QK^T` results in a `(N_query, N_enc)` matrix:
+
    - `Q` has shape `(N_query, D)`.
    - `K^T` has shape `(D, N_enc)`.
 
    Multiplying `Q (N_query, D)` by `K^T (D, N_enc)` gives:
+
    $$
    QK^T \in \mathbb{R}^{N_{\text{query}} \times N_{\text{enc}}}
    $$
 
    This is the **cross-attention weight matrix**, which, after the softmax operation, is used to combine the values:
+   
    $$
    \text{Attention Output} = \text{softmax}(QK^T) V \in \mathbb{R}^{N_{\text{query}} \times D}
    $$
