@@ -16,7 +16,7 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <br>
 <br>
 <br>
-<be>
+<br>
 - Click on each icon below for categorical topics.
 
 
