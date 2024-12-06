@@ -1,6 +1,6 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-purple?style=for-the-badge&logo=github)](../main_page/CV)
+## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](../main_page/CV)
 
 # TrackFormer
 Below is a comprehensive explanation of TrackFormer, its motivation, architecture, training procedure, inference strategy, and evaluation metrics. The explanation includes conceptual understanding, block diagrams, mathematical details, ground truth generation, loss computation, and pseudo-code snippets with inline comments on tensor shapes. The pseudo-code is illustrative rather than exact.
