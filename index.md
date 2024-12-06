@@ -16,7 +16,9 @@ I try to use simple scenarios and of course, I never use ChatGPT🤥.
 <br>
 <br>
 <br>
-<br>
+<be>
+- Click on each icon below for categorical topics.
+
 
 [<img src="images/GenAI.png"  width="170" height="170">](main_page/GenAI) [<img src="images/CV.png"  width="170" height="170">](main_page/CV)
 [<img src="images/ML.png"  width="170" height="170">](main_page/ML) [<img src="images/CP.png"  width="170" height="170">](main_page/CP)
