@@ -706,3 +706,6 @@ DETR revolutionizes object detection by framing it as a direct set prediction pr
 - **Set-Based Loss with Bipartite Matching:** Ensures unique assignment of predictions to ground truth objects.
 
 By leveraging the strengths of Transformers, DETR opens new avenues for research and applications in object detection and beyond.
+
+# Panoptic Segmentation
+for a better understanding of the actual science behind the segmentation head please look at this awesome  [Video](https://www.youtube.com/watch?v=zc9aaTINDk4&ab_channel=MakGaiduk)
