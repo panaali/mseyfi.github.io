@@ -22,7 +22,7 @@ This separation can lead to suboptimal solutions since detection and association
 - Improved robustness to occlusions and appearance changes since the model learns both detection and association features together.
 
 ---
-![TrackFormer](../TrackFormer.png)
+![TrackFormer](../images/TrackFormer.png)
 
 ### Model Overview and Block Diagram
 
