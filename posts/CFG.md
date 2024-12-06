@@ -1,5 +1,7 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
+## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../main_page/GenAI)
+
 # Classifier-Free Diffusion Models: A Comprehensive Guide!
 
 1. **Introduction to Classifier-Free Diffusion Models**
