@@ -1,5 +1,8 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
+## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](../main_page/CP)
+
+
 ## **Comprehensive Tutorial on Traditional Video Compression**
 
 This tutorial explains the entire workflow of traditional video compression, combining motion estimation, motion compensation (including warping), residual calculation, DCT transformation, quantization, and encoding. We'll add **mathematical relationships** between the blocks to provide a deeper understanding.
