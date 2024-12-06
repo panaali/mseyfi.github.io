@@ -4,6 +4,17 @@
 <br>
 <br>
 
+[![TrackFormer](https://img.shields.io/badge/TrackFormer-Multi_Object_Tracking_with_Transformer-blue?style=for-the-badge&logo=github)](../posts/TrackFormer)
+
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+Traditional multi-object tracking (MOT) systems often follow a two-step pipeline:
+  
+Detect objects in each frame independently.
+Associate detections across frames to form trajectories.
+This separation can lead to suboptimal solutions since detection and association are treated as separate problems. TrackFormer merges these steps by extending a Transformer-based detection architecture (inspired by DETR) to simultaneously detect and track objects. It does this by introducing track queries that carry information about previously tracked objects forward in time, allowing the network to reason about detection and association in a unified end-to-end manner. <p></p>
+_Last updated: {{ site.time | date: "%B %d, %Y" }}_
+</div>
+
 [![DETR](https://img.shields.io/badge/DETR-Detection_Transformer-blue?style=for-the-badge&logo=github)](../posts/DETR)
 
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
