@@ -1602,7 +1602,7 @@ What is quantization? Quantization is a process used in machine learning to redu
 Static quantization converts the weights and activates of a neural network to lower precision (e.g., from 32-bit floating-point to 8-bit integers) during the training or post-training phase. Here we have a more detailed breakdown of static quantization:
 
 1. **Calibration Phase**
--A calibration step is performed where the model runs on a representative dataset. This step is important as it helps to gather the distribution statistics of the activations, which are then used to determine the optimal scaling factors (quantization parameters) for each layer.
+- A calibration step is performed where the model runs on a representative dataset. This step is important as it helps to gather the distribution statistics of the activations, which are then used to determine the optimal scaling factors (quantization parameters) for each layer.
 
 2. **Quantization Parameters**
 - In this step, the model weights are quantized to a lower precision format (e.g., int8). The scale and zero-point for each layer are computed based on the calibration data and are fixed during inference.
