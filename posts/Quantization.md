@@ -1737,7 +1737,7 @@ By understanding these concepts and applying them effectively, you can optimize 
 
 - **Static vs Dynamic Quantization in Machine Learning**
 
-[[Static vs Dynamic Quantization in Machine Learning](https://selek.tech/posts/static-vs-dynamic-quantization-in-machine-learning/)](https://selek.tech/posts/static-vs-dynamic-quantization-in-machine-learning/)
+  [https://selek.tech/posts/static-vs-dynamic-quantization-in-machine-learning/](https://selek.tech/posts/static-vs-dynamic-quantization-in-machine-learning/)
 ---
 
 **Note:** When implementing quantization in practice, always consider the specific requirements and constraints of your deployment environment. Test your quantized models thoroughly to ensure they meet the desired performance criteria.
