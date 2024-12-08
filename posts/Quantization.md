@@ -1602,17 +1602,14 @@ What is quantization? Quantization is a process used in machine learning to redu
 Static quantization converts the weights and activates of a neural network to lower precision (e.g., from 32-bit floating-point to 8-bit integers) during the training or post-training phase. Here we have a more detailed breakdown of static quantization:
 
 1. **Calibration Phase**
-
 -A calibration step is performed where the model runs on a representative dataset. This step is important as it helps to gather the distribution statistics of the activations, which are then used to determine the optimal scaling factors (quantization parameters) for each layer.
 Quantization Parameters
 In this step, the model weights are quantized to a lower precision format (e.g., int8). The scale and zero-point for each layer are computed based on the calibration data and are fixed during inference.
 
 2. **Inference**
-
 -During inference, both the weights and activations are quantized to int8. Since the quantization parameters are fixed, the model uses these pre-determined scales and zero-points to perform fast, integer-only computations.
 
 3. **Performance**
-
 -Static quantization typically results in more efficient execution compared to dynamic quantization because all the computations can be done using integer arithmetic, which is faster on many hardware platforms. It often achieves better accuracy compared to dynamic quantization since the quantization parameters are finely tuned using the calibration data.
 
 **Use Cases of Static Quantization**
@@ -1651,18 +1648,15 @@ torch.save(model_quantized.state_dict(), "quantized_model.pth")
 Dynamic quantization quantizes only the weights to a lower precision and leaves the activations in floating-point during the model’s runtime. Deeper look at dynamic quantization:
 
 1. **No Calibration Needed**
-
 - Dynamic quantization does not require a separate calibration phase. The quantization parameters are determined on-the-fly during inference. This makes it more straightforward to apply since it eliminates the need for a representative calibration dataset.
 
 2. **Quantization Parameters**
-
 - Model weights are quantized to lower precision as int8 format before inference. During inference, activations are dynamically quantized, which means their scale and zero-point are computed for each batch or layer during execution.
 
 3. **Inference**
 -Weights are stored and computed in int8, but activations remain in floating-point until they are used in computations. This allows the model to adapt to the variability in input data at runtime by recalculating the quantization parameters dynamically.
 
 4. **Performance**
-
 -Dynamic quantization typically incurs a lower reduction in model accuracy compared to static quantization since it can adapt to changes in input data distribution on-the-fly. However, it may not achieve the same level of inference speedup as static quantization because part of the computation still involves floating-point operations.
 
 **Use Cases:**
@@ -1684,8 +1678,7 @@ model_quantized = torch.quantization.quantize_dynamic(
 # Save the quantized model
 torch.save(model_quantized.state_dict(), 'dynamic_quantized_model.pth')
 ```
-** Static Quantization Workflow**
-
+**Static Quantization Workflow**
 -Model Training: Train your model normally.
 -Calibration: Run the model on a representative dataset to determine quantization parameters.
 -Quantization: Convert model weights and activations to lower precision using fixed quantization parameters.
@@ -1694,7 +1687,7 @@ torch.save(model_quantized.state_dict(), 'dynamic_quantized_model.pth')
 -Model Training: Train your model normally.
 -Quantization: Convert model weights to lower precision.
 -Inference: Dynamically quantize activations during inference, allowing for adaptable performance based on input data.
-**Summary
+**Summary**
 Both static and dynamic quantization offer ways to reduce the model size and improve inference efficiency but cater to different use cases and trade-offs:
 
 Static Quantization requires a calibration step, uses fixed quantization parameters, offers faster inference with purely integer arithmetic, and is ideal for scenarios with known and stable input data distributions.
@@ -1741,6 +1734,7 @@ By understanding these concepts and applying them effectively, you can optimize 
 
   [https://arxiv.org/abs/1608.01981](https://arxiv.org/abs/1608.01981)
 
+[Static vs Dynamic Quantization in Machine Learning](https://selek.tech/posts/static-vs-dynamic-quantization-in-machine-learning/)
 ---
 
 **Note:** When implementing quantization in practice, always consider the specific requirements and constraints of your deployment environment. Test your quantized models thoroughly to ensure they meet the desired performance criteria.
