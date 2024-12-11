@@ -61,28 +61,31 @@ If there are a large number of outliers, this optimization may yield poor estima
 
 2. **Minimal Subset Sampling:**
    For a line, the minimal subset $$S$$ could be just 2 distinct points. From points $$(x_i, y_i)$$ and $$(x_j, y_j)$$, we can solve:
+   
    $$
    m = \frac{y_j - y_i}{x_j - x_i}, \quad c = y_i - m x_i.
    $$
 
-3. **Distance Threshold (Consensus Criterion):**
+4. **Distance Threshold (Consensus Criterion):**
    We define a threshold $$\epsilon$$ that determines what we call an inlier. For each data point $$(x_k, y_k)$$, compute the residual:
+   
    $$
    r_k = |y_k - (m x_k + c)|.
    $$
+   
    If $$r_k \le \epsilon$$, then the point is considered an inlier for that particular model.
 
-4. **Inlier Count:**
+6. **Inlier Count:**
    Count the number of inliers $$I(\theta)$$ for the model $$\theta$$. The quality of the model is measured by how many inliers it has.
 
-5. **Repetition:**
+7. **Repetition:**
    Repeat the above sampling many times. Each time:
    - Randomly select a minimal subset of data (in the line example, two points).
    - Estimate the model parameters from that subset.
    - Compute the number of inliers.
    Keep track of the model that yields the maximum number of inliers.
 
-6. **Refinement:**
+8. **Refinement:**
    Once you identify the best model $$\theta^*$$, you can optionally re-fit the model to all the inliers of $$\theta^*$$ using a more robust estimation (like a standard least-squares fit only on the inliers).
 
 **Key RANSAC parameters:**
@@ -91,9 +94,11 @@ If there are a large number of outliers, this optimization may yield poor estima
 - **Minimal number of points $$n$$:** The smallest number of points required to estimate the model parameters (2 for a line, 3 for a plane, etc.).
 
 A common guideline for selecting $$T$$ is based on the probability of success. If $$w$$ is the probability that any chosen data point is an inlier, then the probability that a chosen subset of $$n$$ points consists entirely of inliers is $$w^n$$. We want to choose $$T$$ such that the probability of never picking an all-inlier subset is small (e.g., $$0.01$$). Thus:
+
 $$
 1 - (w^n)^T = \delta \implies T = \frac{\log \delta}{\log(1 - w^n)},
 $$
+
 where $$\delta$$ is the desired probability of failure. This gives a theoretical grounding for choosing the number of iterations.
 
 ---
