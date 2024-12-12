@@ -11,6 +11,7 @@ In this guide, we'll provide sample code for training and inference of a diffusi
 
 ---
 
+![Diffusion](../images/DDPM.png)
 ## Table of Contents
 
 1. [Imports and Setup](#imports-and-setup)
