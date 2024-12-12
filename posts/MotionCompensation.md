@@ -553,7 +553,7 @@ Motion estimation is integral to video coding standards like MPEG, H.264/AVC, HE
    - Encode the quantized coefficients and motion vectors using entropy coding techniques (e.g., Huffman coding, arithmetic coding).
 
 6. **Reconstruction for Reference Frames:**
-   - In the encoder, reconstruct the macroblock by inverse quantization and inverse transform.
+   - In the decoder, reconstruct the macroblock by inverse quantization and inverse transform.
    - Add the reconstructed residual to the predicted macroblock.
    - Store the reconstructed frame for future predictions.
 
