@@ -1,5 +1,5 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
-## [![ML](https://img.shields.io/badge/ML-Selected_Topics_in_Machine_Learning-green?style=for-the-badge&logo=github)](../ML)
+## [![ML](https://img.shields.io/badge/ML-Selected_Topics_in_Machine_Learning-green?style=for-the-badge&logo=github)](../main_pages/ML)
 
 # RANSAC
 Below is a comprehensive tutorial on the RANSAC (Random Sample Consensus) algorithm. We will cover the intuition behind it, the mathematical underpinnings, reasons why we need it, and provide a complete working example in Python at the end. By the end, you should have a solid understanding of RANSAC and how to apply it to a simple parameter estimation problem, such as fitting a linear model to data with outliers.
