@@ -1,3 +1,5 @@
+# Axial Attention Simplified
+
 Below is illustrative pseudo-code comparing **traditional (vanilla) 2D self-attention** vs. **axial attention** for a batch of 2D feature maps (e.g., an image). We’ll assume:
 
 - **Input** $\mathbf{X}$ has shape $(B, H, W, d)$  
