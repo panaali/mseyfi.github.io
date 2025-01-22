@@ -20,9 +20,7 @@ Below is an overview of **Linformer**, why we need it, and **side-by-side pseudo
   - Introduce a learnable projection $E \in \mathbb{R}^{N \times r}$.  
   - Project $K, V$ along the sequence dimension, obtaining $K' \in \mathbb{R}^{B \times r \times d}$ and $V' \in \mathbb{R}^{B \times r \times d}$.  
   - Then compute attention as:
-    $$
-      \text{Attention}(Q, K', V') = \text{softmax}\Bigl(\frac{Q K'^\top}{\sqrt{d}}\Bigr) V'
-    $$
+    $\text{Attention}(Q, K', V') = \text{softmax}\Bigl(\frac{Q K'^\top}{\sqrt{d}}\Bigr) V'$
   - Now the attention matrix is $\mathbb{R}^{B \times N \times r}$ instead of $\mathbb{R}^{B \times N \times N}$.
 
 **Result**: The complexity becomes $\mathcal{O}(N \times r \times d)$ instead of $\mathcal{O}(N^2 \times d)$. For $r \ll N$, this is a major saving in both memory and computation.
