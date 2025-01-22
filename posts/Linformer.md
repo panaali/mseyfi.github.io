@@ -203,26 +203,20 @@ In **Linformer**, we typically project only the Key ($K$) and Value ($V$) matric
 
 Recall that in standard self-attention, we compute:
 
-$
-\text{Attention}(Q, K, V) 
-= \underbrace{\text{softmax}\Bigl(\frac{Q \,K^\top}{\sqrt{d}}\Bigr)}_{\displaystyle \text{size }N \times N} \; V,
-$
+$\text{Attention}(Q, K, V) 
+= \underbrace{\text{softmax}\Bigl(\frac{Q \,K^\top}{\sqrt{d}}\Bigr)}_{\displaystyle \text{size }N \times N} \; V,$
 
 where $Q, K, V \in \mathbb{R}^{B \times N \times d}$ and $N$ is the sequence length. This yields an $\mathcal{O}(N^2)$ memory and compute cost (because of the $N\times N$ matrix).
 
 - **Linformer** introduces a learnable projection $\mathbf{E}\in \mathbb{R}^{N \times r}$ (with $r \ll N$) that compresses $K$ and $V$ from shape $(N, d)$ to $(r, d)$ along the sequence dimension:
 
-  $
-    K' = K \times E,\quad V' = V \times E \quad (\text{schematically}),
-  $
+  $K' = K \times E,\quad V' = V \times E \quad (\text{schematically}),$
   
   so that $K' \in \mathbb{R}^{B \times r \times d}$ and $V' \in \mathbb{R}^{B \times r \times d}$.
 
 - Then the new attention step becomes:
 
-  $$
-    \text{Attention}(Q, K', V') = \text{softmax}\Bigl(\frac{Q \,K'^\top}{\sqrt{d}}\Bigr) \; V',
-  $$
+  $\text{Attention}(Q, K', V') = \text{softmax}\Bigl(\frac{Q \,K'^\top}{\sqrt{d}}\Bigr) \; V',$
 
   which yields an $N \times r$ attention matrix instead of $N \times N$, cutting complexity down to $\mathcal{O}(N \times r)$.
 
