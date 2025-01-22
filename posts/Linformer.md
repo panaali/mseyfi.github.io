@@ -5,7 +5,7 @@ Below is an overview of **Linformer**, why we need it, and **side-by-side pseudo
 
 ## 1. What Is Linformer?
 
-**Linformer** (Wang et al., 2020) is a method to reduce the $\mathcal{O}(N^2)$ complexity of self-attention (where $N$ is the sequence length) to approximately $\mathcal{O}(N)$ (or more precisely $\mathcal{O}(N \times r)$), by projecting the attention’s **key** and **value** representations into a **lower-dimensional space** of size $r \ll N$.  
+**Linformer** (Wang et al., 2020) is a method to reduce the $\mathcal{O}(N^2)$ complexity of self-attention (where $N$ is the sequence length) to approximately $\mathcal{O}(N)$ (or more precisely $\mathcal{O} (N \times r)$ ), by projecting the attention’s **key** and **value** representations into a **lower-dimensional space** of size $r \ll N$.  
 
 ### The Core Idea
 
