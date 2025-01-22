@@ -12,7 +12,7 @@ Below is an overview of **Linformer**, why we need it, and **side-by-side pseudo
 - In standard self-attention, we compute:
   
   $$
-    \text{Attention}(Q, K, V) = \text{softmax} \Bigl(\frac{QK^\top}{\sqrt{d}}\Bigr)V 
+    \text{Attention}(Q, K, V) = \text{softmax} \Bigl(\frac{QK^\top}{\sqrt{d}}\Bigr)V
   $$
   
   - $Q, K, V \in \mathbb{R}^{B \times N \times d}$
