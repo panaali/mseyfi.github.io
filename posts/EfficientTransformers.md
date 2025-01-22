@@ -23,6 +23,10 @@ Vision Transformers (ViTs) have become a popular choice for image recognition an
   \- *Paper:* [Big Bird: Transformers for Longer Sequences](https://arxiv.org/abs/2007.14062) (Zaheer et al., 2020)  
   \- *Idea:* Combines random, global, and local attentions to handle very long sequences efficiently.
 
+- **Axial Attentions**
+  \- *papers:* [Axial Attention in Multidimensional Transformers](https://arxiv.org/abs/1912.12180) (Ho et al., 2019)
+  \- *Idea:* Use combinations of 1D attentions in each dimention instead of one big 2D attention.
+
 ---
 
 ## 2. Model Compression Techniques
@@ -121,6 +125,7 @@ Sometimes, simply rethinking the architecture yields a more efficient design:
    - *Performer* (Choromanski et al., 2021)  
    - *Reformer* (Kitaev et al., 2020)  
    - *Big Bird* (Zaheer et al., 2020)
+   - *Axial Attentions* (Ho et al., 2019)
 
 2. **Model Compression**  
    - **Pruning:** *Movement Pruning* (Sanh et al., 2020)  
