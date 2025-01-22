@@ -20,7 +20,9 @@ Below is an overview of **Linformer**, why we need it, and **side-by-side pseudo
   - Introduce a learnable projection $E \in \mathbb{R}^{N \times r}$.  
   - Project $K, V$ along the sequence dimension, obtaining $K' \in \mathbb{R}^{B \times r \times d}$ and $V' \in \mathbb{R}^{B \times r \times d}$.  
   - Then compute attention as:
+    
     $\text{Attention}(Q, K', V') = \text{softmax}\Bigl(\frac{Q K'^\top}{\sqrt{d}}\Bigr) V'$
+
   - Now the attention matrix is $\mathbb{R}^{B \times N \times r}$ instead of $\mathbb{R}^{B \times N \times N}$.
 
 **Result**: The complexity becomes $\mathcal{O}(N \times r \times d)$ instead of $\mathcal{O}(N^2 \times d)$. For $r \ll N$, this is a major saving in both memory and computation.
@@ -201,23 +203,27 @@ In **Linformer**, we typically project only the Key ($K$) and Value ($V$) matric
 
 Recall that in standard self-attention, we compute:
 
-$$
+$
 \text{Attention}(Q, K, V) 
 = \underbrace{\text{softmax}\Bigl(\frac{Q \,K^\top}{\sqrt{d}}\Bigr)}_{\displaystyle \text{size }N \times N} \; V,
-$$
+$
 
 where $Q, K, V \in \mathbb{R}^{B \times N \times d}$ and $N$ is the sequence length. This yields an $\mathcal{O}(N^2)$ memory and compute cost (because of the $N\times N$ matrix).
 
 - **Linformer** introduces a learnable projection $\mathbf{E}\in \mathbb{R}^{N \times r}$ (with $r \ll N$) that compresses $K$ and $V$ from shape $(N, d)$ to $(r, d)$ along the sequence dimension:
-  $$
+
+  $
     K' = K \times E,\quad V' = V \times E \quad (\text{schematically}),
-  $$
+  $
+  
   so that $K' \in \mathbb{R}^{B \times r \times d}$ and $V' \in \mathbb{R}^{B \times r \times d}$.
 
 - Then the new attention step becomes:
+
   $$
     \text{Attention}(Q, K', V') = \text{softmax}\Bigl(\frac{Q \,K'^\top}{\sqrt{d}}\Bigr) \; V',
   $$
+
   which yields an $N \times r$ attention matrix instead of $N \times N$, cutting complexity down to $\mathcal{O}(N \times r)$.
 
 ---
