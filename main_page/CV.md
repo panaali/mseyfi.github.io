@@ -11,7 +11,7 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 
-[![AxialAttention](https://img.shields.io/badge/Axial_Attention-blue?style=for-the-badge&logo=github)](../posts/AxialAttention)
+[![AxialAttention](https://img.shields.io/badge/Axial_Attention-Attentions across axes-blue?style=for-the-badge&logo=github)](../posts/AxialAttention)
 
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Key ideas:
