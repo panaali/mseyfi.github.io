@@ -1,6 +1,6 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../main_page/GenAI)
+## [![CP](https://img.shields.io/badge/CP-Computational_Photography-green?style=for-the-badge&logo=github)](../main_page/CP)
 
 Below is a comprehensive tutorial on the Non-Local Means (NLM) algorithm, a highly-regarded method for image denoising. By the end of this tutorial, you will understand the theory behind Non-Local Means, why it is effective, how it is formulated mathematically, and how to implement it in code.
 
