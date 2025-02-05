@@ -505,6 +505,7 @@ The process of predicting offsets relative to anchor boxes and normalizing these
 When preparing the training data, we encode the ground truth bounding boxes relative to the anchor boxes:
 
 1. **Compute offset**
+   
 - $t_x = \left(\frac{x_{gt} - x_{anchor}}{w_{anchor}}\right)/c_v$
 
 - $t_y = \left(\frac{y_{gt} - y_{anchor}}{h_{anchor}}\right)/c_v$
