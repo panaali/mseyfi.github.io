@@ -3,6 +3,18 @@
 
 <br>
 <br>
+[![Axial Attention](https://img.shields.io/badge/Axial_Attention-blue?style=for-the-badge&logo=github)](../posts/AxialAttention)
+
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+Key ideas:
+  
+1. Perform attention **across rows** (the width dimension, $W$) for each of the $H$ rows, independently.  
+2. Then perform attention **across columns** (the height dimension, $H$) for each of the $W$ columns, independently.  
+3. Each step is effectively 1D self-attention, so the cost scales like $O(H \cdot W^2 + W \cdot H^2)$ instead of $O(H^2 W^2)$.
+
+_Last updated: {{ site.time | date: "%B %d, %Y" }}_
+</div>
+
 
 [![TrackFormer](https://img.shields.io/badge/TrackFormer-Multi_Object_Tracking_with_Transformer-blue?style=for-the-badge&logo=github)](../posts/TrackFormer)
 
