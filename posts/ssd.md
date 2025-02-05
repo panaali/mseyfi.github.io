@@ -538,7 +538,7 @@ When the model makes predictions, we decode the predicted offsets to obtain the 
 
 - $h_{pred} = h_{anchor} \times \exp(t_h \times s_v)$
 
-3. Interpretation
+2. Interpretation
 	- Multiplying by the variances during decoding reverses the scaling applied during encoding.
 	- Exponentiating the size offsets ensures that the predicted widths and heights are positive.
 	
