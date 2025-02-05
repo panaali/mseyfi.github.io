@@ -13,7 +13,7 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 
-[![Efficiency](https://img.shields.io/badge/Efficient_Transformers-Efficient_Techniques_in_Transformers-blue?style=for-the-badge&logo=github)](../posts/posts/EfficientTransformers)
+[![Efficiency](https://img.shields.io/badge/Efficient_Transformers-Efficient_Techniques_in_Transformers-blue?style=for-the-badge&logo=github)](../posts/EfficientTransformers)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 
 Vision Transformers (ViTs) have become a popular choice for image recognition and related tasks, but they can be computationally expensive and memory-heavy. Below is a list of common (and often complementary) techniques to optimize Transformers—including ViTs—for more efficient training and inference. Alongside each category, I’ve mentioned some influential or representative papers.
