@@ -1,0 +1,7 @@
+{% capture git_modified %}
+  {{ site.time | date: "%Y-%m-%d" }}
+{% endcapture %}
+
+{% assign post_path = page.path %}
+{% assign git_info = post_path | prepend: "git log -1 --format=%cd -- " | append: " | date '+%B %d, %Y'" | shell %}
+{{ git_info }}
