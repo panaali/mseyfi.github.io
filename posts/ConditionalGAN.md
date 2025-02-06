@@ -39,9 +39,9 @@ train_loader = DataLoader(
 
 # Generator model
 class Generator(nn.Module):
-    def __init__(self):
+    def __init__(self, latend_dim, num_classes):
         super(Generator, self).__init__()
-        self.label_emb = nn.Embedding(num_classes, num_classes)
+        self.label_emb = nn.Embedding(num_classes, latent_dim)
 
         def block(in_feat, out_feat, normalize=True):
             layers = [nn.Linear(in_feat, out_feat)]
@@ -68,9 +68,9 @@ class Generator(nn.Module):
 
 # Discriminator model
 class Discriminator(nn.Module):
-    def __init__(self):
+    def __init__(self, latent_dim, num_classes):
         super(Discriminator, self).__init__()
-        self.label_emb = nn.Embedding(num_classes, num_classes)
+        self.label_emb = nn.Embedding(num_classes, latent_dim)
 
         self.model = nn.Sequential(
             nn.Linear(channels * img_size * img_size + num_classes, 512),
@@ -90,8 +90,8 @@ class Discriminator(nn.Module):
         return validity
 
 # Initialize models
-generator = Generator().to(device)
-discriminator = Discriminator().to(device)
+generator = Generator(latent_dim, num_classes).to(device)
+discriminator = Discriminator(latent_dim, num_classes).to(device)
 
 # Loss function
 adversarial_loss = nn.BCELoss()
