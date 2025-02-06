@@ -16,7 +16,7 @@ Overview of Linformer, why we need it, and side-by-side pseudo-code comparing tr
     {% assign modified_date = git_date %}
 {% endif %}
 
-_Last updated: {{ modified_date | date: "%B %d, %Y" }}_
+_Last updated: {{ modified_date | date: "%B %d, %Y %I:%M %p" }}_
 
 </div>
 
@@ -71,7 +71,15 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Python implementation of a Conditional Generative Adversarial Network (cGAN) using PyTorch.
  <p></p>
-_Last updated: {{ site.time | date: "%B %d, %Y" }}_
+{% assign modified_date = site.time %}
+{% capture git_date %}{% include last-modified.html %}{% endcapture %}
+{% if git_date != "" %}
+    {% assign modified_date = git_date %}
+{% endif %}
+
+_Last updated: {{ modified_date | date: "%B %d, %Y %I:%M %p" }}_
+
+</div>
 </div>
 
 ## [![Distillation](https://img.shields.io/badge/Distillation-grey?style=for-the-badge&logo=github)](../posts/Distillation)
