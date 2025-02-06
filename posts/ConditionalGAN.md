@@ -41,7 +41,7 @@ train_loader = DataLoader(
 class Generator(nn.Module):
     def __init__(self, latent_dim, num_classes):
         super(Generator, self).__init__()
-        self.label_emb = nn.Embedding(num_classes, latent_dim)
+        self.label_emb = nn.Embedding(num_classes, num_classes)
 
         def block(in_feat, out_feat, normalize=True):
             layers = [nn.Linear(in_feat, out_feat)]
@@ -70,7 +70,7 @@ class Generator(nn.Module):
 class Discriminator(nn.Module):
     def __init__(self, latent_dim, num_classes):
         super(Discriminator, self).__init__()
-        self.label_emb = nn.Embedding(num_classes, latent_dim)
+        self.label_emb = nn.Embedding(num_classes, num_classes)
 
         self.model = nn.Sequential(
             nn.Linear(channels * img_size * img_size + num_classes, 512),
