@@ -18,6 +18,8 @@ highlighter: rouge
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-scholar
+  - jekyll-shell
 
 # Theme-specific settings
 # kramdown:
