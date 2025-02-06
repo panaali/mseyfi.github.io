@@ -205,13 +205,12 @@ Transformers process inputs in parallel and do not inherently capture the order 
 ### **Relative Position Computation**
 
 - **Example**: The difference between positional encodings can be used to compute relative positions.
-```math
+$$
 \begin{aligned}
     \sin(a) - \sin(b) &=2 \cos\left(\frac{a + b}{2}\right) \sin\left(\frac{a - b}{2}\right)\\
     \cos(a) - \cos(b) &=-2 \sin\left(\frac{a + b}{2}\right) \sin\left(\frac{a - b}{2}\right)
  \end{aligned}
- ```
-    
+$$    
     These identities help the model infer the relative distance between tokens.
 ---
 
