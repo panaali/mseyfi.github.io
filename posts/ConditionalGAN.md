@@ -39,7 +39,7 @@ train_loader = DataLoader(
 
 # Generator model
 class Generator(nn.Module):
-    def __init__(self, latend_dim, num_classes):
+    def __init__(self, latent_dim, num_classes):
         super(Generator, self).__init__()
         self.label_emb = nn.Embedding(num_classes, latent_dim)
 
