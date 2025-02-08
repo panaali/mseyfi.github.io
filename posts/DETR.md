@@ -591,10 +591,25 @@ Positional embeddings are re-applied to the keys during the decoder’s cross-at
 3. **Why Add Positional Embeddings Again to Keys in the Decoder?**
    - **Encoder Output Already Contains Positional Information, Right?**  
      The encoder output ("memory") is influenced by the positional embeddings that were added at the encoder input stage. After passing through multiple self-attention layers, the encoder’s output features do carry implicit positional structure. However, the positional information is no longer explicitly represented as a simple additive signal. It's been "distributed" throughout the representations by self-attention mixing.  
-     
+
+4. Queries in the Decoder Represent Object Queries (Learnable Embeddings)
+
+The queries in DETR's transformer decoder are object queries, which are learnable embeddings initialized randomly and updated during training.
+These queries do not correspond to specific spatial locations in the image but rather act as high-level object "slots" that extract information about different objects.
+Since these queries are not tied to spatial positions, there is no need to add positional embeddings.
+Keys (from Encoder) Represent Spatial Information
+
+The keys and values in the decoder come from the encoder, which processes image features extracted from a CNN backbone.
+These feature maps retain spatial information about objects, so it is crucial to add positional encodings to the encoder’s outputs (keys) to provide spatial awareness.
+Without positional embeddings, the self-attention mechanism in the decoder would treat all key features as position-agnostic, making it harder to distinguish objects at different locations.
+Attention Mechanism in the Decoder
+
+In the decoder, each query attends to all spatial positions (keys) in the encoded image features.
+Since the queries are not tied to specific locations, the positional information should only come from the keys to ensure the decoder can correctly localize objects.
+
      In the decoder’s cross-attention, we explicitly add positional embeddings again to the keys. This ensures the positional cues are directly and cleanly available at the point of computing attention weights. The decoder’s cross-attention mechanism can then straightforwardly use these embeddings to differentiate locations. This step reinforces positional cues so that the decoder’s object queries (queries Q) can latch onto spatial locations (keys K) more easily and accurately.
 
-4. **Why Not Add Positional Embeddings to Values?**
+5. **Why Not Add Positional Embeddings to Values?**
    The attention step involves:
 
    $$
