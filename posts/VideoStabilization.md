@@ -1,3 +1,7 @@
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+## [![CV](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](../main_page/CP)
+
 Below is a comprehensive, step-by-step tutorial on image (video) stabilization. The tutorial will cover the conceptual underpinnings and the mathematical formulations often used in state-of-the-art stabilizing pipelines. We will discuss various motion models, explain how to extract and match features, how to identify and separate camera motion from subject (object) motion, and finally how to warp frames to achieve a stabilized sequence. 
 
 Because you requested a deeper, manual discussion (without relying on OpenCV or high-level libraries), this tutorial will focus on the principles, the math, and illustrative pseudo-code. Please note that you can implement these ideas in your own codebase in any language of your choice (C++, Python, MATLAB, etc.), so long as you handle the corresponding linear algebra operations and optimization routines.
