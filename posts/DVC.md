@@ -1,6 +1,6 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../main_page/CP)
+## [![CV](https://img.shields.io/badge/CP-Selected_Topics_in_Computational_Photography-green?style=for-the-badge&logo=github)](../main_page/CP)
 
 # Deep Learning-Based Video Compression: A Comprehensive Tutorial
 ---
