@@ -12,6 +12,73 @@ Below is a comprehensive tutorial on **Noise Conditional Score Networks (NCSN)**
 6. **Practical Computer Vision Example** with code
 
 ---
+## 0. Langevin dynamics:
+Great question! This touches on a deep connection between **Langevin dynamics** and **probabilistic inference**, especially in the context of sampling from a complex probability distribution.
+
+---
+
+### 🔁 The Big Picture:
+In Langevin dynamics (specifically *overdamped* Langevin), we aim to **sample from a target distribution** — usually a **posterior** in Bayesian inference or a Boltzmann distribution in physics.
+
+The dynamics are governed by:
+
+$$
+dx_t = \frac{1}{2} \nabla \log p(x_t) \, dt + dW_t
+$$
+
+where:
+- $ p(x) $ is the target distribution (typically a probability density),
+- $ \nabla \log p(x) $ is the **score function**, and
+- $ dW_t $ is Brownian motion (standard Gaussian noise).
+
+---
+
+### ✅ Why use the **gradient of the log-density** (score function) instead of the density itself?
+
+Here are the key reasons:
+
+---
+
+#### 0.1. **Sampling Doesn’t Require Normalization**
+We often work with **unnormalized densities**: $ \tilde{p}(x) = e^{-U(x)} $, where $ U(x) $ is a potential or energy function.
+
+- We *don't* know the normalization constant $ Z = \int e^{-U(x)} dx $, so we can't evaluate the true $ p(x) = \frac{1}{Z} e^{-U(x)} $.
+- However, when taking $ \nabla \log p(x) $, the normalization constant cancels out:
+
+$$
+\nabla \log p(x) = \nabla \log \left( \frac{1}{Z} e^{-U(x)} \right) = -\nabla U(x)
+$$
+
+So we can compute $ \nabla \log p(x) $ **even when we don't know the full pdf**!
+
+---
+
+#### 0.2. **Gradient Drives the Drift in Langevin Dynamics**
+Langevin dynamics is derived from physics — particles moving in a potential field:
+
+- The **drift** term $ \frac{1}{2} \nabla \log p(x) $ pushes the samples toward high-probability regions.
+- The **noise** ensures exploration.
+
+So, the gradient tells the particle **which direction increases the probability**, which is exactly what we want for sampling efficiently.
+
+---
+
+#### 0.3. **Mathematical Convenience & Stability**
+- Gradients of log-probability give a **vector field** that guides dynamics in a stable way.
+- Using the raw probability would lead to issues:
+  - It’s scalar → not directly useful for dynamics.
+  - It could vary wildly across space → numerically unstable.
+  - It’s often hard to estimate or normalize in practice.
+
+---
+
+#### 0.4. **Connections to Score-Based Models and Diffusion**
+Modern generative methods like **score-based diffusion models** and **denoising score matching** also use $ \nabla \log p(x) $ because:
+- It's easier to learn or approximate.
+- It provides meaningful information about the shape of the distribution.
+
+---
+
 
 ## 1. High-Level Intuition
 
