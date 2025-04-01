@@ -39,7 +39,7 @@ Stable Diffusion is a powerful generative model that synthesizes high-quality im
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
-## [![NCSN](https://img.shields.io/badge/NCSN_Score_Based_Generative_Models-blue?style=for-the-badge&logo=github)](../posts/NCSN)
+## [![NCSN](https://img.shields.io/badge/NCSN-Score_Based_Generative_Models-blue?style=for-the-badge&logo=github)](../posts/NCSN)
 
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 A **Score-based Generative Model** learns the gradient of the log-probability (the “score”) for a family of **noisy** versions of data. Instead of directly learning a generative model $ p(x) $, we train a network $ s_\theta(x, \sigma) $ that approximates:
