@@ -1,6 +1,6 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
-## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../main_page/GenAI)
+## [![GENAI](https://img.shields.io/badge/CV-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../main_page/GenAI)
 
 Below is a comprehensive tutorial on **Noise Conditional Score Networks (NCSN)**. We’ll cover:
 
@@ -442,6 +442,98 @@ plt.show()
 ```
 
 ---
+
+Below is a concise **advantage vs. disadvantage** comparison between **Noise Conditional Score Networks (NCSN)** and **Denoising Diffusion Probabilistic Models (DDPM)**. Both are types of diffusion-like generative models but differ in how they parameterize and learn the “reverse” (denoising) process.
+
+---
+
+## NCSN/DDPM Pros and Cons:
+### NCSN (Noise Conditional Score Networks)
+
+### Advantages
+1. **Direct Score Learning**  
+   - NCSN directly estimates the *score* $\nabla_x \log p_\sigma(x)$ for multiple noise levels.  
+   - This yields a continuous (or semi-continuous) representation of how to denoise data at different noise scales.
+
+2. **Strong Theoretical Foundation in Score Matching**  
+   - NCSN is grounded in the concept of **score matching** (Hyvärinen, 2005), with extensions to *denoising score matching*.  
+   - The math for gradient-based sampling (e.g., **Annealed Langevin Dynamics** or **SDE-based** sampling) is quite elegant.
+
+3. **Flexibility with Noise Schedules**  
+   - In principle, one can adapt the **noise schedule** (ranging from $\sigma_\text{max}$ down to $\sigma_\text{min}$) to suit different data types or complexity levels.
+
+4. **Connections to Denoising Diffusion and SDEs**  
+   - NCSN paved the way for more general **Stochastic Differential Equation (SDE)** frameworks (e.g., Score-Based Generative Modeling via SDEs).  
+   - These approaches unify various noise processes (e.g., VE/VP SDEs) under one umbrella, often with excellent empirical performance.
+
+### Disadvantages
+1. **Potential Training Instability**  
+   - Directly learning the score can be numerically sensitive, especially if the network *overestimates* or *underestimates* gradients at particular noise scales.  
+   - NCSNv1 sometimes suffered from artifacts without careful training tricks; later versions (NCSNv2, etc.) introduced improvements.
+
+2. **Sampling Speed**  
+   - **Annealed Langevin Dynamics** or SDE-based sampling often requires **many iterations** to produce high-quality samples (although alternative samplers exist).  
+   - This can be **slower** compared to some other generative models unless carefully optimized or used with accelerated samplers.
+
+3. **Hyperparameter Sensitivity**  
+   - The choice of noise schedule, step size in Langevin updates, and weighting across noise levels can be *tricky* to tune.  
+   - Poor choices can lead to slow convergence or poor sample quality.
+
+4. **Less Common than DDPM in Some Frameworks**  
+   - DDPM has become quite popular in mainstream applications (e.g., large text-to-image systems), so codebases and community support might be stronger there.
+
+---
+
+## DDPM (Denoising Diffusion Probabilistic Models)
+
+### Advantages
+1. **Stable & Well-Studied Training**  
+   - DDPM uses a *simple denoising objective* — typically predicting the added noise $\epsilon$ (or predicting $\mathbf{x}_0$) in a discretized forward diffusion process.  
+   - This approach is known to be **empirically stable** and relatively straightforward to implement.
+
+2. **High-Quality Results & Widespread Adoption**  
+   - DDPMs have led to many state-of-the-art image (and other modality) generation systems (e.g., Stable Diffusion variants, latent diffusion, etc.).  
+   - Large-scale industrial efforts have focused on optimizing, scaling, and refining the DDPM pipeline.
+
+3. **Discrete Timesteps = Easier Implementation**  
+   - The forward noising is broken into a finite number of steps $1,2,\ldots,T$.  
+   - Each step is a standard Gaussian transition with a closed-form variance schedule.  
+   - The backward (reverse) process has a well-defined Markov chain structure.
+
+4. **Flexible Samplers**  
+   - Many specialized samplers (ancestral sampling, DDIM, DPM++, etc.) speed up or refine the sampling process.  
+   - This fosters a large ecosystem of improved, faster sampling algorithms.
+
+### Disadvantages
+1. **Discrete, Fixed Noise Schedule**  
+   - Typically, we define a discrete schedule $\beta_1, \beta_2, \ldots, \beta_T$.  
+   - If you want to adapt noise scales on the fly, you need more complex scheduling methods or continuous-time extensions.
+
+2. **Sampling Speed**  
+   - Like NCSN, naive DDPM sampling can be *slow* if you must run through all $T$ steps.  
+   - Optimized samplers exist but still can be more computationally heavy than, say, a single forward pass in a GAN or an autoregressive model.
+
+3. **Hyperparameter Tuning**  
+   - While training is stable, the choice of $\beta_t$ schedules, number of diffusion steps $T$, and the weighting in the loss can impact final quality and sampling speed.
+
+4. **Less Direct Theoretical Link to Score Matching**  
+   - DDPM training can be seen as *equivalent* to certain forms of denoising score matching, but it’s not as explicitly framed in that manner.  
+   - Some prefer the direct interpretation of “learning the score” in NCSN.
+
+---
+
+## When to Choose Which?
+
+- **If you’re comfortable with continuous noise processes** (or you want to unify everything under an SDE perspective), or you like the *direct* score-matching formulation, **NCSN** (score-based) might be more appealing.  
+- **If you prefer a discrete step approach** with a more widely adopted codebase, more off-the-shelf tools, and strong community support, **DDPM** might be more convenient.
+
+In practice, **both methods** can achieve excellent results. They share many similarities (iterative denoising, Gaussian noise corruption) and differ primarily in how the network is parameterized and trained (i.e., predicting the score function vs. predicting the noise or the clean image at each diffusion step).  
+
+Ultimately, which approach you pick can depend on:
+- Familiarity and community adoption  
+- Desired sampler flexibility (continuous vs. discrete)  
+- Implementation details and existing frameworks  
+- Empirical performance on your specific dataset or domain.
 
 ## Putting It All Together
 
