@@ -209,7 +209,7 @@ $$ \mathcal{L} = \mathbb{E}_{t, \mathbf{x}_0, \epsilon, \mathbf{c}'} \left[ \|\e
    where $\epsilon_{\text{guided}}$ is the guided noise prediction:
 
 
-$$ \epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) + s \cdot \left( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null}) \right) $$
+$$ \epsilon_{\text{guided}} = \epsilon_\theta(\mathbf{x}_t, t, \mathbf{null}) + s \cdot \left( \epsilon_\theta(\mathbf{x}_t, t, \mathbf{c}) - \epsilon_\theta(\mathbf{x}_t, t, \text{null}) \right) $$
 
    and $\mathbf{z} \sim \mathcal{N}(0, \mathbf{I})$.
 
