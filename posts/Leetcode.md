@@ -19,8 +19,8 @@ function fn(arr):
 The strength of this technique is that we will never have more than  $O(n)$ iterations for the while loop because the pointers start $n$ away from each other and move at least one step closer in every iteration. Therefore, if we can keep the work inside each iteration at $O(1)$, this technique will result in a linear runtime, which is usually the best possible runtime. 
 
 #### sample Questions
-- Given a string $s$, return **true** if it is a **palindrome**, **false** otherwise
-- Given a sorted array of unique integers and a target integer, return **true** if there exists a pair of numbers that sum to target, **false** otherwise. 
+- Given a string `s`, return `true` if it is a `palindrome`, `false` otherwise
+- Given a sorted array of unique integers and a target integer, return `true` if there exists a pair of numbers that sum to target, `false` otherwise. 
 
 
 > Move along both inputs simultaneously until all elements have been checked.
@@ -116,7 +116,7 @@ Let's say that we are using the sliding window algorithm we have learned and cur
 
 There's the current window `(left, right)`, then `(left + 1, right)`, `(left + 2, right)`, and so on until `(right, right)` (only the element at `right`).
 
-You can fix the right bound and then choose any value between **left** and `right` inclusive for the `left` bound. Therefore, the number of valid windows ending at index `right` is equal to the size of the window, which we know is `right - left + 1`.
+You can fix the right bound and then choose any value between `left` and `right` inclusive for the `left` bound. Therefore, the number of valid windows ending at index `right` is equal to the size of the window, which we know is `right - left + 1`.
 
 ## Prefix Sum
 Prefix sum is a technique that can be used on arrays (of numbers). The idea is to create an array prefix where `prefix[i]` is the sum of all elements up to the index `i` (inclusive). For example, given `nums = [5, 2, 1, 6, 3, 8]`, we would have `prefix = [5, 7, 8, 14, 17, 25]`.
