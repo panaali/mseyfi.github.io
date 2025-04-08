@@ -112,11 +112,11 @@ is $O(n)$ with **amortized** $O(1)$ in the inner while loop.
 ## Number of subarrays
 If a problem asks for the number of subarrays that fit some constraint, we can still use sliding window, but we need to use a neat math trick to calculate the number of subarrays.
 
-Let's say that we are using the sliding window algorithm we have learned and currently have a window **(left, right)**. How many valid windows end at index **right**?
+Let's say that we are using the sliding window algorithm we have learned and currently have a window `(left, right)`. How many valid windows end at index `right`?
 
-There's the current window **(left, right)**, then **(left + 1, right)**, **(left + 2, right)**, and so on until **(right, right)** (only the element at **right**).
+There's the current window `(left, right)`, then `(left + 1, right)`, `(left + 2, right)`, and so on until `(right, right)` (only the element at `right`).
 
-You can fix the right bound and then choose any value between **left** and **right** inclusive for the **left** bound. Therefore, the number of valid windows ending at index **right** is equal to the size of the window, which we know is **right - left + 1**.
+You can fix the right bound and then choose any value between **left** and `right` inclusive for the `left` bound. Therefore, the number of valid windows ending at index `right` is equal to the size of the window, which we know is `right - left + 1`.
 
 ## Prefix Sum
 Prefix sum is a technique that can be used on arrays (of numbers). The idea is to create an array prefix where `prefix[i]` is the sum of all elements up to the index `i` (inclusive). For example, given `nums = [5, 2, 1, 6, 3, 8]`, we would have `prefix = [5, 7, 8, 14, 17, 25]`.
