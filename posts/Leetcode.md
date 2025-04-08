@@ -2,9 +2,8 @@
 
 ## Two pointers
 
-'''
+
 Start the pointers at the edges of the input. Move them towards each other until they meet.
-'''
 
 ```python
 function fn(arr):
