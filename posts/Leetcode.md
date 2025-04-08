@@ -18,7 +18,7 @@ function fn(arr):
 ```
 The strength of this technique is that we will never have more than  $O(n)$ iterations for the while loop because the pointers start $n$ away from each other and move at least one step closer in every iteration. Therefore, if we can keep the work inside each iteration at $O(1)$, this technique will result in a linear runtime, which is usually the best possible runtime. 
 
-### sample Questions
+#### sample Questions
 - Given a string $s$, return **true** if it is a **palindrome**, **false** otherwise
 - Given a sorted array of unique integers and a target integer, return **true** if there exists a pair of numbers that sum to target, **false** otherwise. 
 
@@ -45,14 +45,14 @@ function fn(arr1, arr2):
         Do some logic here depending on the problem
         j++
 ```
-### Sample Questions:
+#### Sample Questions:
 - Given two sorted integer arrays arr1 and arr2, return a new array that combines both of them and is also sorted.
 
 Similar to the first method we looked at, this method will have a linear time complexity of $O(n+m)$ if the work inside the while loop is 
 $O(1)$, where $n = arr1.length$ and $m = arr2.length$. This is because at every iteration, we move at least one pointer forward, and the pointers cannot be moved forward more than $n + m$ times without the arrays being exhausted. Let's look at some examples.
 
 ## Sliding Window
-### When should we use sliding window?
+#### When should we use sliding window?
 There is a very common group of problems involving subarrays that can be solved efficiently with sliding window. Let's talk about how to identify these problems.
 
 **First**, the problem will either explicitly or implicitly define criteria that make a subarray "valid". There are 2 components regarding what makes a subarray valid:
@@ -69,7 +69,7 @@ Another common task is finding the number of valid subarrays. We will take a loo
 
 > Whenever a problem description talks about subarrays, you should figure out if sliding window is a good option by analyzing the problem description. If you can find the things mentioned above, then it's a good bet.
 
-### Sample Questions:
+#### Sample Questions:
 - Find the longest subarray with a sum less than or equal to $k$
 - Find the longest substring that has at most one "0"
 - Find the number of subarrays that have a product less than $k$
@@ -106,4 +106,14 @@ function fn(nums, k):
     return answer
 ```
 
-## Complexity is $O(n)$ with **amortized** $O(1)$ in the inner while loop.
+#### Complexity
+is $O(n)$ with **amortized** $O(1)$ in the inner while loop.
+
+## Number of subarrays
+If a problem asks for the number of subarrays that fit some constraint, we can still use sliding window, but we need to use a neat math trick to calculate the number of subarrays.
+
+Let's say that we are using the sliding window algorithm we have learned and currently have a window **(left, right)**. How many valid windows end at index **right**?
+
+There's the current window **(left, right)**, then **(left + 1, right)**, **(left + 2, right)**, and so on until **(right, right)** (only the element at **right**).
+
+You can fix the right bound and then choose any value between **left** and **right** inclusive for the **left** bound. Therefore, the number of valid windows ending at index **right** is equal to the size of the window, which we know is **right - left + 1**.
