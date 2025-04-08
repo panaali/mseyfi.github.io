@@ -1,8 +1,3 @@
-<style>
-r { color: Red }
-o { color: Orange }
-g { color: Green }
-</style>
 # Array and String
 
 ## Two pointers
@@ -24,7 +19,10 @@ function fn(arr):
 The strength of this technique is that we will never have more than  $O(n)$ iterations for the while loop because the pointers start $n$ away from each other and move at least one step closer in every iteration. Therefore, if we can keep the work inside each iteration at $O(1)$, this technique will result in a linear runtime, which is usually the best possible runtime. 
 
 ### sample Questions
-- Given a string $s$, return <r>true</r> if it is a palindrome, false otherwise
+- Given a string $s$, return **true** if it is a **palindrome**, **false** otherwise
+- Given a sorted array of unique integers and a target integer, return **true** if there exists a pair of numbers that sum to target, **false** otherwise. 
+
+
 > Move along both inputs simultaneously until all elements have been checked.
 
 ```python
@@ -47,6 +45,8 @@ function fn(arr1, arr2):
         Do some logic here depending on the problem
         j++
 ```
+### Sample Questions:
+- Given two sorted integer arrays arr1 and arr2, return a new array that combines both of them and is also sorted.
 
 Similar to the first method we looked at, this method will have a linear time complexity of $O(n+m)$ if the work inside the while loop is 
 $O(1)$, where $n = arr1.length$ and $m = arr2.length$. This is because at every iteration, we move at least one pointer forward, and the pointers cannot be moved forward more than $n + m$ times without the arrays being exhausted. Let's look at some examples.
@@ -73,4 +73,37 @@ Another common task is finding the number of valid subarrays. We will take a loo
 - Find the longest subarray with a sum less than or equal to $k$
 - Find the longest substring that has at most one "0"
 - Find the number of subarrays that have a product less than $k$
-- 
+
+
+```python
+function fn(arr):
+    left = 0
+    for (int right = 0; right < arr.length; right++):
+        Do some logic to "add" element at arr[right] to window
+
+        while WINDOW_IS_INVALID:
+            Do some logic to "remove" element at arr[left] from window
+            left++
+
+        Do some logic to update the answer
+```
+
+sample solution to sum of array = k:
+
+```python
+function fn(nums, k):
+    left = 0
+    curr = 0
+    answer = 0
+    for (int right = 0; right < nums.length; right++):
+        curr += nums[right]
+        while (curr > k):
+            curr -= nums[left]
+            left++
+
+        answer = max(answer, right - left + 1)
+
+    return answer
+```
+
+## Complexity is $O(n)$ with **amortized** $O(1)$ in the inner while loop.
