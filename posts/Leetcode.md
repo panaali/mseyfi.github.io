@@ -1,5 +1,7 @@
 # Array and String
 
+### Two pointers
+
 ```python
 function fn(arr):
     left = 0
