@@ -2,8 +2,8 @@
 
 ## Two pointers
 
-
-Start the pointers at the edges of the input. Move them towards each other until they meet.
+> [!note]
+> Start the pointers at the edges of the input. Move them towards each other until they meet.
 
 ```python
 function fn(arr):
@@ -19,6 +19,26 @@ function fn(arr):
 ```
 The strength of this technique is that we will never have more than  $O(n)$ iterations for the while loop because the pointers start $n$ away from each other and move at least one step closer in every iteration. Therefore, if we can keep the work inside each iteration at $O(1)$, this technique will result in a linear runtime, which is usually the best possible runtime. 
 
-'''
-Move along both inputs simultaneously until all elements have been checked.
-'''
+> [!note]
+> Move along both inputs simultaneously until all elements have been checked.
+
+```python
+function fn(arr1, arr2):
+    i = j = 0
+    while i < arr1.length AND j < arr2.length:
+        Do some logic here depending on the problem
+        Do some more logic here to decide on one of the following:
+            1. i++
+            2. j++
+            3. Both i++ and j++
+
+    // Step 4: make sure both iterables are exhausted
+    // Note that only one of these loops would run
+    while i < arr1.length:
+        Do some logic here depending on the problem
+        i++
+
+    while j < arr2.length:
+        Do some logic here depending on the problem
+        j++
+```
