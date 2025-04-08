@@ -117,3 +117,14 @@ Let's say that we are using the sliding window algorithm we have learned and cur
 There's the current window **(left, right)**, then **(left + 1, right)**, **(left + 2, right)**, and so on until **(right, right)** (only the element at **right**).
 
 You can fix the right bound and then choose any value between **left** and **right** inclusive for the **left** bound. Therefore, the number of valid windows ending at index **right** is equal to the size of the window, which we know is **right - left + 1**.
+
+## Prefix Sum
+Prefix sum is a technique that can be used on arrays (of numbers). The idea is to create an array prefix where `prefix[i]` is the sum of all elements up to the index `i` (inclusive). For example, given `nums = [5, 2, 1, 6, 3, 8]`, we would have `prefix = [5, 7, 8, 14, 17, 25]`.
+
+When a subarray starts at index `0`, it is considered a "prefix" of the array. A prefix sum represents the sum of all prefixes.
+
+Prefix sums allow us to find the sum of any subarray in 
+
+$O(1)$. If we want the sum of the subarray from `i` to `j` (inclusive), then the answer is `prefix[j] - prefix[i - 1]`, or `prefix[j] - prefix[i] + nums[i]` if you don't want to deal with the out of bounds case when `i = 0`.
+
+This works because `prefix[i - 1]` is the sum of all elements before index `i`. When you subtract this from the sum of all elements up to index `j`, you are left with the sum of all elements starting at index `i` and ending at index `j`, which is exactly what we are looking for.
