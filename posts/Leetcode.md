@@ -22,6 +22,7 @@ The strength of this technique is that we will never have more than  $O(n)$ iter
 - Given a string `s`, return `true` if it is a `palindrome`, `false` otherwise
 - Given a sorted array of unique integers and a target integer, return `true` if there exists a pair of numbers that sum to target, `false` otherwise.
 - [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/description/)
+- [Reverse-words-in-a-string-iii](https://leetcode.com/problems/reverse-words-in-a-string-iii/description/)
 
 
 > Move along both inputs simultaneously until all elements have been checked.
@@ -128,3 +129,10 @@ When a subarray starts at index `0`, it is considered a "prefix" of the array. A
 Prefix sums allow us to find the sum of any subarray in `O(1)`. If we want the sum of the subarray from `i` to `j` (inclusive), then the answer is `prefix[j] - prefix[i - 1]`, or `prefix[j] - prefix[i] + nums[i]` if you don't want to deal with the out of bounds case when `i = 0`.
 
 This works because `prefix[i - 1]` is the sum of all elements before index `i`. When you subtract this from the sum of all elements up to index `j`, you are left with the sum of all elements starting at index `i` and ending at index `j`, which is exactly what we are looking for.
+
+# 2. Hashing:
+Hashing can be used for existance or for counting. Since existance is easy we jump into counting:
+### Counting with Hash
+Counting is a very common pattern with hash maps. By "counting", we are referring to tracking the frequency of things. This means our hash map will be mapping keys to integers. Anytime you need to count anything, think about using a hash map to do it.
+
+Recall that when we were looking at **sliding windows**, some problems had their constraint as limiting the amount of a certain element in the window. For example, longest substring with at most `k` `0`s. In those problems, we could simply use an integer variable curr because we are only focused on **one element** (we only cared about `0`). A hash map opens the door to solving problems where the constraint involves **multiple elements**. Let's start by looking at a sliding window example that leverages a hash map.
