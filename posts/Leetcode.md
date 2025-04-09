@@ -136,3 +136,7 @@ Hashing can be used for existance or for counting. Since existance is easy we ju
 Counting is a very common pattern with hash maps. By "counting", we are referring to tracking the frequency of things. This means our hash map will be mapping keys to integers. Anytime you need to count anything, think about using a hash map to do it.
 
 Recall that when we were looking at **sliding windows**, some problems had their constraint as limiting the amount of a certain element in the window. For example, longest substring with at most `k` `0`s. In those problems, we could simply use an integer variable curr because we are only focused on **one element** (we only cared about `0`). A hash map opens the door to solving problems where the constraint involves **multiple elements**. Let's start by looking at a sliding window example that leverages a hash map.
+
+### Sample Questions:
+[Contiguous-Array](https://leetcode.com/problems/contiguous-array/)
+[Group-Anagrams](https://leetcode.com/problems/group-anagrams/)
