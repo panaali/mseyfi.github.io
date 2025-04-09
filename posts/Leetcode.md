@@ -74,6 +74,7 @@ Another common task is finding the number of valid subarrays. We will take a loo
 - Find the longest subarray with a sum less than or equal to $k$
 - Find the longest substring that has at most one "0"
 - Find the number of subarrays that have a product less than $k$
+- [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/description/)
 
 
 ```python
