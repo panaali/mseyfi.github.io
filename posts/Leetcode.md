@@ -20,7 +20,8 @@ The strength of this technique is that we will never have more than  $O(n)$ iter
 
 #### sample Questions
 - Given a string `s`, return `true` if it is a `palindrome`, `false` otherwise
-- Given a sorted array of unique integers and a target integer, return `true` if there exists a pair of numbers that sum to target, `false` otherwise. 
+- Given a sorted array of unique integers and a target integer, return `true` if there exists a pair of numbers that sum to target, `false` otherwise.
+- [https://leetcode.com/problems/squares-of-a-sorted-array/description/][Squares of a Sorted Array]
 
 
 > Move along both inputs simultaneously until all elements have been checked.
