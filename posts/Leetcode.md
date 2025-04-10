@@ -179,6 +179,23 @@ Therefore, we can increment our answer by `counts[curr - k]`. If the prefix `cur
 > Here's another mathematical way to look at it: we have `curr` and we need to subtract `x` from it to find `k`. The equation is `curr - x = k`. We can rearrange for `x` to get `x = curr - k`.
 >
 
+> Given an integer array nums and an integer `k`, find the number of subarrays whose sum is equal to `k`.
+
+
+```python
+from collections import defaultdict
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        counter = defaultdict(int)
+        prefix = ans = 0
+        counter[0] = 1
+        for item in nums:
+            prefix+=item
+            ans +=counter[prefix - k]
+            counter[prefix]+=1
+        
+        return ans
+```
 ### Sample Questions:
 - [Contiguous-Array](https://leetcode.com/problems/contiguous-array/)
 - [Group-Anagrams](https://leetcode.com/problems/group-anagrams/)
