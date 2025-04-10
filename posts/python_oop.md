@@ -1,4 +1,4 @@
-Here’s a Python example that walks through **Object-Oriented Programming (OOP) principles** using **three classes** and highlights all the concepts you mentioned.
+# Object-Oriented Programming (OOP) principles
 
 We’ll create a small system around **Vehicles**, including a base class and two subclasses.
 
