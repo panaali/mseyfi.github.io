@@ -178,6 +178,7 @@ Encapsulation helps you write **robust, secure, and clean code** by:
 
 ---
 ## Protected vs Private
+```python
 class Base:
     def __init__(self):
         self._protected = "Protected"
@@ -188,3 +189,4 @@ class Sub(Base):
         print(self._protected)       # ✅ allowed
         # print(self.__private)     # ❌ not allowed
         print(self._Base__private)   # ⚠️ works, but yikes
+```
