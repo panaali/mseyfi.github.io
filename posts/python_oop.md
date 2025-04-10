@@ -42,8 +42,15 @@ class Vehicle(ABC):
         self.__speed = value
 
     # 4. PRIVATE METHOD
+    # private methods are accessible only within the class structure. They are not accessible by the children of the class or any instance of the class, we cannot override a private method.
     def __update_log(self):
         print("Private: Vehicle log updated")
+
+    # 4.1 PROTECTED METHOD
+    # protected methods are accessible only within the class structure. They are not accessible by any instance of the class
+    def _update_log(self):
+        print("Protected: Vehicle log updated")
+
 
     # 5. ABSTRACT METHOD (force subclasses to implement this)
     @abstractmethod
