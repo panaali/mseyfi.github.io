@@ -7,9 +7,9 @@ from abc import ABC, abstractmethod  # For abstraction
 
 # 1. ABSTRACTION: Define an abstract base class
 class Vehicle(ABC):
-    # Class/static attribute shared among all instances. If it is changed anywhere, then its value across all the instances will also change accordingly.
-    # it is created once for all the instances.
-    # it is good when we want to share properties/values among all instances.
+    # Class/static attribute is shared among all instances. If it is changed anywhere, its value across all the instances will also change accordingly.
+    # It is created once for all the instances.
+    # It is good when we want to share properties/values among all instances.
 
 
     vehicle_count = 0
@@ -50,7 +50,7 @@ class Vehicle(ABC):
     def drive(self):
         pass
 
-    # 6. STATIC METHOD (doesn't access class or instance, is shared between all the objects, we can access it on class level or instance level)
+    # 6. STATIC METHOD (doesn't access class or instance (it cannot access self.), is shared between all the objects, we can access it on class level or instance level)
     @staticmethod
     def convert_kmph_to_mph(kmph):
         return kmph * 0.621371
