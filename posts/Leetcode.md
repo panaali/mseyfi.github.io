@@ -167,18 +167,18 @@ Now, imagine there exists a subarray ending at `i` with a sum of `k`. We don't k
 This is the key idea: if we saw the prefix sum `curr - k` before, it necessarily implies that there is a subarray ending at `i` with a sum of `k`. Again, we don't know where the beginning of this subarray is; we just know it exists, but that's enough to solve the problem.
 
 Therefore, we can increment our answer by `counts[curr - k]`. If the prefix `curr - k` occurred multiple times before (due to negative numbers), then each of those prefixes could be used as a starting point to form a subarray ending at the current index with a sum of `k`. That's why we need to track the frequency.
+```text
+Let's use a concrete example to better illustrate this idea. Imagine we had `nums = [0, 1, 2, 3, 4]` and `k = 5`. Let's jump to `i = 3`.
 
-> Let's use a concrete example to better illustrate this idea. Imagine we had `nums = [0, 1, 2, 3, 4]` and `k = 5`. Let's jump to `i = 3`.
+Currently, `curr = 6` (remember, `curr` is tracking the prefix sum up to `i`). We also have `0`, `1`, and `3` in `counts` (all the prefix sums we have encountered so far).
 
-> Currently, `curr = 6` (remember, `curr` is tracking the prefix sum up to `i`). We also have `0`, `1`, and `3` in `counts` (all the prefix sums we have encountered so far).
+At this point, we can see that there is a subarray ending at `i` with a sum of `k`
+- it's `[2, 3]`. How does our algorithm see it though?
 
-> At this point, we can see that there is a subarray ending at `i` with a sum of `k`
-> - it's `[2, 3]`. How does our algorithm see it though?
+The current prefix sum is `6`. We want a subarray with a sum of `5`. Thus, if there was a prefix sum of `1` earlier, you could just subtract that prefix from the current one, and you'll get a subarray sum of `5`. In > this case, we had a `prefix [0, 1]` which has a prefix sum of `1`. We can subtract that from the current prefix `[0, 1, 2, 3]` and we're left with `[2, 3]`, which has our target sum.
 
-> The current prefix sum is `6`. We want a subarray with a sum of `5`. Thus, if there was a prefix sum of `1` earlier, you could just subtract that prefix from the current one, and you'll get a subarray sum of `5`. In > this case, we had a `prefix [0, 1]` which has a prefix sum of `1`. We can subtract that from the current prefix `[0, 1, 2, 3]` and we're left with `[2, 3]`, which has our target sum.
-
-> Here's another mathematical way to look at it: we have `curr` and we need to subtract `x` from it to find `k`. The equation is `curr - x = k`. We can rearrange for `x` to get `x = curr - k`.
-
+Here's another mathematical way to look at it: we have `curr` and we need to subtract `x` from it to find `k`. The equation is `curr - x = k`. We can rearrange for `x` to get `x = curr - k`.
+```
 
 ### Sample Questions:
 - [Contiguous-Array](https://leetcode.com/problems/contiguous-array/)
