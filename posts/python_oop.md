@@ -177,7 +177,3 @@ Encapsulation helps you write **robust, secure, and clean code** by:
 - Reducing bugs and accidental misuse
 
 ---
-
-Want an analogy? It’s like using a **remote control** instead of opening the TV and messing with the wires to change the channel. You get what you need, and the inner workings stay safe.
-
-Want a more real-world code example of encapsulation?
