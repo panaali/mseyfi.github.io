@@ -20,7 +20,7 @@ class Vehicle(ABC):
         self.__speed = speed
         Vehicle.vehicle_count += 1
         # if we use self. then here only the count will be incremented in the instance and will not reflect to other instances.
-        #self.vegicle_count += 1
+        # self.vegicle_count += 1
 
     # 3. GETTERS AND SETTERS with property decorators
     @property
