@@ -23,6 +23,7 @@ The strength of this technique is that we will never have more than  $O(n)$ iter
 - Given a sorted array of unique integers and a target integer, return `true` if there exists a pair of numbers that sum to target, `false` otherwise.
 - [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/description/)
 - [Reverse-words-in-a-string-iii](https://leetcode.com/problems/reverse-words-in-a-string-iii/description/)
+- https://leetcode.com/problems/minimum-consecutive-cards-to-pick-up/description/
 
 
 > Move along both inputs simultaneously until all elements have been checked.
@@ -137,6 +138,49 @@ Counting is a very common pattern with hash maps. By "counting", we are referrin
 
 Recall that when we were looking at **sliding windows**, some problems had their constraint as limiting the amount of a certain element in the window. For example, longest substring with at most `k` `0`s. In those problems, we could simply use an integer variable curr because we are only focused on **one element** (we only cared about `0`). A hash map opens the door to solving problems where the constraint involves **multiple elements**. Let's start by looking at a sliding window example that leverages a hash map.
 
+
+## Count the number of subarrays with an "exact" constraint
+In the sliding window article from previous section, we talked about a pattern "find the number of subarrays/substrings that fit a constraint". In those problems, if you had a window between left and right that fit the constraint, then all windows from `x` to `right` also fit the constraint, where `left < x <= right`.
+
+For this pattern, we will be looking at problems with stricter constraints, so that the property just mentioned is not necessarily true.
+
+For example, **"Find the number of subarrays that have a sum less than k"** with an input that only has positive numbers would be solved with sliding window. In this section, we would be talking about questions like **"Find the number of subarrays that have a sum exactly equal to k"**.
+
+At first, some of these problems seem very difficult. However, the pattern is very simple once you learn it, and you'll see how similar the code is for each problem that falls in this pattern. To understand the algorithm, we need to recall the concept of **prefix sums**.
+
+With a prefix sum, you can find the sum of subarrays by taking the difference between two prefix sums. Let's say that you wanted to find subarrays that had a sum exactly equal to k, and you also had a prefix sum of the input. You know that any difference in the prefix sum equal to k represents a subarray with a sum equal to k. So how do we find these differences?
+
+Let's first declare a hash map counts that maps prefix sums to how often they occur (a number could appear multiple times in a prefix sum if the input has negative numbers, for example, given `nums = [1, -1, 1]`, the prefix sum is `[1, 0, 1]` and `1` appears twice). We need to initialize `counts[0] = 1`. This is because the empty `prefix []` has a sum of `0`. You'll see why this is necessary in a second.
+
+Next, let's declare our `answer` variable and `curr`. As we iterate over the input, `curr` will represent the sum of all elements we have iterated over so far (the sum of the prefix up to the current element).
+
+Now, we iterate over the input. At each element, we update `curr` and also maintain counts by incrementing the frequency of curr by `1` 
+- remember, `counts` is counting how many times we have seen each prefix sum. Before we update counts however, we first need to update the `answer`.
+
+How do we update the answer? Recall that in the sliding window article, when we were looking for the "number of subarrays", we focused on each index and figured out how many valid subarrays ended at the current index. We will do the same thing here. Let's say that we're at an index `i`. We know a few things:
+
+- Up until this point, `curr` stores the prefix of all elements up to `i`.
+- We have stored all other prefixes before `i` inside of `counts`.
+The difference between any two prefix sums represents a subarray. For example, if you wanted the subarray starting at index `3` and ending at index `8`, you would take the prefix up to `8` and subtract the prefix up to `2` from it.
+Now, imagine there exists a subarray ending at `i` with a sum of `k`. We don't know where this subarray starts, we just know it exists - let's say it starts at index `j`. What would the prefix sum be ending at `j - 1`? Well, according to our assumptions, the sum of the subarray from `j` to `i` is `k` and the sum of the prefix up to `i` is `curr`. Thus, you can find the prefix sum ending at `j - 1` by subtracting these two: it's `curr - k`.
+
+This is the key idea: if we saw the prefix sum `curr - k` before, it necessarily implies that there is a subarray ending at `i` with a sum of `k`. Again, we don't know where the beginning of this subarray is; we just know it exists, but that's enough to solve the problem.
+
+Therefore, we can increment our answer by `counts[curr - k]`. If the prefix `curr - k` occurred multiple times before (due to negative numbers), then each of those prefixes could be used as a starting point to form a subarray ending at the current index with a sum of `k`. That's why we need to track the frequency.
+
+> Let's use a concrete example to better illustrate this idea. Imagine we had `nums = [0, 1, 2, 3, 4]` and `k = 5`. Let's jump to `i = 3`.
+
+Currently, `curr = 6` (remember, `curr` is tracking the prefix sum up to `i`). We also have `0`, `1`, and `3` in `counts` (all the prefix sums we have encountered so far).
+
+At this point, we can see that there is a subarray ending at `i` with a sum of `k`
+- it's `[2, 3]`. How does our algorithm see it though?
+
+The current prefix sum is `6`. We want a subarray with a sum of `5`. Thus, if there was a prefix sum of `1` earlier, you could just subtract that prefix from the current one, and you'll get a subarray sum of `5`. In this case, we had a `prefix [0, 1]` which has a prefix sum of `1`. We can subtract that from the current prefix `[0, 1, 2, 3]` and we're left with `[2, 3]`, which has our target sum.
+
+Here's another mathematical way to look at it: we have `curr` and we need to subtract `x` from it to find `k`. The equation is `curr - x = k`. We can rearrange for `x` to get `x = curr - k`.
+
+
 ### Sample Questions:
 - [Contiguous-Array](https://leetcode.com/problems/contiguous-array/)
 - [Group-Anagrams](https://leetcode.com/problems/group-anagrams/)
+- [max-sum-of-a-pair-with-equal-sum-of-digits](https://leetcode.com/problems/max-sum-of-a-pair-with-equal-sum-of-digits/)
