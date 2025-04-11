@@ -5,7 +5,6 @@ We’ll create a small system around **Vehicles**, including a base class and tw
 ```python
 from abc import ABC, abstractmethod  # For abstraction
 
-# 1. ABSTRACTION: Define an abstract base class
 class Vehicle(ABC):
     # Class/static attribute is shared among all instances. If it is changed anywhere, its value across all the instances will also change accordingly.
     # It is created once for all the instances.
@@ -15,14 +14,14 @@ class Vehicle(ABC):
     vehicle_count = 0
 
     def __init__(self, brand, speed):
-        # 2. ENCAPSULATION: Private attributes with double underscore
+        # 1. ENCAPSULATION: Private attributes with double underscore
         self.__brand = brand
         self.__speed = speed
         Vehicle.vehicle_count += 1
         # if we use self. then here only the count will be incremented in the instance and will not reflect to other instances.
         # self.vegicle_count += 1
 
-    # 3. GETTERS AND SETTERS with property decorators
+    # 2. GETTERS AND SETTERS with property decorators
     @property
     def brand(self):
         return self.__brand
@@ -41,12 +40,12 @@ class Vehicle(ABC):
             raise ValueError("Speed cannot be negative")
         self.__speed = value
 
-    # 4. PRIVATE METHOD
+    # 3. PRIVATE METHOD
     # private methods are accessible only within the class structure. They are not accessible by the children of the class or any instance of the class, we cannot override a private method.
     def __update_log(self):
         print("Private: Vehicle log updated")
 
-    # 4.1 PROTECTED METHOD
+    # 4 PROTECTED METHOD
     # protected methods are accessible only within the class structure. They are not accessible by any instance of the class
     def _update_log(self):
         print("Protected: Vehicle log updated")
@@ -57,18 +56,28 @@ class Vehicle(ABC):
     def drive(self):
         pass
 
-    # 6. STATIC METHOD (doesn't access class or instance (it cannot access self.), is shared between all the objects, we can access it on class level or instance level)
+    # 6  ABSTRACTION
+    # hides unncessary implementation, 
+      def oil_change(self):
+       self._chek_the_gauge()
+     
+      def _chek_the_gauge(self):
+        pass
+
+
+
+    # 7. STATIC METHOD (doesn't access class or instance (it cannot access self.), is shared between all the objects, we can access it on class level or instance level)
     @staticmethod
     def convert_kmph_to_mph(kmph):
         return kmph * 0.621371
 
-    # 7. CLASS METHOD (access class-level data)
+    # 8. CLASS METHOD (access class-level data)
     @classmethod
     def get_vehicle_count(cls):
         return cls.vehicle_count
 
 
-# 8. INHERITANCE: Car inherits from Vehicle
+# 9. INHERITANCE: Car inherits from Vehicle
 class Car(Vehicle):
     def __init__(self, brand, speed, model):
         super().__init__(brand, speed)  # Call the base constructor
@@ -82,7 +91,7 @@ class Car(Vehicle):
     def model(self, value):
         self.__model = value
 
-    # 9. POLYMORPHISM: Implementing abstract method differently
+    # 10. POLYMORPHISM: Implementing abstract method differently
     def drive(self):
         return f"Driving car {self.brand} {self.model} at {self.speed} km/h"
 
@@ -97,7 +106,7 @@ class Motorcycle(Vehicle):
     def has_sidecar(self):
         return self.__has_sidecar
 
-    # 10. POLYMORPHISM continued
+    # 11. POLYMORPHISM continued
     def drive(self):
         sidecar = "with sidecar" if self.__has_sidecar else "without sidecar"
         return f"Riding motorcycle {self.brand} {sidecar} at {self.speed} km/h"
