@@ -23,7 +23,7 @@ The strength of this technique is that we will never have more than  $O(n)$ iter
 - Given a sorted array of unique integers and a target integer, return `true` if there exists a pair of numbers that sum to target, `false` otherwise.
 - [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/description/)
 - [Reverse-words-in-a-string-iii](https://leetcode.com/problems/reverse-words-in-a-string-iii/description/)
-- https://leetcode.com/problems/minimum-consecutive-cards-to-pick-up/description/
+- [minimum-consecutive-cards-to-pick-up](https://leetcode.com/problems/minimum-consecutive-cards-to-pick-up/description/)
 
 
 > Move along both inputs simultaneously until all elements have been checked.
