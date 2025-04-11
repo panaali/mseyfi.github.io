@@ -243,5 +243,4 @@ public:
 
 ---
 
-Would you like this added to your current tutorial document too? I can format it properly and include it as a new section.
 
