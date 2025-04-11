@@ -1,4 +1,4 @@
-Sure! Here's a detailed comparison of **Object-Oriented Programming (OOP) in Python and C++**, covering key concepts side-by-side with **code snippets** for each. This helps you understand **how both languages implement OOP differently** while achieving similar goals.
+# Object-Oriented Programming (OOP) in Python and C++
 
 ---
 
