@@ -239,4 +239,17 @@ class TreeNode:
 ## Depth-first search (DFS)
 In a DFS, we prioritize depth by traversing as far down the tree as possible in one direction (until reaching a leaf node) before considering the other direction. For example, let's say we choose left as our priority direction. We move exclusively with `node.left` until the left subtree has been fully explored. Then, we move up one step and explore the right subtree ( the right leaf will be the parent we we do DFS on that again) when done again we move up one level and do everything again until we finish traversing all the nodes.
 
+Trees are named as such because they resemble real-life trees. You can think of the paths of a binary tree as branches growing from the root. DFS chooses a branch and **goes as far down as possible. Once it fully explores the branch, it backtracks until it finds another unexplored branch.**
+
+Because we need to backtrack up the tree after reaching the end of a branch, DFS is typically implemented using recursion, although it is also sometimes done iteratively using a stack. Here is a simple example of recursive DFS to visit every node:
+```python
+def dfs(node):
+    if node == None:
+        return
+
+    dfs(node.left)
+    dfs(node.right)
+    return
+```
+
 <img src="../../images/DFS.gif"  width="500" height="500">
