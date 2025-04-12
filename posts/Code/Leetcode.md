@@ -203,4 +203,14 @@ class Solution:
 
 ## Tricks:
 - To check if string `s1` is a permutation of string `s2` you have to check if `Counter(s1) == Counter(s2)`
+- ```python
+  class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        if len(set(s))==len(set(t))==len(set(zip(s,t))):
+            return True
+        else:
+            return False
+
+        
+ '''
    
