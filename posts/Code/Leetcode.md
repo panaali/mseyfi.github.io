@@ -253,3 +253,5 @@ def dfs(node):
 ```
 
 <img src="../../images/DFS.gif"  width="500" height="500">
+> [!Note!]
+> You should also be comfortable with the idea that during the DFS, many calls to dfs exist simultaneously with their own versions of node.
