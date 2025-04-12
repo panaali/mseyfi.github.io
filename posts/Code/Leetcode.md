@@ -239,4 +239,4 @@ class TreeNode:
 ## Depth-first search (DFS)
 In a DFS, we prioritize depth by traversing as far down the tree as possible in one direction (until reaching a leaf node) before considering the other direction. For example, let's say we choose left as our priority direction. We move exclusively with `node.left` until the left subtree has been fully explored. Then, we move up one step and explore the right subtree ( the right leaf will be the parent we we do DFS on that again) when done again we move up one level and do everything again until we finish traversing all the nodes.
 
-[<img src="../../images/DFS.gif"  width="40" height="40">]
+<img src="../../images/DFS.gif"  width="40" height="400">
