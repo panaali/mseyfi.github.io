@@ -200,3 +200,7 @@ class Solution:
 - [Contiguous-Array](https://leetcode.com/problems/contiguous-array/)
 - [Group-Anagrams](https://leetcode.com/problems/group-anagrams/)
 - [max-sum-of-a-pair-with-equal-sum-of-digits](https://leetcode.com/problems/max-sum-of-a-pair-with-equal-sum-of-digits/)
+
+## Tricks:
+- To check if string `s1` is a permutation of string `s2` you have to check if `Counter(s1) == Counter(s2)`
+   
