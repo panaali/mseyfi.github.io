@@ -251,9 +251,10 @@ def dfs(node):
     dfs(node.right)
     return
 ```
-
-<img src="../../images/DFS.gif"  width="500" height="500" style="display: block; margin: 0 auto"/>
-
+<p align="center">
+<img src="../../images/DFS.gif"  width="500" height="500">
+p>
+  
 > [!IMPORTANT]
 > **You should also be comfortable with the idea that during the DFS, many calls to dfs exist simultaneously with their own versions of node.**
 The good news is that the structure for performing a DFS is very similar across all problems. It goes as follows:
