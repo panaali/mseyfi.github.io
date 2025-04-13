@@ -326,9 +326,14 @@ Running the above code on the example tree, we would see the nodes printed in th
 Notice that for any given node, no values in its right subtree are printed until all values in its left subtree are printed, and its own value is not printed until after that.
 
 > The name of each traversal is describing when the current node's logic is performed.
-
+>
 > Pre -> before children
-
+>
 > In -> in the middle of children
-
+>
 > Post -> after children
+
+
+## Solving Tree Problems with Recursion
+> for post-order: Assume the `func` returns the correct values for the left node and for the right node then decide how left return value and right return value contribute to the final result.
+> for in-order: ???
