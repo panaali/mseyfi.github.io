@@ -335,5 +335,10 @@ Notice that for any given node, no values in its right subtree are printed until
 
 
 ## Solving Tree Problems with Recursion
-> for post-order: Assume the `func` returns the correct values for the left node and for the right node then decide how left return value and right return value contribute to the final result.
-> for in-order: ???
+> - for post-order: Assume the `func` returns the correct values for the left node and for the right node then decide how left return value and right return value contribute to the final result.
+> - for in-order: ???
+
+**Assume the left tree and the right tree work fine and return the correct value, then write the logic for the current node given the values of L and R**
+
+## Sample Important and Classic Question:
+[Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
