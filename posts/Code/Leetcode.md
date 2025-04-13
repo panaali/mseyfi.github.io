@@ -287,9 +287,9 @@ def preorder_dfs(node):
 Running the above code on the example tree, we would see the nodes printed in this order: `0, 1, 3, 4, 6, 2, 5`.
 
 Because the logic (printing) is done immediately at the start of each function call, preorder handles nodes in the same order that the function calls happen.
-
-<img src="../../images/DFS.png"  width="500" height="300" style="display: block; margin: 0 auto"/>
-
+<p align="center">
+<img src="../../images/DFS.png"  width="500" height="300">
+p>
 ## Inorder traversal
 
 For inorder traversal, we first recursively call the left child, then perform logic (print in this case) on the current node, and then recursively call the right child. This means no logic will be done until we reach a node without a left child since calling on the left child takes priority over performing logic.
