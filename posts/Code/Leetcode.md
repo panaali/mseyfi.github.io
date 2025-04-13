@@ -252,7 +252,7 @@ def dfs(node):
     return
 ```
 
-<img src="../../images/DFS.gif"  width="500" height="500">
+<img src="../../images/DFS.gif"  width="500" height="500" style="display: block; margin: 0 auto"/>
 
 > [!IMPORTANT]
 > **You should also be comfortable with the idea that during the DFS, many calls to dfs exist simultaneously with their own versions of node.**
@@ -287,7 +287,7 @@ Running the above code on the example tree, we would see the nodes printed in th
 
 Because the logic (printing) is done immediately at the start of each function call, preorder handles nodes in the same order that the function calls happen.
 
-<img src="../../images/DFS.png"  width="500" height="300" style="display: block; margin: 0 auto">
+<img src="../../images/DFS.png"  width="500" height="300" style="display: block; margin: 0 auto"/>
 
 ## Inorder traversal
 
