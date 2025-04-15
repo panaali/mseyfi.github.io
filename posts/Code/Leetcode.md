@@ -369,4 +369,33 @@ def print_all_nodes(root):
                 queue.append(node.right)
 ```
 - Sample Questions
-> [!IMPORTANT] - [reorder-routes-to-make-all-paths-lead-to-the-city-zero](https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/description/)
+> [!IMPORTANT]
+ - [reorder-routes-to-make-all-paths-lead-to-the-city-zero](https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/description/)
+```python
+from collections import defaultdict
+
+class Solution:
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+
+        graph = defaultdict(list)
+        
+        for i, j in connections:
+            graph[i].append(j)
+            graph[j].append(i)
+
+        direct_path = set([(c1, c2) for c1, c2 in connections])
+        seen = [0] * n
+        def dfs(node):
+            ans = 0
+            for neighbor in graph[node]:
+                if seen[neighbor] == 0:
+                    seen[neighbor] = 1
+                    # if the path from node->neighbir is in direct path that means we have to swap it
+                    if (node, neighbor) in direct_path: 
+                        ans +=1
+                    ans +=dfs(neighbor)
+
+            return ans
+        seen[0] = 1
+        return dfs(0)
+```
