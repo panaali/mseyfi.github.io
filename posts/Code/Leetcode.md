@@ -368,4 +368,5 @@ def print_all_nodes(root):
             if node.right:
                 queue.append(node.right)
 ```
-
+- Sample Questions
+> [IMPORTANT!]- [reorder-routes-to-make-all-paths-lead-to-the-city-zero](https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/description/)
