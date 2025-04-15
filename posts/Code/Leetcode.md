@@ -401,3 +401,4 @@ class Solution:
         seen[0] = 1
         return dfs(0)
 ```
+- [course-schedule](https://leetcode.com/problems/course-schedule/)
