@@ -402,3 +402,14 @@ class Solution:
         return dfs(0)
 ```
 - [course-schedule](https://leetcode.com/problems/course-schedule/)
+
+## Graph BFS
+*In graphs, it is mostly the case when you are asked to find the **shortest path.***
+
+Recall that in binary trees, BFS would visit all nodes at a depth `d` before visiting any node at a depth `d + 1`. BFS visited the nodes according to their distance from the root.
+
+99% of the time, a graph will not have a tree structure. But even then, the same logic still applies. Imagine whatever node you start from as a "root". Then, the neighbors of the root represent the next level, and the neighbors of those nodes represent the level after that.
+
+BFS on a graph always visits nodes according to their distance from the starting point. This is the key idea behind BFS on graphs - every time you visit a node, you must have reached it in the minimum steps possible from wherever you started your BFS.
+
+The above statement was always the case on binary trees, even if you did a DFS, because there is only one possible path to any node from the root. In a graph, there could be many paths from a given starting point to any other node. Using BFS will ensure that out of all possible paths, you take the shortest one.
