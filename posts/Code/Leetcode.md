@@ -368,6 +368,8 @@ def print_all_nodes(root):
             if node.right:
                 queue.append(node.right)
 ```
+
+# Graphs
 - ## Sample Questions
 
 > [!IMPORTANT]
