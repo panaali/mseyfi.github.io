@@ -369,7 +369,7 @@ def print_all_nodes(root):
                 queue.append(node.right)
 ```
 
-# Graphs
+# 4. Graphs
 - ## Sample Questions
 
 > [!IMPORTANT]
@@ -415,3 +415,7 @@ Recall that in binary trees, BFS would visit all nodes at a depth `d` before vis
 BFS on a graph always visits nodes according to their distance from the starting point. This is the key idea behind BFS on graphs - every time you visit a node, you must have reached it in the minimum steps possible from wherever you started your BFS.
 
 The above statement was always the case on binary trees, even if you did a DFS, because there is only one possible path to any node from the root. In a graph, there could be many paths from a given starting point to any other node. Using BFS will ensure that out of all possible paths, you take the shortest one.
+
+
+ ## Implicit graphs
+ Sometimes, a graph is more subtle. The input may look nothing like one of the formats we have talked about. Remember that a graph is any abstract collection of elements (nodes) connected by some abstract relationship (edges). **If a problem involves transitioning between states, then try to think about if the states can be nodes and the transition criteria can be edges. Additionally, if the problem wants the shortest path or fewest operations etc., it is a great candidate for BFS.**
