@@ -371,11 +371,14 @@ def print_all_nodes(root):
 #  Binary search trees
 ## A trick:
 - ***if a problem is BTS then it has to have unique values***
+  
 A binary search tree (BST) is a type of binary tree. A BST has the following property:
 
 For each node, all values in its left subtree are less than the value in the node, and all values in its right subtree are greater than the value in the node.
 With a binary search tree, operations like searching, adding, and removing can be done in 
 `O(logn)` time on average, where `n` is the number of nodes in the tree, using something called binary search, which is the focus of an upcoming chapter.
+>[!IMPORTANT]
+**Trivia to know: an inorder DFS traversal prioritizing left before right on a BST will handle the nodes in sorted order.**
 
 
 # 4. Graphs
