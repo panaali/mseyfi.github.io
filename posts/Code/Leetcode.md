@@ -422,6 +422,7 @@ The above statement was always the case on binary trees, even if you did a DFS, 
 
 - ## Sample Questions
 > [!IMPORTANT]
+**These problems are very important to learn how to solve**
 - [cracking-the-safe](https://leetcode.com/problems/cracking-the-safe/)
 
 - [evaluate-division](https://leetcode.com/problems/evaluate-division/description/)  #very important
