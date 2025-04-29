@@ -444,7 +444,27 @@ The above statement was always the case on binary trees, even if you did a DFS, 
 
 # 5. Binrary Search
 
+**General template:**
+```python
+def binary_search(arr, target):
+    left = 0
+    right = len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            # do something
+            return
+        if arr[mid] > target:
+            right = mid - 1
+        else:
+            left = mid + 1
+    
+    # target is not in arr, but left is at the insertion point
+    return left
+```
 
+** Duplicate elements
+If your input has duplicates, you can modify the binary search template to find either the first or the last position of a given element. If target appears multiple times, then the following template will find the left-most index:
 learn these templates:
 ```python
 def binary_search(arr, target):
@@ -459,6 +479,8 @@ def binary_search(arr, target):
 
     return left
 ```
+
+The following template will find the right-most insertion point (the index of the right-most element plus one):
 
 ```python
 def binary_search(arr, target):
