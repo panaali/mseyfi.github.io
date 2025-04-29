@@ -432,9 +432,11 @@ The above statement was always the case on binary trees, even if you did a DFS, 
  ## Implicit graphs
  Sometimes, a graph is more subtle. The input may look nothing like one of the formats we have talked about. Remember that a graph is any abstract collection of elements (nodes) connected by some abstract relationship (edges). **If a problem involves transitioning between states, then try to think about if the states can be nodes and the transition criteria can be edges. Additionally, if the problem wants the shortest path or fewest operations etc., it is a great candidate for BFS.**
 
+# One way recommended to solve the BST problems is using iterative way by Stack 
 - ## Sample Questions
 > [!IMPORTANT]
 **These problems are very important to learn how to solve**
 - [cracking-the-safe](https://leetcode.com/problems/cracking-the-safe/)
 
 - [evaluate-division](https://leetcode.com/problems/evaluate-division/description/)  #very important
+- [insert-into-a-binary-search-tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
