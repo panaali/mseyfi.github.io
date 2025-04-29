@@ -463,7 +463,7 @@ def binary_search(arr, target):
     return left
 ```
 
-** Duplicate elements
+**Duplicate elements**
 If your input has duplicates, you can modify the binary search template to find either the first or the last position of a given element. If target appears multiple times, then the following template will find the left-most index:
 learn these templates:
 ```python
