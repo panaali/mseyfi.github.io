@@ -495,3 +495,5 @@ def binary_search(arr, target):
 
     return left
 ```
+## something to remember:
+if you walk on a sorted array from left to right the first algo gives you the index of the target in the array immediately after seeing the right spot. So if e.g. `target = 5` and `arr = [0, 1, 2, 3, 3, 3, 5, 5, 5, 6]` then the first and second algorithm return `left = 6`. If `target = 4` the first and second algorithm return `left = 6` again. The last algorithm, however; is more patient. It walks from left to right on the array and chacks target with the elements from left to right. If and `target== element` it goes to the next one untill target < element. So it chooses the index *after* the last possible place. Here e.g. if `target=5` the last algorithm returns `9` it means put the new element in this position. If `target = 4` it 'retuns 6'. 
