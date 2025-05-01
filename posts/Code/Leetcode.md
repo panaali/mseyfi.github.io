@@ -523,7 +523,7 @@ The 2nd and 3rd requirements imply that there are two "zones". One where it is p
 ## A note on implementation
 If we ask for a minimum, in all solutions, we return `left`{:.ruby}.
 
-If a problem is instead asking for a maximum, then left will not actually be the correct answer at the end. Instead, we should return `right`{:.ruby}.
+If a problem is instead asking for a maximum, then left will not actually be the correct answer at the end. Instead, we should return `right`{.ruby}.
 
 Why does left point to the answer when looking for a minimum, but right points to the answer when looking for a maximum?
 
