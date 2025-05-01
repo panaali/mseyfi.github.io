@@ -498,7 +498,7 @@ def binary_search(arr, target):
 ## something to remember:
 if you walk on a sorted array from left to right the first algo gives you the index of the target in the array immediately after seeing the right spot. So if e.g. `target = 5` and `arr = [0, 1, 2, 3, 3, 3, 5, 5, 5, 6]` then the first and second algorithm return `left = 6`. If `target = 4` the first and second algorithm return `left = 6` again. The last algorithm, however; is more patient. It walks from left to right on the array and chacks target with the elements from left to right. If and `target== element` it goes to the next one untill target < element. So it chooses the index *after* the last possible place. Here e.g. if `target=5` the last algorithm returns `9` it means put the new element in this position. If `target = 4` it retuns `6`.
 
-## Binary Seach On solution spaces (sort is not needed)
+## Binary Search On solution spaces (sort is not needed because we do not have an array to find the index for)
 
 There is a more creative way to use binary search - on a solution space/answer. A very common type of problem is "what is the max/min that something can be done". Binary search can be used if the following criteria are met:
 
@@ -514,13 +514,13 @@ You can quickly (in `O(n)` or better) verify if the task is possible for a given
 The 2nd and 3rd requirements imply that there are two "zones". One where it is possible and one where it is impossible. The zones have no breaks, no overlap, and are separated by a threshold.
 
 
-# Super Important 
+## Super Important 
 [path-with-minimum-effort](https://leetcode.com/problems/path-with-minimum-effort/description/)
 
 
 
 
-## A note on implementation
+## A note on implementation return left for minimization and right for maximization problems
 If we ask for a minimum, in all solutions, we return `left`{:.ruby}.
 
 If a problem is instead asking for a maximum, then `left` will not actually be the correct answer at the end. Instead, we should return `right`.
