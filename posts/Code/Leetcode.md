@@ -521,7 +521,7 @@ The 2nd and 3rd requirements imply that there are two "zones". One where it is p
 
 
 ## A note on implementation return left for minimization and right for maximization problems
-If we ask for a minimum, in all solutions, we return `left`{:.ruby}.
+If we ask for a minimum, in all solutions, we return `left`.
 
 If a problem is instead asking for a maximum, then `left` will not actually be the correct answer at the end. Instead, we should return `right`.
 
