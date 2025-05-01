@@ -514,3 +514,5 @@ You can quickly (in `O(n)` or better) verify if the task is possible for a given
 The 2nd and 3rd requirements imply that there are two "zones". One where it is possible and one where it is impossible. The zones have no breaks, no overlap, and are separated by a threshold.
 
 
+# Super Important 
+[path-with-minimum-effort](https://leetcode.com/problems/path-with-minimum-effort/description/)
