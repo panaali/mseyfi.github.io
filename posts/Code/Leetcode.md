@@ -523,10 +523,10 @@ The 2nd and 3rd requirements imply that there are two "zones". One where it is p
 ## A note on implementation
 If we ask for a minimum, in all solutions, we return `left`{:.ruby}.
 
-If a problem is instead asking for a maximum, then left will not actually be the correct answer at the end. Instead, we should return `right`{.ruby}.
+If a problem is instead asking for a maximum, then `left` will not actually be the correct answer at the end. Instead, we should return `right`.
 
 Why does left point to the answer when looking for a minimum, but right points to the answer when looking for a maximum?
 
-Let's say we're looking for a minimum and the answer is x. After doing check(x), we set right = x - 1 because check(x) will return true, and we move the right bound to look for a better answer. As you can see, the correct answer is actually outside of our search space now. That means every future iteration of check is going to fail, which means we will continuously increase left until eventually we try check(x - 1). This will fail and set left = (x - 1) + 1 = x. Our while loop terminates because left > right, and left is at the answer.
+Let's say we're looking for a minimum and the answer is `x`. After doing `check(x)`, we set `right = x - 1` because `check(x)` will return `true`, and we move the right bound to look for a better answer. As you can see, the correct answer is actually outside of our search space now. That means every future iteration of check is going to fail, which means we will continuously increase `left` until eventually we try `check(x - 1)`. This will fail and set `left = (x - 1) + 1 = x`. Our while loop terminates because `left > right`, and `left` is at the answer.
 
-If we are instead looking for a maximum, after performing check(x), we set left = x + 1. Again, the correct answer is outside of the search space and all future checks will fail. Eventually, we try check(x + 1), fail, and set right = (x + 1) - 1 = x. The loop terminates because right < left, and right is pointing at the answer.
+If we are instead looking for a maximum, after performing check(x), we set `left = x + 1`. Again, the correct answer is outside of the search space and all future checks will fail. Eventually, we try `check(x + 1)`, fail, and set `right = (x + 1) - 1 = x`. The loop terminates because `right < left`, and right is pointing at the answer.
