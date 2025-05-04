@@ -592,7 +592,8 @@ class Solution:
         backtrack([], 0, 0)
         return and
 ```
-## Note to remember: try to create a tree. Look at curr after each backtrack return. When a backtrack hits return that means it has hit a node leaf. Look at curr at that moment. Right after the return we have this tem `curr.pop()` try to imaging if curr pops the next item is  the item in  `for ... in ...` if we are done with all the children of the first child, that means we are at the end of the for loop and a new number will be chosen from scratch. That means `for i in range(start, end)` now what should this `start` be?  Also a very important thing you should do is to create a tree and beside each node write the status of the variables so you can track them.
+## Note to remember: 
+try to create a tree. Look at curr after each backtrack return. When a backtrack hits return that means it has hit a node leaf. Look at curr at that moment. Right after the return we have this tem `curr.pop()` try to imaging if curr pops the next item is  the item in  `for ... in ...` if we are done with all the children of the first child, that means we are at the end of the for loop and a new number will be chosen from scratch. That means `for i in range(start, end)` now what should this `start` be?  Also a very important thing you should do is to create a tree and beside each node write the status of the variables so you can track them.
 
 
 
