@@ -530,3 +530,69 @@ Why does left point to the answer when looking for a minimum, but right points t
 Let's say we're looking for a minimum and the answer is `x`. After doing `check(x)`, we set `right = x - 1` because `check(x)` will return `true`, and we move the right bound to look for a better answer. As you can see, the correct answer is actually outside of our search space now. That means every future iteration of check is going to fail, which means we will continuously increase `left` until eventually we try `check(x - 1)`. This will fail and set `left = (x - 1) + 1 = x`. Our while loop terminates because `left > right`, and `left` is at the answer.
 
 If we are instead looking for a maximum, after performing check(x), we set `left = x + 1`. Again, the correct answer is outside of the search space and all future checks will fail. Eventually, we try `check(x + 1)`, fail, and set `right = (x + 1) - 1 = x`. The loop terminates because `right < left`, and right is pointing at the answer.
+
+
+# 6. Backtracking
+
+In backtracking we have a couple of imporatant templates
+
+Try building a tree for yourself before solving backtracking problems, it helps understanding how to manage the index
+
+## temlate 1: Permutation of non repetitious numbers: if you saw something before you dont want to see it again.
+
+```python
+nums = [1, 2, 3, 4]
+def backtrack(curr):
+    if condition:
+        ans.append(curr[:])
+
+    for item in nums:
+        if not item in curr:
+            curr.append(item)
+            backtrack(curr)
+            curr.pop()
+```
+## temlate 2: combination of non repetitious numbers: if you incorporated a node, then put that node aside and don't work with it anymore.
+```python
+#combanation of c(n,k)
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        def backtrack(curr, i):
+            if len(curr) == k:
+                ans.append(curr[:])
+                return
+            
+            for num in range(i, n + 1):
+                curr.append(num)
+                backtrack(curr, num + 1)
+                curr.pop()
+        
+        ans = []
+        backtrack([], 1)
+        return ans
+```
+## temlate 3: combination of non repetitious numbers: if you incorporated a node, then put that node aside and don't work with it anymore.
+Given an array of distinct positive integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+```python
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        def backtrack(path, start, curr):
+            if curr == target:
+                ans.append(path[:])
+                return
+
+            for i in range(start, len(candidates)):
+                num = candidates[i]
+                if curr + num <= target:
+                    path.append(num)
+                    backtrack(path, i, curr + num)
+                    path.pop()     
+        
+        ans = []
+        backtrack([], 0, 0)
+        return and
+```
+## Note to remember: try to create a tree. Look at curr after each backtrack return. When a backtrack hits return that means it has hit a node leaf. Look at curr at that moment. Right after the return we have this tem `curr.pop()` try to imaging if curr pops the next item is  the item in  `for ... in ...` if we are done with all the children of the first child, that means we are at the end of the for loop and a new number will be chosen from scratch. That means `for i in range(start, end)` now what should this `start` be?  Also a very important thing you should do is to create a tree and beside each node write the status of the variables so you can track them.
+
+
+
