@@ -428,7 +428,7 @@ BFS on a graph always visits nodes according to their distance from the starting
 
 The above statement was always the case on binary trees, even if you did a DFS, because there is only one possible path to any node from the root. In a graph, there could be many paths from a given starting point to any other node. Using BFS will ensure that out of all possible paths, you take the shortest one.
 
-[!IMPORTANT]
+>[!IMPORTANT]
 - **Do we need to track the visited nodes?:**
 - In classic BFS or DFS We track visited to avoid revisiting the same node — because we're only looking for the shortest path in terms of number of edges. Once we visit a node, there's no point in visiting it again.
 - But in problems that we do not look for the shortest path we dont  need it. e.e.g **[cheapest-flights-within-k-stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)**
