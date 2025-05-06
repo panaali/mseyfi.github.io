@@ -603,5 +603,33 @@ class Solution:
 ## Note to remember: 
 Try to create a tree. Look at curr after each backtrack return. When a backtrack hits return that means it has hit a node leaf. Look at curr at that moment. Right after the return we have this tem `curr.pop()` try to imaging if curr pops the next item is  the item in  `for ... in ...` if we are done with all the children of the first child, that means we are at the end of the for loop and a new number will be chosen from scratch. That means `for i in range(start, end)` now what should this `start` be?  Also a very important thing you should do is to create a tree and beside each node write the status of the variables so you can track them.
 
+# 7. Heap
+in heap the first element to pop in the minimum element in the heap. If we push tuples in the heap the fitst element to pop is the tuple with minimum first element. If two tuples have same first element then the tuple with the second element being minimum is poped.
 
 
+One common type of interview problem is one that asks you to find the k best elements, with "best" being defined by the problem. The easiest way to solve these problems is to just sort the input according to the criteria defined in the problem, and then return the top `k` elements. This has a time complexity of  `O(n⋅logn)` if `n` is the length of the input.
+
+Using a heap, we can instead find the top k elements in  `O(n⋅logk)`. Logically, `k < n`, so this is an improvement. Practically, because 
+`log` is so fast anyway, it probably isn't a big deal in terms of a speed increase. But when interviewers give you these kinds of problems, it is these small improvements that they are looking for.
+
+What is the improvement? Create a max heap at the start, iterate over the input while pushing every element on the heap (according to the problem's criteria), and pop from the heap once the size exceeds `k`. Because the heap's size is bounded by `k`, then all heap operations are at worst 
+`O(logk)`. Multiply this by n iterations to get `O(n⋅logk)`. Because we are using a max heap and we are popping from the heap according to the problem criteria, pops remove the "worst" elements, so at the end, the `k` "best" elements will remain in the heap.
+
+Q: Given an integer array nums and an integer k, return the k most frequent elements. It is guaranteed that the answer is unique.
+
+```python
+from collections import Counter
+import heapq
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        counts = Counter(nums)
+        heap = []
+        
+        for key, val in counts.items():
+            heapq.heappush(heap, (val, key))
+            if len(heap) > k:
+                heapq.heappop(heap)
+        
+        return [pair[1] for pair in heap]
+```
