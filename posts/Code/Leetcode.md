@@ -73,7 +73,7 @@ Another common task is finding the number of valid subarrays. We will take a loo
 > Whenever a problem description talks about subarrays, you should figure out if sliding window is a good option by analyzing the problem description. If you can find the things mentioned above, then it's a good bet.
 
 #### Sample Questions:
-- Find the longest subarray with a sum less than or equal to $k$
+- Given an array of **positive** integers nums and an integer $k$, find the length of the longest subarray whose sum is less than or equal to $k$. ***solve for when negatives are there.***
 - Find the longest substring that has at most one "0"
 - Find the number of subarrays that have a product less than $k$
 - [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/description/)
