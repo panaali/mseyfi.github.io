@@ -428,6 +428,16 @@ BFS on a graph always visits nodes according to their distance from the starting
 
 The above statement was always the case on binary trees, even if you did a DFS, because there is only one possible path to any node from the root. In a graph, there could be many paths from a given starting point to any other node. Using BFS will ensure that out of all possible paths, you take the shortest one.
 
+[!IMPORTANT]
+- **Do we need to track the visited nodes?:**
+- In classic BFS or DFS We track visited to avoid revisiting the same node — because we're only looking for the shortest path in terms of number of edges. Once we visit a node, there's no point in visiting it again.
+- But in problems that we do not look for the shortest path we dont  need it. e.e.g **[cheapest-flights-within-k-stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)**
+  - We're looking for minimum cost, not minimum number of steps, and we allow up to k stops. So: A city might be reachable using 1 stop at a higher cost, and again with 2 stops at a lower cost. Therefore, you must allow re-visiting the same node if you're reaching it
+  - With fewer stops but higher cost, or
+  - With more stops but cheaper cost.
+
+
+
 
  ## Implicit graphs
  Sometimes, a graph is more subtle. The input may look nothing like one of the formats we have talked about. Remember that a graph is any abstract collection of elements (nodes) connected by some abstract relationship (edges). **If a problem involves transitioning between states, then try to think about if the states can be nodes and the transition criteria can be edges. Additionally, if the problem wants the shortest path or fewest operations etc., it is a great candidate for BFS.**
