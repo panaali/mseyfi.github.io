@@ -416,6 +416,53 @@ class Solution:
         return dfs(0)
 ```
 - [course-schedule](https://leetcode.com/problems/course-schedule/)
+>[!IMPORTANT]
+**Find if there is a cycle in the graph (directed or undirected)**
+```python
+from collections import defaultdict
+
+class Graph:
+    def __init__(self, num_nodes):
+        self.graph = defaultdict(list)
+        self.num_nodes = num_nodes
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+
+    def is_cyclic_util(self, node, visited, rec_stack):
+        visited[node] = True
+        rec_stack[node] = True
+
+        for neighbor in self.graph[node]:
+            if not visited[neighbor]:
+                if self.is_cyclic_util(neighbor, visited, rec_stack):
+                    return True
+            elif rec_stack[neighbor]:
+                return True  # Cycle detected
+
+        rec_stack[node] = False
+        return False
+
+    def is_cyclic(self):
+        visited = [False] * self.num_nodes
+        rec_stack = [False] * self.num_nodes
+
+        for node in range(self.num_nodes):
+            if not visited[node]:
+                if self.is_cyclic_util(node, visited, rec_stack):
+                    return True
+        return False
+
+# Example usage:
+g = Graph(4)
+g.add_edge(0, 1)
+g.add_edge(1, 2)
+g.add_edge(2, 0)  # Cycle here
+g.add_edge(3, 3)  # Self-loop (also a cycle)
+
+print("Graph has cycle?" , g.is_cyclic())
+
+```
 
 ## Graph BFS
 *In graphs, it is mostly the case when you are asked to find the **shortest path.***
