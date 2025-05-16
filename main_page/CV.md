@@ -20,7 +20,7 @@ Vision Transformers (ViTs) have become a popular choice for image recognition an
 
 </div>
 
-[![Efficiency](https://img.shields.io/badge/Efficient_Transformers-Efficient_Techniques_in_Transformers-blue?style=for-the-badge&logo=github)](../posts/EfficientTransformers)
+[![AxialAttention](https://img.shields.io/badge/Axial_Attention-Attentions_across_axes-blue?style=for-the-badge&logo=github)](../posts/AxialAttention)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Key ideas:
   
