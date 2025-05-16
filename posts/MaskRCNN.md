@@ -250,7 +250,7 @@ Each anchor $a_i$ is:
 * Compute **regression target deltas**:
 
 $$
-t_{xi}^* = \frac{x_{gt} - x_{a}}{w_a},\quad
+t_{xi}^* = \frac{x_{gt} - x_{a}}{w_a},\quad\\
 t_{yi}^* = \frac{y_{gt} - y_{a}}{h_a}
 $$
 
