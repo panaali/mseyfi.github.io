@@ -235,7 +235,10 @@ Let's walk through the **complete flow from RPN to the final detection and class
 For each anchor $a_i$, the RPN outputs:
 
 * Objectness score $p_i \in [0,1]$
-* Box deltas $t_i = (\hat{t}_{xi}, \hat{t}_{yi}, \hat{t}_{wi}, \hat{t}_{hi})$
+* Box deltas
+$$
+t_i = (\hat{t}_{x_i}, \hat{t}_{y_i}, \hat{t}_{w_i}, \hat{t}_{h_i})
+$$
 
 ### 🔹 Training Labels for RPN
 
@@ -250,14 +253,12 @@ Each anchor $a_i$ is:
 * Compute **regression target deltas**:
 
 $$
-t_{xi}^* = \frac{x_{gt} - x_{a}}{w_a},\quad\\
-t_{yi}^* = \frac{y_{gt} - y_{a}}{h_a}
-$$
-
-$$
+t_{xi}^* = \frac{x_{gt} - x_{a}}{w_a},\quad
+t_{yi}^* = \frac{y_{gt} - y_{a}}{h_a}. \quad
 t_{wi}^* = \log\left(\frac{w_{gt}}{w_a}\right),\quad
 t_{hi}^* = \log\left(\frac{h_{gt}}{h_a}\right)
 $$
+
 ### 🔹 RPN Loss
 
 Let $N_{cls}$ and $N_{reg}$ be the number of samples:
@@ -278,10 +279,7 @@ Only **positive anchors** contribute to the regression loss.
 
 $$
 x_p = \hat{t}_x \cdot w_a + x_a,\quad
-y_p = \hat{t}_y \cdot h_a + y_a
-$$
-
-$$
+y_p = \hat{t}_y \cdot h_a + y_a,\quad
 w_p = w_a \cdot e^{\hat{t}_w},\quad
 h_p = h_a \cdot e^{\hat{t}_h}
 $$
@@ -304,10 +302,10 @@ $$
     l = \lfloor 4 + \log_2(\sqrt{wh} / 224) \rfloor
     $$
 * Crop the feature map using **bilinear interpolation** into shape (B, 256, 7, 7)
-
+# Each ROI is pooled out of the feature maps and create a 256 x 7 x 7 feature map, we have 1000 ROIs per image. 
 ### Output:
 
-Tensor of shape (N, 256, 7, 7) — N = number of RoIs
+Tensor of shape (N, 256, 7, 7) — N = total number of RoIs across all images in the batch 
 
 ---
 
@@ -348,10 +346,7 @@ For positive RoIs $r_i = (x_r, y_r, w_r, h_r)$:
 
 $$
 t_{xi}^* = \frac{x_{gt} - x_r}{w_r},\quad
-t_{yi}^* = \frac{y_{gt} - y_r}{h_r}
-$$
-
-$$
+t_{yi}^* = \frac{y_{gt} - y_r}{h_r}, \quad
 t_{wi}^* = \log\left(\frac{w_{gt}}{w_r}\right),\quad
 t_{hi}^* = \log\left(\frac{h_{gt}}{h_r}\right)
 $$
