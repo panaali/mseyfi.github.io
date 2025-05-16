@@ -10,14 +10,6 @@
 
 Overview of Linformer, why we need it, and side-by-side pseudo-code comparing traditional self-attention to Linformer self-attention. We’ll keep the example to single-head attention for clarity, but in practice you would typically use multi-head attention (with separate projections for each head).
 
-{% assign modified_date = site.time %}
-{% capture git_date %}{% include last-modified.html %}{% endcapture %}
-{% if git_date != "" %}
-    {% assign modified_date = git_date %}
-{% endif %}
-
-_Last updated: {{ modified_date | date: "%B %d, %Y %I:%M %p" }}_
-
 </div>
 
 
@@ -38,7 +30,6 @@ Key ideas:
 2. Then perform attention **across columns** (the height dimension, $H$) for each of the $W$ columns, independently.  
 3. Each step is effectively 1D self-attention, so the cost scales like $O(H \cdot W^2 + W \cdot H^2)$ instead of $O(H^2 W^2)$.
 
-_Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 
@@ -50,7 +41,6 @@ Traditional multi-object tracking (MOT) systems often follow a two-step pipeline
 Detect objects in each frame independently.
 Associate detections across frames to form trajectories.
 This separation can lead to suboptimal solutions since detection and association are treated as separate problems. TrackFormer merges these steps by extending a Transformer-based detection architecture (inspired by DETR) to simultaneously detect and track objects. It does this by introducing track queries that carry information about previously tracked objects forward in time, allowing the network to reason about detection and association in a unified end-to-end manner. <p></p>
-_Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 [![DETR](https://img.shields.io/badge/DETR-Detection_Transformer-blue?style=for-the-badge&logo=github)](../posts/DETR)
@@ -58,26 +48,17 @@ _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 The Detection Transformer (DETR) is a novel approach to object detection that leverages Transformers, which were originally designed for sequence-to-sequence tasks like machine translation. Introduced by Carion et al. in 2020, DETR simplifies the object detection pipeline by eliminating the need for hand-crafted components like anchor generation and non-maximum suppression (NMS).
  <p></p>
-_Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![VIT](https://img.shields.io/badge/VIT-Vision_Transformers-blue?style=for-the-badge&logo=github)](../posts/VIT)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Vision Transformers (ViTs) apply the Transformer architecture, originally designed for natural language processing (NLP), to computer vision tasks like image classification. ViTs treat an image as a sequence of patches (akin to words in a sentence) and process them using Transformer encoders. <p></p>
-_Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 ## [![CGANS](https://img.shields.io/badge/CGANs-Conditional_GAN-blue?style=for-the-badge&logo=github)](../posts/ConditionalGAN)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Python implementation of a Conditional Generative Adversarial Network (cGAN) using PyTorch.
  <p></p>
-{% assign modified_date = site.time %}
-{% capture git_date %}{% include last-modified.html %}{% endcapture %}
-{% if git_date != "" %}
-    {% assign modified_date = git_date %}
-{% endif %}
-
-_Last updated: {{ modified_date | date: "%B %d, %Y %I:%M %p" }}_
 
 </div>
 </div>
@@ -86,22 +67,13 @@ _Last updated: {{ modified_date | date: "%B %d, %Y %I:%M %p" }}_
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Generalization issue with Distillation
  <p></p>
-_Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 
-[![MaskRCNN](https://img.shields.io/badge/MaskRCNN-Instancce_Segmentation-blue?style=for-the-badge&logo=github)](../posts/MASKRCNN)
+[![MaskRCNN](https://img.shields.io/badge/MaskRCNN-Instancce_Segmentation-blue?style=for-the-badge&logo=github)](../posts/MaskRCNN)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 
-Overview of Linformer, why we need it, and side-by-side pseudo-code comparing traditional self-attention to Linformer self-attention. We’ll keep the example to single-head attention for clarity, but in practice you would typically use multi-head attention (with separate projections for each head).
-
-{% assign modified_date = site.time %}
-{% capture git_date %}{% include last-modified.html %}{% endcapture %}
-{% if git_date != "" %}
-    {% assign modified_date = git_date %}
-{% endif %}
-
-_Last updated: {{ modified_date | date: "%B %d, %Y %I:%M %p" }}_
+This tutorial is written to provide an extensive understanding of the Mask R-CNN architecture by dissecting every individual component involved in its pipeline.
 
 </div>
 
@@ -109,7 +81,6 @@ _Last updated: {{ modified_date | date: "%B %d, %Y %I:%M %p" }}_
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 
 Single shot object detector
-_Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
 
