@@ -13,16 +13,15 @@ Overview of Linformer, why we need it, and side-by-side pseudo-code comparing tr
 </div>
 
 
-[![Efficiency](https://img.shields.io/badge/Efficient_Transformers-Efficient_Techniques_in_Transformers-blue?style=for-the-badge&logo=github)](../posts/EfficientTransformers)
-<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+#[![Efficiency](https://img.shields.io/badge/Efficient_Transformers-Efficient_Techniques_in_Transformers-blue?style=for-the-badge&logo=github)](../posts/EfficientTransformers)
+#<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 
-Vision Transformers (ViTs) have become a popular choice for image recognition and related tasks, but they can be computationally expensive and memory-heavy. Below is a list of common (and often complementary) techniques to optimize Transformers—including ViTs—for more efficient training and inference. Alongside each category, I’ve mentioned some influential or representative papers.
+#Vision Transformers (ViTs) have become a popular choice for image recognition and related tasks, but they can be computationally expensive and memory-heavy. Below is a list of common (and often complementary) techniques #to optimize Transformers—including ViTs—for more efficient training and inference. Alongside each category, I’ve mentioned some influential or representative papers.
 
-</div>
+#</div>
 
 
 [![AxialAttention](https://img.shields.io/badge/Axial_Attention-Attentions across axes-blue?style=for-the-badge&logo=github)](../posts/AxialAttention)
-
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Key ideas:
   
@@ -35,7 +34,6 @@ Key ideas:
 
 
 [![TrackFormer](https://img.shields.io/badge/TrackFormer-Multi_Object_Tracking_with_Transformer-blue?style=for-the-badge&logo=github)](../posts/TrackFormer)
-
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Traditional multi-object tracking (MOT) systems often follow a two-step pipeline:
   
