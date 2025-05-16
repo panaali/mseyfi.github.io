@@ -17,7 +17,7 @@ Overview of Linformer, why we need it, and side-by-side pseudo-code comparing tr
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 
 Vision Transformers (ViTs) have become a popular choice for image recognition and related tasks, but they can be computationally expensive and memory-heavy. Below is a list of common (and often complementary) techniques to optimize Transformers—including ViTs—for more efficient training and inference. Alongside each category, I’ve mentioned some influential or representative papers.
-_Last updated: {{ site.time | date: "%B %d, %Y" }}_
+
 </div>
 
 
@@ -29,6 +29,7 @@ Key ideas:
 1. Perform attention **across rows** (the width dimension, $W$) for each of the $H$ rows, independently.  
 2. Then perform attention **across columns** (the height dimension, $H$) for each of the $W$ columns, independently.  
 3. Each step is effectively 1D self-attention, so the cost scales like $O(H \cdot W^2 + W \cdot H^2)$ instead of $O(H^2 W^2)$.
+ <p></p>
 
 </div>
 
