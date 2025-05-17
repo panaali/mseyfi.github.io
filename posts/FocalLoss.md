@@ -45,14 +45,14 @@ $$
 
 Where:
 
-* $p_t = \begin{cases}
+* $$p_t = \begin{cases}
   \hat{p} & \text{if } y = 1 \\
   1 - \hat{p} & \text{if } y = 0
-  \end{cases}$
-* $\alpha_t = \begin{cases}
+  \end{cases}$$
+* $$\alpha_t = \begin{cases}
   \alpha & \text{if } y = 1 \\
   1 - \alpha & \text{if } y = 0
-  \end{cases}$
+  \end{cases}$$
 
 ---
 
