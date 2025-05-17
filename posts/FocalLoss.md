@@ -122,7 +122,7 @@ def focal_loss(logits, targets, alpha=0.25, gamma=2.0, reduction='mean'):
 For multiclass classification with softmax over $K$ classes:
 
 $$
-\mathcal{L}_{\text{focal}} = - \sum_{c=1}^{K} \alpha_c (1 - p_c)^\gamma y_c \log(p_c)
+\mathcal{L}_{\rm{focal}} = - \sum_{c=1}^{K} \alpha_c (1 - p_c)^\gamma y_c \rm{log}(p_c)
 $$
 
 Where:
