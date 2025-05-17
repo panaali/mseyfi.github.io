@@ -143,3 +143,89 @@ Where:
 | Common usage       | RetinaNet, imbalanced classification |
 
 ---
+
+
+
+In **focal loss** and **cross-entropy**, if **positives are the minority**, you should **give more weight to positives** to compensate for imbalance.
+
+So:
+
+* **You should set $\alpha = 0.75$** (not 0.25) if positives are rare.
+* In the focal loss:
+
+  * $\alpha_t = 0.75$ for **positives (y = 1)**
+  * $\alpha_t = 0.25$ for **negatives (y = 0)**
+
+This is **exactly the same principle** as class-weighted cross-entropy.
+
+---
+
+## 🔍 Where the confusion happened
+
+In your earlier example:
+
+> "If $\alpha = 0.25$", then:
+>
+> * $\alpha_t = 0.25$ for **positive**
+> * $\alpha_t = 0.75$ for **negative**
+
+That means: you’re assigning **less weight to positives**, which is appropriate **only if positives are abundant** (i.e. majority), which is **not** typical.
+
+---
+
+## 🧠 Proper Setting of $\alpha$
+
+Let’s get it straight:
+
+| Scenario                           | Class           | Weight in Focal Loss      |
+| ---------------------------------- | --------------- | ------------------------- |
+| **Positives are rare** (e.g. 1:10) | Positives (y=1) | $\alpha = 0.75$ or higher |
+|                                    | Negatives (y=0) | $1 - \alpha = 0.25$       |
+| **Negatives are rare**             | Positives (y=1) | $\alpha = 0.25$           |
+|                                    | Negatives (y=0) | $1 - \alpha = 0.75$       |
+
+So: **Higher alpha means "give more weight to class 1 (positives)."**
+
+---
+
+## ✅ Consistency with Weighted Cross-Entropy
+
+In standard **weighted binary cross-entropy**:
+
+$$
+\text{Loss} = - w_1 y \log(\hat{p}) - w_0 (1 - y)\log(1 - \hat{p})
+$$
+
+To handle imbalance:
+
+* Set $w_1 > w_0$ when **class 1 (positive)** is underrepresented
+* This is equivalent to choosing $\alpha > 0.5$ in focal loss
+
+---
+
+## 🔁 Why Then Did RetinaNet Use $\alpha = 0.25$?
+
+Good catch: RetinaNet (Lin et al., 2017) uses:
+
+* $\alpha = 0.25$
+* Because **positives are extremely rare** (\~1:100) in dense object detection
+* But in their definition:
+
+  * They assign \*\*$\alpha = 0.25$ to **positives**
+  * Not because it's optimal, but because the large **focusing parameter** $\gamma = 2$ already downweights easy negatives harshly
+  * So they experimentally found **$\alpha = 0.25$** was enough
+
+But in **general use**, especially in class-imbalanced problems, it's safer to follow:
+
+> **Set $\alpha$ higher for the underrepresented class.**
+
+---
+
+## ✅ Final Rule of Thumb
+
+> If **positives are rare**, use **$\alpha > 0.5$** (e.g., 0.75 or 0.9) to give them more weight.
+
+> If **negatives are rare**, use **$\alpha < 0.5$** (e.g., 0.25).
+
+---
+
