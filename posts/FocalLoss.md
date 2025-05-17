@@ -229,3 +229,139 @@ But in **general use**, especially in class-imbalanced problems, it's safer to f
 
 ---
 
+
+
+### ✅ Categorical Focal Loss: Deep Dive + Formulations
+
+**Categorical focal loss** is an extension of the **binary focal loss** to **multi-class classification**, particularly useful when:
+
+* You have **many classes**
+* Some classes are **rare (class imbalance)**
+* You want to focus training on **hard examples**
+
+---
+
+## 🔷 1. Standard Categorical Cross-Entropy
+
+Let:
+
+* $\mathbf{p} = [p_1, p_2, \dots, p_K]$: predicted probabilities (softmax outputs)
+* $\mathbf{y} = [y_1, y_2, \dots, y_K]$: one-hot ground truth
+* $c$: true class index (i.e., $y_c = 1$)
+
+Then cross-entropy is:
+
+$$
+\mathcal{L}_{\text{CE}} = -\sum_{k=1}^{K} y_k \log(p_k) = -\log(p_c)
+$$
+
+---
+
+## 🔶 2. Focal Loss Generalization to Multi-Class
+
+To focus on **hard** examples (low $p_c$), add a modulating term $(1 - p_c)^\gamma$:
+
+$$
+\mathcal{L}_{\text{focal}} = -\sum_{k=1}^{K} y_k \cdot \alpha_k \cdot (1 - p_k)^\gamma \cdot \log(p_k)
+$$
+
+Since $y_k = 1$ only for the true class $c$, it simplifies to:
+
+$$
+\mathcal{L}_{\text{focal}} = - \alpha_c (1 - p_c)^\gamma \log(p_c)
+$$
+
+---
+
+## 🔷 3. Term-by-Term Explanation
+
+| Term               | Meaning                                                 |
+| ------------------ | ------------------------------------------------------- |
+| $\alpha_c$         | Weight for class $c$ (helps balance rare classes)       |
+| $(1 - p_c)^\gamma$ | Focusing term: reduces loss for well-classified samples |
+| $\log(p_c)$        | CE loss for true class                                  |
+
+---
+
+## 🔶 4. Full Softmax + Focal Loss Flow
+
+Given logits $\mathbf{z} \in \mathbb{R}^K$, compute:
+
+1. **Softmax output**:
+
+   $$
+   p_k = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}} \quad \text{for } k = 1, \dots, K
+   $$
+
+2. **Categorical focal loss**:
+
+   $$
+   \mathcal{L} = -\sum_{k=1}^{K} y_k \cdot \alpha_k \cdot (1 - p_k)^\gamma \cdot \log(p_k)
+   $$
+
+---
+
+## 🔷 5. PyTorch-like Implementation
+
+```python
+import torch
+import torch.nn.functional as F
+
+def categorical_focal_loss(logits, targets, alpha=None, gamma=2.0, reduction='mean'):
+    """
+    logits: Tensor of shape (B, C) -- raw model outputs
+    targets: LongTensor of shape (B,) -- class indices
+    alpha: Tensor of shape (C,) or scalar (weight per class)
+    gamma: focusing parameter
+    """
+
+    B, C = logits.shape
+    probs = F.softmax(logits, dim=1)                      # (B, C)
+    log_probs = torch.log(probs + 1e-9)                   # for numerical stability
+
+    targets_one_hot = F.one_hot(targets, num_classes=C)   # (B, C)
+    pt = probs.gather(1, targets.unsqueeze(1)).squeeze(1) # (B,)
+    log_pt = log_probs.gather(1, targets.unsqueeze(1)).squeeze(1) # (B,)
+
+    if alpha is not None:
+        alpha_t = alpha[targets] if isinstance(alpha, torch.Tensor) else alpha
+    else:
+        alpha_t = 1.0
+
+    loss = -alpha_t * (1 - pt) ** gamma * log_pt
+
+    if reduction == 'mean':
+        return loss.mean()
+    elif reduction == 'sum':
+        return loss.sum()
+    return loss
+```
+
+---
+
+## 🔶 6. Summary Table
+
+| Component          | Binary Focal Loss                           | Categorical Focal Loss                |
+| ------------------ | ------------------------------------------- | ------------------------------------- |
+| Output Layer       | Sigmoid                                     | Softmax                               |
+| True label         | Scalar (0 or 1)                             | Class index or one-hot                |
+| Loss               | $-\alpha (1 - \hat{p})^\gamma \log \hat{p}$ | $-\alpha_c (1 - p_c)^\gamma \log p_c$ |
+| Imbalance Handling | $\alpha \in (0,1)$                          | $\alpha_k \in \mathbb{R}^K$           |
+| Typical Usage      | Binary/multi-label                          | Multi-class (K > 2)                   |
+
+---
+
+## ✅ Practical Tips
+
+* Set $\gamma = 2.0$ as default.
+* Use **class frequency-based $\alpha_k$** to compensate for imbalance.
+  Example:
+
+  $$
+  \alpha_k = \frac{1}{\log(1.02 + f_k)} \quad \text{where } f_k = \text{freq of class } k
+  $$
+* For highly imbalanced datasets, use both $\gamma$ and $\alpha$.
+
+---
+
+
