@@ -1,3 +1,7 @@
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](../main_page/CV)
+
 **Sub-pixel convolution** (also known as **pixel shuffle**) is a technique primarily used for **image super-resolution** and other upsampling tasks in deep learning. Instead of upsampling via interpolation or transposed convolution, it learns to generate a **high-resolution image** from a low-resolution feature map by **reorganizing the channels**.
 
 ---
