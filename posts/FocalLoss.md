@@ -1,4 +1,7 @@
-Focal Loss is a modified version of the standard cross-entropy loss, designed to address the **class imbalance problem**, especially in tasks like **object detection** (e.g. RetinaNet) or **extremely imbalanced binary classification**.
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+## [![ML](https://img.shields.io/badge/ML-Selected_Topics_in_Machine_Learning-green?style=for-the-badge&logo=github)](../main_pages/ML)
+
+**Focal Loss** is a modified version of the standard cross-entropy loss, designed to address the **class imbalance problem**, especially in tasks like **object detection** (e.g. RetinaNet) or **extremely imbalanced binary classification**.
 
 ---
 
