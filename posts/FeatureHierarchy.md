@@ -1,5 +1,8 @@
 
 # 🔍 Understanding Feature Hierarchies and Fine-Grained Representations in Deep Learning
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](../main_page/CV)
 
 This note explains how **features evolve across layers in deep neural networks** (especially CNNs), and how **fine-grained features** emerge and are preserved or enhanced for tasks like fine-grained classification, detection, and facial recognition.
 
