@@ -64,13 +64,15 @@ Python implementation of a Conditional Generative Adversarial Network (cGAN) usi
 ## [![SubPixelConv](https://img.shields.io/badge/SubPixelConv-Pixel_Shuffle-blue?style=for-the-badge&logo=github)](../posts/SubPixelConv)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 **Sub-pixel convolution** (also known as **pixel shuffle**) is a technique primarily used for **image super-resolution** and other upsampling tasks in deep learning. Instead of upsampling via interpolation or transposed convolution, it learns to generate a **high-resolution image** from a low-resolution feature map by **reorganizing the channels**.
-SubPixelConv
+  <p></p>
+</div>
+
+## [![FeatureHierarchy](https://img.shields.io/badge/FeatureHierarchy-Feature_Evolution_Along_DNN-blue?style=for-the-badge&logo=github)](../posts/FeatureHierarchy)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+This note explains how **features evolve across layers in deep neural networks** (especially CNNs), and how **fine-grained features** emerge and are preserved or enhanced for tasks like fine-grained classification, detection, and facial recognition.
 
   <p></p>
-
 </div>
-</div>
-
 
 
 ## [![Distillation](https://img.shields.io/badge/Distillation-grey?style=for-the-badge&logo=github)](../posts/Distillation)
