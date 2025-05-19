@@ -1,4 +1,4 @@
-Here’s a simplified set of **rules for broadcasting in Python (NumPy):**
+**rules for broadcasting in Python (NumPy):**
 
 ## ✅ Broadcasting: 3 Golden Rules
 
