@@ -166,3 +166,118 @@ Result: (2, 4, 3)
 ---
 
 
+Broadcasting works **exactly the same for multiplication** as it does for addition — same rules, same shape expansion — but the **operation is elementwise multiplication**.
+
+---
+
+## ✅ Broadcasting Multiplication Rules
+
+* **Same rules** as for addition:
+
+  1. Align shapes **right to left**
+  2. Dimensions must be **equal** or **one of them is 1**
+  3. Singleton dimensions are **stretched logically**
+* Result shape is the **broadcasted shape**
+
+---
+
+## 🧪 Examples of Broadcasting Multiplication
+
+---
+
+### 🔸 Scalar × Array
+
+```python
+a = np.array([1, 2, 3])  # shape (3,)
+b = 10                   # scalar
+
+a * b  # ➜ [10, 20, 30]
+```
+
+---
+
+### 🔸 Vector × Vector (Same shape)
+
+```python
+a = np.array([1, 2, 3])    # shape (3,)
+b = np.array([10, 20, 30]) # shape (3,)
+
+a * b  # ➜ [10, 40, 90]
+```
+
+---
+
+### 🔸 Row Vector × Matrix
+
+```python
+row = np.array([[1, 2, 3]])               # shape (1, 3)
+mat = np.array([[10, 10, 10], [1, 1, 1]]) # shape (2, 3)
+
+mat * row
+# row broadcast to (2, 3)
+# ➜ [[10, 20, 30],
+#     [1, 2, 3]]
+```
+
+---
+
+### 🔸 Column Vector × Matrix
+
+```python
+col = np.array([[2], [3]])               # shape (2,1)
+mat = np.array([[10, 20, 30], [1, 2, 3]])# shape (2,3)
+
+col * mat
+# col broadcast to (2,3)
+# ➜ [[20, 40, 60],
+#     [3, 6, 9]]
+```
+
+---
+
+### 🔸 Matrix × Matrix with one expandable dimension
+
+```python
+a = np.array([[[1], [2], [3]]])       # shape (1, 3, 1)
+b = np.array([[[10, 20, 30]]])        # shape (1, 1, 3)
+
+a * b  # broadcast to shape (1, 3, 3)
+# ➜ [[[10, 20, 30],
+#      [20, 40, 60],
+#      [30, 60, 90]]]
+```
+
+---
+
+### ❌ Incompatible shapes
+
+```python
+a = np.ones((2, 3))  # shape (2,3)
+b = np.ones((4,))    # shape (4,)
+
+a * b  # ❌ Error: cannot broadcast (2,3) with (4,)
+```
+
+---
+
+## 📏 Practical Uses of Broadcasting Multiplication
+
+* Apply **scale factors** to each column or row:
+
+```python
+# Normalize rows
+X = np.array([[1, 2], [3, 4]])         # (2,2)
+row_sums = X.sum(axis=1, keepdims=True)  # (2,1)
+X_normalized = X / row_sums              # broadcast division (2,2)/(2,1)
+```
+
+* Apply a **mask**:
+
+```python
+image = np.random.rand(5, 5, 3)  # shape (H, W, C)
+mask = np.array([0, 1, 0])       # shape (3,)
+result = image * mask            # mask broadcast to (5, 5, 3)
+```
+
+---
+
