@@ -32,10 +32,17 @@ This tutorial provides an in-depth exploration of quantizing machine learning mo
 
 </div>
 
-## [![FocalLoss](https://img.shields.io/badge/FocalLoss_Focal_Loss-blue?style=for-the-badge&logo=github)](../posts/FocalLoss)
+## [![FocalLoss](https://img.shields.io/badge/FocalLoss-Focal_Loss-blue?style=for-the-badge&logo=github)](../posts/FocalLoss)
 
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Focal Loss is a modified version of the standard cross-entropy loss, designed to address the class imbalance problem, especially in tasks like object detection (e.g. RetinaNet) or extremely imbalanced binary classification.
 <p></p>
 
 </div>
+## [![kmeans](https://img.shields.io/badge/kmeans-unsupervised-learning-blue?style=for-the-badge&logo=github)](../posts/kmeans)
+
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+K-Means is a popular clustering algorithm used to partition a dataset into **K clusters** by minimizing intra-cluster variance. A crucial factor in its performance is how you initialize the cluster centroids. 
+<p></p>
+</div>
+
