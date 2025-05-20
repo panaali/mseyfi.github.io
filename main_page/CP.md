@@ -26,7 +26,7 @@ Motion estimation and motion compensation are critical components in video compr
 </div>
 
 
-## [![DenoisingIII](https://img.shields.io/badge/Denoising-Noise-Estimation-blue?style=for-the-badge&logo=github)](../posts/NoiseEstimation)
+## [![DenoisingIII](https://img.shields.io/badge/Denoising-Noise_Estimation-blue?style=for-the-badge&logo=github)](../posts/NoiseEstimation)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 To **estimate noise in a single image**, especially when the ground truth is not available, you need to make statistical assumptions about the noise and the image content. Here's a full tutorial that outlines **multiple practical techniques** for noise estimation:
 <p></p>
