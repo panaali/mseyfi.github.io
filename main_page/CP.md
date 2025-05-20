@@ -30,9 +30,16 @@ Motion estimation and motion compensation are critical components in video compr
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
 
-## [![Denoising](https://img.shields.io/badge/Denoising-Non Local Mean-blue?style=for-the-badge&logo=github)](../posts/NLMean)
+## [![Denoising](https://img.shields.io/badge/Denoising-Non_Local_Mean-blue?style=for-the-badge&logo=github)](../posts/NLMean)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Image denoising is a fundamental problem in image processing and computer vision. Given a noisy image, the goal is to recover a clean version that preserves important details and structures. Traditional denoising methods often rely on local information.
+<p></p>
+_Last updated: {{ site.time | date: "%B %d, %Y" }}_
+</div>
+
+## [![ImageFiltering](https://img.shields.io/badge/Image-Filtering_Kernels-blue?style=for-the-badge&logo=github)](../posts/ImageFiltering)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+HPF and LPF filtering of images, Gaussian Kernels, Laplacian Pyramids
 <p></p>
 _Last updated: {{ site.time | date: "%B %d, %Y" }}_
 </div>
