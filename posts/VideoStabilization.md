@@ -181,11 +181,11 @@ Mathematically, if $I(x, y) $ is your image, SIFT looks for extrema of:
 $$
 D(x, y, \sigma) = (G(x, y, k\sigma) - G(x, y, \sigma)) * I(x, y),
 $$
-where $G(\cdot, \sigma) $ is a Gaussian function with standard deviation \(\sigma$, and \(k$ is a constant multiplicative factor between successive scales. Points which are local maxima in the DoG space are used as candidate keypoints.
+where $G(\cdot, \sigma) $ is a Gaussian function with standard deviation $\sigma$, and $k$ is a constant multiplicative factor between successive scales. Points which are local maxima in the DoG space are used as candidate keypoints.
 
 ### 3.2 Optical Flow in a Nutshell
 
-Optical flow methods attempt to find the apparent motion of pixels from frame \(t$ to frame \(t+1$. The **Lucas-Kanade** approach solves for small motion under the brightness constancy assumption:
+Optical flow methods attempt to find the apparent motion of pixels from frame $t$ to frame $t+1$. The **Lucas-Kanade** approach solves for small motion under the brightness constancy assumption:
 $$
 I(x, y, t) \approx I(x + \delta x, y + \delta y, t+1),
 $$
@@ -193,7 +193,7 @@ leading to the well-known optical flow constraint:
 $$
 \frac{\partial I}{\partial x} \, \delta x + \frac{\partial I}{\partial y} \, \delta y + \frac{\partial I}{\partial t} = 0.
 $$
-This is solved in neighborhoods to yield \((\delta x, \delta y)$ for each feature point.
+This is solved in neighborhoods to yield $(\delta x, \delta y)$ for each feature point.
 
 ---
 
@@ -202,12 +202,12 @@ This is solved in neighborhoods to yield \((\delta x, \delta y)$ for each featur
 After extracting features (keypoints + descriptors) from consecutive frames:
 
 1. **Nearest Neighbor Matching**  
-   - For each feature in Frame \(k$, find the closest descriptor in Frame \(k+1$.  
+   - For each feature in Frame $k$, find the closest descriptor in Frame $k+1$.  
    - Usually done in descriptor space (e.g., Euclidean distance for SIFT or SURF descriptors).
 
 2. **Ratio Test (Lowe’s test)**  
-   - Compare the closest match distance \(d_1$ to the second-closest match distance \(d_2$.  
-   - Accept the match only if \(\frac{d_1}{d_2} < \text{some threshold}$ (e.g., 0.7 or 0.8).
+   - Compare the closest match distance $d_1$ to the second-closest match distance $d_2$.  
+   - Accept the match only if $\frac{d_1}{d_2} < \text{some threshold}$ (e.g., 0.7 or 0.8).
 
 3. **Optical Flow**  
    - Track corners using a local window-based approach (Lucas-Kanade).  
@@ -235,7 +235,7 @@ In real footage, not all motion is from the camera; some objects or subjects mov
 
 ### 6.1 Mathematical Formulation
 
-Assuming we have matched pairs \(\{(x_i, y_i)\}$ in frame \(k$ and \(\{(x'_i, y'_i)\}$ in frame \(k+1$. We want to solve for the homography matrix \(H$:
+Assuming we have matched pairs $\{(x_i, y_i)\}$ in frame $k$ and $\{(x'_i, y'_i)\}$ in frame $k+1$. We want to solve for the homography matrix $H$:
 $$
 \begin{pmatrix}x'_i \\ y'_i \\ 1\end{pmatrix}
 \sim
@@ -272,35 +272,35 @@ h_{11} \\ h_{12} \\ h_{13} \\ h_{21} \\ h_{22} \\ h_{23} \\ h_{31} \\ h_{32} \\ 
 = 0.
 $$
 
-Stacking enough points (at least 4 correspondences for a total of 8 equations, if not degenerate) yields a system \(A \vec{h} = 0$. You can solve it by SVD (Singular Value Decomposition), picking the \(\vec{h}$ that corresponds to the singular vector of the smallest singular value. Then you reshape \(\vec{h}$ into the 3×3 matrix \(H$.  
+Stacking enough points (at least 4 correspondences for a total of 8 equations, if not degenerate) yields a system $A \vec{h} = 0$. You can solve it by SVD (Singular Value Decomposition), picking the $\vec{h}$ that corresponds to the singular vector of the smallest singular value. Then you reshape $\vec{h}$ into the 3×3 matrix $H$.  
 
-**Use RANSAC** to robustly estimate \(H$. In each iteration:
+**Use RANSAC** to robustly estimate $H$. In each iteration:
 1. Pick a minimal subset of matched points (4 for a homography).  
-2. Compute \(H$.  
-3. Count the number of inliers (matches that agree with this \(H$ within a threshold).  
-4. Keep the best \(H$ that yields the most inliers.  
+2. Compute $H$.  
+3. Count the number of inliers (matches that agree with this $H$ within a threshold).  
+4. Keep the best $H$ that yields the most inliers.  
 
 ---
 
 ## 7. Stabilization Pipeline and Smoothing
 
-Once we have a sequence of transformations \(\{H_1, H_2, \ldots, H_N\}$ relating consecutive frames, we want to produce a stable sequence. Simply applying each raw transformation might still produce jitter. Therefore we **smooth** or **filter** these transformations over time.
+Once we have a sequence of transformations $\{H_1, H_2, \ldots, H_N\}$ relating consecutive frames, we want to produce a stable sequence. Simply applying each raw transformation might still produce jitter. Therefore we **smooth** or **filter** these transformations over time.
 
 1. **Cumulative Transforms**  
    - We can transform each frame relative to the first frame by composing transformations:  
      $$
      C_k = H_k \, H_{k-1} \, \ldots \, H_2 \, H_1
      $$  
-     So \(C_k$ is the transform from frame 1 to frame k.  
+     So $C_k$ is the transform from frame 1 to frame k.  
 
 2. **Filter the Cumulative Transform**  
-   - Let \(\hat{C}_k$ be the smoothed version of \(C_k$. You can use:  
+   - Let $\hat{C}_k$ be the smoothed version of $C_k$. You can use:  
      - **Moving average** filter,  
      - **Kalman filter**,  
      - **Gaussian smoothing** in the parameter space (translation, rotation, scale).  
 
-3. **Stabilized Transformation for Frame \(k$**  
-   - The final transform that you apply to frame \(k$ might be:  
+3. **Stabilized Transformation for Frame $k$**  
+   - The final transform that you apply to frame $k$ might be:  
      $$
      S_k = \hat{C}_k \, C_k^{-1}.
      $$  
@@ -310,7 +310,7 @@ Once we have a sequence of transformations \(\{H_1, H_2, \ldots, H_N\}$ relating
 
 ## 8. Warping and Rendering the Final Stabilized Frame
 
-Given your final transformation (let’s call it \(T_k$ for each frame \(k$), to warp the frame you perform:
+Given your final transformation (let’s call it $T_k$ for each frame $k$), to warp the frame you perform:
 
 $$
 \begin{pmatrix}
@@ -327,8 +327,8 @@ y \\
 \end{pmatrix}.
 $$
 
-For each pixel \((x', y')$ in the output (stabilized) frame, you sample the corresponding color from \((x, y)$ in the original frame using bilinear interpolation or another interpolation method. This process is also called **inverse mapping**:  
-1. For each pixel in the output image, apply \(T_k^{-1}$ to find the corresponding source position in the original image.  
+For each pixel $(x', y')$ in the output (stabilized) frame, you sample the corresponding color from $(x, y)$ in the original frame using bilinear interpolation or another interpolation method. This process is also called **inverse mapping**:  
+1. For each pixel in the output image, apply $T_k^{-1}$ to find the corresponding source position in the original image.  
 2. Interpolate that color.  
 
 ---
