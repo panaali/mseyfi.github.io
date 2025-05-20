@@ -1,7 +1,7 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 <br>
 
-## [![Stabilization](https://img.shields.io/badge/Stabilization-Traditional_Video_Stabilization-blue?style=for-the-badge&logo=github)](../posts/VideoStabilization.md)
+## [![Stabilization](https://img.shields.io/badge/Stabilization-Traditional_Video_Stabilization-blue?style=for-the-badge&logo=github)](../posts/VideoStabilization)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Image (or video) stabilization seeks to remove unwanted motions (often from camera shake or jitter) in consecutive frames of a video.
 <p></p>
