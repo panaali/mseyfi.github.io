@@ -25,14 +25,14 @@ Motion estimation and motion compensation are critical components in video compr
 <p></p>
 </div>
 
-## [![Denoising](https://img.shields.io/badge/Denoising-Bilateral-Filtering-blue?style=for-the-badge&logo=github)](../posts/BilateralFiltering)
+## [![DenoisingII](https://img.shields.io/badge/Denoising-Bilateral_Filtering-blue?style=for-the-badge&logo=github)](../posts/BilateralFiltering)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 In image denoising, we often want to remove **noise** but preserve **edges**. Classical filters like Gaussian blur are fast but **blur across edges**, causing loss of detail.
 <p></p>
 </div>
 
 
-## [![Denoising](https://img.shields.io/badge/Denoising-Non_Local_Mean-blue?style=for-the-badge&logo=github)](../posts/NLMean)
+## [![DenoisingI](https://img.shields.io/badge/Denoising-Non_Local_Mean-blue?style=for-the-badge&logo=github)](../posts/NLMean)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Image denoising is a fundamental problem in image processing and computer vision. Given a noisy image, the goal is to recover a clean version that preserves important details and structures. Traditional denoising methods often rely on local information.
 <p></p>
