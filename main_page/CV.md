@@ -61,6 +61,19 @@ Python implementation of a Conditional Generative Adversarial Network (cGAN) usi
 </div>
 </div>
 
+
+## [![GANS](https://img.shields.io/badge/GAN-Generative_Adversarial_Networks-blue?style=for-the-badge&logo=github)](../posts/GAN)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+
+Generative Adversarial Networks (GANs) are composed of two neural networks:
+* A **Generator (G)**: learns to generate fake samples $G(z)$ from random noise $z \sim p(z)$
+* A **Discriminator (D)**: learns to classify samples as real (from data) or fake (from the generator)
+* 
+These networks are trained in a two-player minimax game.
+  <p></p>
+</div>
+</div>
+
 ## [![SubPixelConv](https://img.shields.io/badge/SubPixelConv-Pixel_Shuffle-blue?style=for-the-badge&logo=github)](../posts/SubPixelConv)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 **Sub-pixel convolution** (also known as **pixel shuffle**) is a technique primarily used for **image super-resolution** and other upsampling tasks in deep learning. Instead of upsampling via interpolation or transposed convolution, it learns to generate a **high-resolution image** from a low-resolution feature map by **reorganizing the channels**.
