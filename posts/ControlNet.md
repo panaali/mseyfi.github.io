@@ -49,7 +49,7 @@ ControlNet introduces **controllers**—additional neural network modules that p
 ---
 ![Controlnet Architecture](../images/stb1.jpg)
 
-*Fig. 1 controlnet architecture with zero convolutions*
+*Fig. 1 controlnet architecture with zero convolutions. Note that the main stable diffusion model is frozen and we do only a fine-tuning with controlnet. This is because the conditioning dataset might be small and we may overfit, and also we do not want to retrain a high-quality stable diffusion from scratch. Note that we have a pretrained VAE on the image dataset that generates a high quality latent space feature as the input of stable diffusion.*
 
 ## 3. Architecture of ControlNet
 
