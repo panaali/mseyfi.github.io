@@ -6,6 +6,76 @@ This is a conditional GAN Training loop, which is exactly the same as DCGANs, wi
 
 **Note that the input images are aligned with the input labels, so the Discriminator and Generator implicitly learn their dependence to the input images.**
 
+### How a conditional GAN (cGAN) “ties” an image to its label
+
+**Key point:** during training the **pair** *(image `x`, label `y`)* is what is judged as real or fake.
+If the image and the label don’t “match”, the discriminator immediately wins, so gradients push both networks toward *“image ↔ label consistency”*.
+
+---
+
+## 1  Conditional adversarial objective
+
+$$
+\min_{G}\,\max_{D}\;
+\mathcal{L}(G,D)=
+\mathbb{E}_{x,y\sim p_{\text{data}}}\bigl[\log D(x,y)\bigr] \;+\;
+\mathbb{E}_{z\sim p(z),\,y\sim p_{\text{data}}}\bigl[\log(1-D(G(z,y),y))\bigr]
+$$
+
+* **Real term** `(x,y)` sampled from the dataset → target **1**
+* **Fake term** `(G(z,y),y)` → target **0**
+
+Because `y` is fed into **both** networks:
+
+* **Discriminator** learns a similarity score *f(x,y)* that is **high** when the visual evidence in `x` agrees with the semantics of `y`.
+* **Generator** receives gradients through the **fake term**; if it outputs a digit *5* while `y=3`, `D` easily rejects it (`f` low), so the gradient nudges `G` to make its output look more “3-like”.
+
+At equilibrium $p_{G}(x\,|\,y)=p_{\text{data}}(x\,|\,y)$.
+
+---
+
+## 2  Where the label enters
+
+| Network                    | Injection method                                                                                         | What happens during back-prop?                                                                                                                           |
+| -------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Generator $G(z,y)$**     | concatenate `y`-embedding to `z`, or use Conditional BatchNorm, FiLM, AdaIN, etc.                        | Gradients flow into the **embedding vector for `y`** and all layers that see it, allowing each class to carve out its own region of the output manifold. |
+| **Discriminator $D(x,y)$** | *Concatenation* (`x‖y`) or *projection* trick: $D(x,y)=\sigma\big(f(x)+\langle\phi(y),h(x)\rangle\big)$. | If the image content contradicts the label, the inner product term becomes negative, lowering $D$’s score and producing a strong gradient signal.        |
+
+### Embedding layer vs. Linear layer (why we embed `y`)
+
+* **`nn.Embedding(C,d)`**: a *lookup* table $W\in\mathbb{R}^{C\times d}$.
+  Input is an **integer id**; output is the corresponding row. Only that row’s parameters receive gradients.
+* **`nn.Linear(C,d)`**: a dense affine map that expects a **real vector** (usually one-hot if used for labels); *every* weight updates each step—wasteful for small $C$.
+
+The embedding therefore gives each class its own learnable “style vector” with minimal compute.
+
+---
+
+## 3  Why the link cannot be ignored
+
+*Suppose `G` tries to ignore `y`.*
+Then $G(z,y)\approx G(z)$. The discriminator still sees the label, so it quickly discovers a pattern:
+
+> “Whenever the label is 3, the strokes look like random digits, not like a 3.”
+> `D`’s accuracy shoots to 1, its gradients ≠ 0, and `G` is forced (by the adversarial loss) to make images that reduce this discrepancy.
+> Conversely, if `D` decides to ignore `y`, its real/fake accuracy drops because real and fake *pairs* become indistinguishable—`D` is pushed to use the label.
+
+Thus the *zero-sum* game drives both players to exploit every predictive bit in `y`, resulting in label-conditioned synthesis.
+
+---
+
+## 4  Practical signs the conditioning is working
+
+* **Per-class FID / accuracy** drops: generated “3”s are evaluated only against real “3”s.
+* **Interference test**: feed the same latent `z` with all labels 0-9. A well-trained cGAN will morph the same base strokes into each digit while preserving style.
+* **Latent traversal** within a fixed label changes pose/thickness but not class, showing disentanglement.
+
+---
+
+### TL;DR
+
+The discriminator judges *pairs* $(x,y)$; the generator can fool it **only** by emitting images whose class evidence truly matches `y`. Gradients flowing through the shared label embeddings make this association explicit and trainable.
+
 ```python
 import torch
 import torch.nn as nn
