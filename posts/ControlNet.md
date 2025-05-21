@@ -64,6 +64,10 @@ The U-Net serves as the core architecture for both standard diffusion models and
 - **Decoder:** Upsamples the features back to the original resolution.
 - **Skip Connections:** Directly connect corresponding layers in the encoder and decoder, preserving spatial information.
 
+![Controlnet Architecture](../images//stb2.jpg)
+
+*Fig. 2 Controlnet architecture, the input is preprocessed to give a condition. This condition then should be passed to network $\mathcal{E}$ to match the stable diffusion size which is usually c x 64 x64. $\mathcal{E}$ can be trained end-to-end with the Controlnet.*
+
 ### The Controller
 
 The **controller** is the distinguishing feature of ControlNet. It processes the auxiliary control signals and integrates their information into the U-Net architecture.
@@ -147,6 +151,7 @@ $$
 
 - **$$\lambda$$:** Balances the influence of the perceptual loss relative to the diffusion loss.
 
+
 **Implementation Example:**
 ```python
 lambda_perceptual = 0.1
@@ -154,9 +159,6 @@ loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
 ```
 
 ---
-![Controlnet Architecture](../images//stb2.jpg)
-
-*Fig. 2 Controlnet architecture, the input is preprocessed to give a condition. This condition then should be passed to network $\mathcal{E}$ to match the stable diffusion size which is usually c x 64 x64. $\mathcal{E} can be trained end-to-end with the Controlnet.$*
 
 ## 5. Training Procedure
 
@@ -486,6 +488,9 @@ for epoch in range(num_epochs):
 - **Data Loading:** Replace the `RandomSegmentationDataset` with actual data loading logic tailored to your dataset.
 
 ---
+![Controlnet Architecture](../images//stb4.jpg)
+
+*Fig. 3 end-to-end inference step from $T\rightarrow 0$*
 
 ## 6. Inference Procedure
 
