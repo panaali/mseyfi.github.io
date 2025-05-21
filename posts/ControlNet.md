@@ -162,7 +162,7 @@ loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
 
 ![Controlnet Architecture](../images/stb5.jpg)
 
-*Fig. 3. Training procedure for Controlnet, with perceptual loss as an option. Note that perceptual loss is not mandatory. **Note that the input to the controlnet(the input before $\mathcal{E}$ block) is the same as what we expect in the inference time** *
+*Fig. 3. Training procedure for Controlnet, with perceptual loss as an option. Note that perceptual loss is not mandatory. **Note that the input to the controlnet(the input before $\mathcal{E}$ block) is the same as what we expect in the inference time; however, the input to the stable diffusion in the inference time is a latent space noise as opposed to the training time which is the ground truth latent representation.** *
 
 ## 5. Training Procedure
 
