@@ -49,7 +49,7 @@ ControlNet introduces **controllers**—additional neural network modules that p
 ---
 ![Controlnet Architecture](../images/stb1.jpg)
 
-
+*Fig. 1 controlnet architecture with zero convolutions*
 
 ## 3. Architecture of ControlNet
 
@@ -155,6 +155,8 @@ loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
 
 ---
 ![Controlnet Architecture](../images//stb2.jpg)
+
+*Fig. 2 Controlnet architecture, the input is preprocessed to give a condition. This condition then should be passed to network $\mathcal{E}$ to match the stable diffusion size which is usually c x 64 x64. $\mathcal{E} can be trained end-to-end with the Controlnet.$*
 
 ## 5. Training Procedure
 
