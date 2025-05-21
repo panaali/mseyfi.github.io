@@ -1,6 +1,11 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
 ## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](../main_page/CV)
+
+This is a conditional GAN Training loop, which is exactly the same as DCGANs, with one minor change. The input to both Generator and Discriminator is concatenated (via embedding layers and maybe some conv layers) to the original inputs we had before. So labels are concatenated to noise for the Generator and are concatenated to the input image for the Discriminator. To match the size we can use some intermediate layers. 
+
+**Note that the input images are aligned with the input labels, so the Discriminator and Generator implicitly learn their dependence to the input images.**
+
 ```python
 import torch
 import torch.nn as nn
