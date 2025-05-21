@@ -1,8 +1,7 @@
 [![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
 
 ## [![CV](https://img.shields.io/badge/CV-Selected_Topics_in_Computer_Vision-green?style=for-the-badge&logo=github)](../main_page/CV)
-
-Below is a Python implementation of a Conditional Generative Adversarial Network (cGAN) using PyTorch. This example uses the MNIST dataset to generate images conditioned on class labels (digits from 0 to 9).
+```python
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -35,7 +34,7 @@ train_loader = DataLoader(
     dataset=train_dataset, batch_size=batch_size, shuffle=True
 )
 
-# Generator model
+# Generator model 
 class Generator(nn.Module):
     def __init__(self, latent_dim, num_classes):
         super(Generator, self).__init__()
@@ -85,7 +84,7 @@ class Discriminator(nn.Module):
         validity = self.model(d_in)                                      # [B, 1]
         return validity
 
-# Initialize models
+# Initialize models 
 generator = Generator(latent_dim, num_classes).to(device)
 discriminator = Discriminator(latent_dim, num_classes).to(device)
 
@@ -107,9 +106,7 @@ for epoch in range(num_epochs):
         valid = torch.ones(batch_size, 1, device=device)  # [B, 1]
         fake = torch.zeros(batch_size, 1, device=device)  # [B, 1]
 
-        # -----------------
-        #  Train Generator
-        # -----------------
+        # Train Generator
         optimizer_G.zero_grad()
         z = torch.randn(batch_size, latent_dim, device=device)       # [B, 100]
         gen_labels = torch.randint(0, num_classes, (batch_size,), device=device)  # [B]
@@ -119,9 +116,7 @@ for epoch in range(num_epochs):
         g_loss.backward()
         optimizer_G.step()
 
-        # ---------------------
-        #  Train Discriminator
-        # ---------------------
+        # Train Discriminator
         optimizer_D.zero_grad()
         real_validity = discriminator(real_imgs, labels)             # [B, 1]
         d_real_loss = adversarial_loss(real_validity, valid)
@@ -133,9 +128,8 @@ for epoch in range(num_epochs):
 
         if i % 400 == 0:
             print(f"Epoch [{epoch}/{num_epochs}] Batch {i}/{len(train_loader)} Loss D: {d_loss.item():.4f}, loss G: {g_loss.item():.4f}")
-
+```
 print("Training finished.")
-
 **Explanation:**
 
 - **Generator (`Generator` class):**
@@ -167,38 +161,4 @@ print("Training finished.")
 - **Label Embedding:**
   - The labels are embedded into a continuous vector space.
   - This embedding is learned during training and helps the generator and discriminator to condition on labels.
-
-- **Data Normalization:**
-  - Images are normalized to the range \([-1, 1]\) using `transforms.Normalize([0.5], [0.5])`.
-  - The generator uses a `Tanh` activation function in the output layer to match this range.
-
-- **Device Configuration:**
-  - The code automatically uses GPU if available.
-  - Ensures faster training when a compatible GPU is present.
-
-- **Monitoring Training:**
-  - Training progress is printed every 400 batches.
-  - You can modify this interval or add code to save generated images for better monitoring.
-
-**Optional Enhancements:**
-
-- **Image Saving:**
-  - Use `torchvision.utils.save_image` to save generated images at each epoch.
-  - Helps in visualizing the generator's performance over time.
-
-- **Model Checkpointing:**
-  - Save the model parameters using `torch.save` to resume training later.
-  - Useful for long training sessions.
-
-- **Hyperparameter Tuning:**
-  - Experiment with different learning rates, batch sizes, and network architectures.
-  - Adjust the number of epochs based on convergence.
-
-**Dependencies:**
-
-Make sure you have the following packages installed:
-
-```bash
-pip install torch torchvision
-```
 
