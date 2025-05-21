@@ -161,7 +161,9 @@ loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
 ---
 
 ![Controlnet Architecture](../images/stb5.jpg)
-*Fig 3. Training procedure for Controlnet, with perceptual loss as an option. Note that perceptual loss is not mandatory*
+
+*Fig. 3. Training procedure for Controlnet, with perceptual loss as an option. Note that perceptual loss is not mandatory. **Note that the input to the controlnet(the input before $\mathcal{E}$ block) is the same as what we expect in the inference time** *
+
 ## 5. Training Procedure
 
 Training ControlNet involves optimizing the model parameters to minimize the combined loss function. Below is a step-by-step guide, accompanied by a PyTorch implementation example.
@@ -492,7 +494,7 @@ for epoch in range(num_epochs):
 ---
 ![Controlnet Architecture](../images//stb4.jpg)
 
-*Fig. 3 end-to-end inference step from $T\rightarrow 0$*
+*Fig. 4 end-to-end inference step from $T\rightarrow 0$*
 
 ## 6. Inference Procedure
 
