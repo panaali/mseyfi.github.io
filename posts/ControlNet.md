@@ -47,6 +47,9 @@ ControlNet introduces **controllers**—additional neural network modules that p
 - **Enhanced Quality:** Maintains high image fidelity while adhering to constraints.
 
 ---
+![Controlnet Architecture](../images/stb1.jpg)
+
+
 
 ## 3. Architecture of ControlNet
 
@@ -151,6 +154,7 @@ loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
 ```
 
 ---
+![Controlnet Architecture](../images//stb2.jpg)
 
 ## 5. Training Procedure
 
