@@ -160,6 +160,8 @@ loss_total = loss_diffusion + lambda_perceptual * loss_perceptual
 
 ---
 
+![Controlnet Architecture](../images/stb5.jpg)
+*Fig 3. Training procedure for Controlnet, with perceptual loss as an option. Note that perceptual loss is not mandatory*
 ## 5. Training Procedure
 
 Training ControlNet involves optimizing the model parameters to minimize the combined loss function. Below is a step-by-step guide, accompanied by a PyTorch implementation example.
