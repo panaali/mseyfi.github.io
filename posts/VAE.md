@@ -6,6 +6,10 @@
 
 ---
 
+![VAE Architecture](../images/vae1.png)
+
+*Fig. 1 the structure of variational autoencoder.*
+
 ### 🔧 Problem Statement: Why Do We Need VAEs?
 
 We want to learn a **generative model** that can:
@@ -45,6 +49,10 @@ $$
 And $p_\theta(x)$ involves the same intractable integral from (1).
 
 ---
+
+![VAE Architecture](../images/vae2.png)
+
+*Fig. 2 posterior approximation in vae.*
 
 ### ✨ Solution: Approximate the Posterior with an Encoder
 
