@@ -53,6 +53,14 @@ The Detection Transformer (DETR) is a novel approach to object detection that le
 Vision Transformers (ViTs) apply the Transformer architecture, originally designed for natural language processing (NLP), to computer vision tasks like image classification. ViTs treat an image as a sequence of patches (akin to words in a sentence) and process them using Transformer encoders. <p></p>
 </div>
 
+## [![VAE](https://img.shields.io/badge/VAEs-Variational_Auto_Encoders-blue?style=for-the-badge&logo=github)](../posts/ConditionalGAN)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+Variational Autoencoders (VAEs): A Complete Tutorial
+ <p></p>
+</div>
+</div>
+
+
 ## [![CGANS](https://img.shields.io/badge/CGANs-Conditional_GAN-blue?style=for-the-badge&logo=github)](../posts/ConditionalGAN)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Python implementation of a Conditional Generative Adversarial Network (cGAN) using PyTorch.
