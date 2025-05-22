@@ -532,6 +532,149 @@ print(f"Most similar image: {most_similar_image_path}")
 
 ---
 
+## Addendum
+Let's break down the **tensor shapes in CLIP's Vision Transformer (ViT)** encoder step-by-step — from raw image to final image embedding. I'll use **ViT-B/32** as the base example and show how tensors flow.
+
+---
+
+## 🖼️ Input Image
+
+Assume:
+
+* Input image: `img`
+* Shape:
+
+  $$
+  \text{img} \in \mathbb{R}^{B \times 3 \times H \times W}
+  $$
+
+  * $B$: batch size
+  * $H = W = 224$
+  * $3$: RGB channels
+
+---
+
+## 🧩 1. Patch Embedding
+
+* Patch size $P = 32$
+* Number of patches per image:
+
+  $$
+  N = \frac{H}{P} \cdot \frac{W}{P} = \frac{224}{32} \cdot \frac{224}{32} = 7 \cdot 7 = 49
+  $$
+
+**Operation**:
+
+* Apply a Conv2d with:
+
+  * `in_channels = 3`
+  * `out_channels = D = 512`
+  * `kernel_size = 32`, `stride = 32`
+
+**Output shape after Conv2d**:
+
+$$
+\text{patches} \in \mathbb{R}^{B \times 512 \times 7 \times 7}
+$$
+
+**Flatten patches**:
+
+$$
+\text{patches} \rightarrow \mathbb{R}^{B \times 49 \times 512}
+$$
+
+---
+
+## 🔤 2. Add Class Token
+
+* A learnable token of shape $\mathbb{R}^{1 \times 1 \times 512}$
+* Concatenated to the beginning:
+
+$$
+\text{tokens} \in \mathbb{R}^{B \times 50 \times 512}
+$$
+
+* 49 patches + 1 class token = 50 tokens
+
+---
+
+## 📍 3. Add Positional Embedding
+
+* Positional embedding:
+
+  $$
+  \text{pos\_embed} \in \mathbb{R}^{1 \times 50 \times 512}
+  $$
+
+* Added element-wise:
+
+$$
+\text{tokens} \leftarrow \text{tokens} + \text{pos\_embed}
+$$
+
+Shape remains:
+
+$$
+\text{tokens} \in \mathbb{R}^{B \times 50 \times 512}
+$$
+
+---
+
+## 🧠 4. Transformer Encoder
+
+* 12 layers (ViT-B/32) of Multi-head Self-Attention (MSA) + MLP
+
+* Input:
+
+  $$
+  \text{tokens} \in \mathbb{R}^{B \times 50 \times 512}
+  $$
+
+* Output (same shape):
+
+  $$
+  \text{encoded} \in \mathbb{R}^{B \times 50 \times 512}
+  $$
+
+---
+
+## 🎯 5. Extract Class Token & Projection
+
+* Take only the **first token** (class token):
+
+  $$
+  \text{class\_token} \in \mathbb{R}^{B \times 512}
+  $$
+
+* Apply a linear projection head (optional in CLIP):
+
+  $$
+  \text{image\_embedding} \in \mathbb{R}^{B \times 512}
+  $$
+
+* Normalize:
+
+  $$
+  \text{image\_embedding} \leftarrow \frac{\text{image\_embedding}}{\|\cdot\|}
+  $$
+
+---
+
+## 🔢 Summary Table
+
+| Stage                 | Tensor Shape                       | Description                                  |
+| --------------------- | ---------------------------------- | -------------------------------------------- |
+| Input Image           | $B \times 3 \times 224 \times 224$ | RGB image                                    |
+| After Patch Embedding | $B \times 49 \times 512$           | 49 flattened patch tokens                    |
+| Add Class Token       | $B \times 50 \times 512$           | 49 patches + 1 class token                   |
+| Add Positional Embed  | $B \times 50 \times 512$           | same shape after addition                    |
+| Transformer Output    | $B \times 50 \times 512$           | encoded tokens                               |
+| Extract Class Token   | $B \times 512$                     | final image representation                   |
+| Normalize             | $B \times 512$                     | L2-normalized embedding for contrastive loss |
+
+---
+
+
 ## Conclusion
 
 In this tutorial, we've explored:
