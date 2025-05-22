@@ -58,14 +58,11 @@ Vision Transformers (ViTs) apply the Transformer architecture, originally design
 Variational Autoencoders (VAEs): A Complete Tutorial
  <p></p>
 </div>
-</div>
 
 ## [![CGANS](https://img.shields.io/badge/CGANs-Conditional_GAN-blue?style=for-the-badge&logo=github)](../posts/ConditionalGAN)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 Python implementation of a Conditional Generative Adversarial Network (cGAN) using PyTorch.
  <p></p>
-
-</div>
 </div>
 
 
@@ -79,7 +76,6 @@ Generative Adversarial Networks (GANs) are composed of two neural networks:
 These networks are trained in a two-player minimax game.
   <p></p>
 </div>
-</div>
 
 ## [![SubPixelConv](https://img.shields.io/badge/SubPixelConv-Pixel_Shuffle-blue?style=for-the-badge&logo=github)](../posts/SubPixelConv)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
@@ -90,7 +86,6 @@ These networks are trained in a two-player minimax game.
 ## [![FeatureHierarchy](https://img.shields.io/badge/FeatureHierarchy-Feature_Evolution_Along_DNN-blue?style=for-the-badge&logo=github)](../posts/FeatureHierarchy)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 This note explains how **features evolve across layers in deep neural networks** (especially CNNs), and how **fine-grained features** emerge and are preserved or enhanced for tasks like fine-grained classification, detection, and facial recognition.
-
   <p></p>
 </div>
 
@@ -104,9 +99,7 @@ Generalization issue with Distillation
 
 [![MaskRCNN](https://img.shields.io/badge/MaskRCNN-Instancce_Segmentation-blue?style=for-the-badge&logo=github)](../posts/MaskRCNN)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
-
 This tutorial is written to provide an extensive understanding of the Mask R-CNN architecture by dissecting every individual component involved in its pipeline.
-
 </div>
 
 [![SSD](https://img.shields.io/badge/SSD-Single_Shot_Object_Detector-blue?style=for-the-badge&logo=github)](../posts/ssd)
