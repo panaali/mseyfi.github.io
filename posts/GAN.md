@@ -72,9 +72,15 @@ This means:
 ### Non-Saturating Loss (Practical Generator Loss)
 
 Instead of minimizing:
-$\mathbb{E}_{z} [\log(1 - D(G(z)))]$
+$$
+\mathbb{E}_{z} [\log(1 - D(G(z)))]
+$$
+
 We minimize:
-$\mathcal{L}_G^{\text{non-saturating}} = -\mathbb{E}_{z} [\log D(G(z))]$
+
+$$
+\mathcal{L}_G^{\text{non-saturating}} = -\mathbb{E}_{z} [\log D(G(z))]
+$$
 
 This avoids saturation and gives large gradients when $D(G(z)) \approx 0$.
 
