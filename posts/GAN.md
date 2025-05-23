@@ -33,7 +33,7 @@ $$
 
 ### BCE Loss for Generator (G)
 
-Original generator loss (from minimax formulation) $\rightarrow$ maximize the loss below:
+Original generator loss (from minimax formulation) $\to$ maximize the loss below:
 
 $$
 \mathcal{L}_G^{\text{original}} = \mathbb{E}_{z \sim p(z)}[-\log(1 - D(G(z)))]
@@ -67,11 +67,12 @@ If $D(G(z)) \to 0$, then $\log(1 - D(G(z))) \to 0$ and gradient $\nabla_G \mathc
 
 This means:
 
-> The generator receives no learning signal when it's weak (bad at fooling D). This is called **loss saturation**.
+> The generator receives no learning signal when it's weak (bad at fooling $D$). This is called **loss saturation**.
 
 ### Non-Saturating Loss (Practical Generator Loss)
 
 Instead of minimizing:
+
 $$
 \mathbb{E}_{z} [\log(1 - D(G(z)))]
 $$
