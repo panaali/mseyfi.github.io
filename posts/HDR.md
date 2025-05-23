@@ -38,6 +38,10 @@ Capture multiple Low Dynamic Range (LDR) images with different exposure times:
 
 ### Step 2: **Camera Response Function (CRF): What and Why?**
 
+![Reinhard](../images/CRF.png)
+
+*Fig. 1 CRF function maps E(Irrediance) * exposure time to RGB values*
+
 The **Camera Response Function (CRF)** describes how the **sensor maps physical light (irradiance × exposure time)** to **recorded pixel values**.
 
 * **Input (x-axis)**: Scene radiance scaled by exposure time (i.e., how much light hits the sensor)
@@ -117,6 +121,22 @@ Tone mapping compresses these values to \[0, 1] or \[0, 255] range.
 
 #### Reinhard Global Operator:
 
+![Reinhard](../images/Reinhard.png)
+
+*Fig. 2 Reinhard tone mapping compresses the radiance map to 0, 1, Now for a custom tone mapping we can insist on more highlits or shadows*
+
+ y(srgb)
+ │               .------           <- highlight rolloff (compression of highlights)
+ │            .-'                 
+ │         .-'
+ │      .-'
+ │   .-'
+ │.-'                               
+ └─────────────────► x(HDR)
+     ↑      ↑      ↑
+  shadows midtones highlights
+
+
 **Equation (5):**
 
 $$
@@ -130,6 +150,11 @@ Apply different compression based on local contrast, preserving details in diffe
 ---
 
 ### Step 7: **Gamma Correction**
+[Very good explanation for Gamma](https://www.cambridgeincolour.com/tutorials/gamma-correction.htm#:~:text=The%20main%20purpose%20of%20the,darker%20image%20with%20greater%20contrast.)
+
+![Gamma](../images/Gamma.png)
+
+*Fig. 3 Gamma correction, SRGB images are Gamma corrected to encode images in less bit. The curve is build this way because human perception is more sensitive to darker tones than brighter tones. Hence, more bits for darker tones. Then the CRT displays we they want to show the images should compensate for this encoding.  The compensated gamma  represents the net effect of all gamma values that have been applied to an image, and is also referred to as the "viewing gamma." For faithful reproduction of a scene, this should ideally be close to a straight line (gamma = 1.0). A straight line ensures that the input (the original scene) is the same as the output (the light displayed on your screen or in a print). However, the system gamma is sometimes set slightly greater than 1.0 in order to improve contrast. This can help compensate for limitations due to the dynamic range of a display device, or due to non-ideal viewing conditions and image flare.*
 
 * Human vision is nonlinear; display systems account for this using gamma.
 * Gamma correction adjusts brightness perceptually:
