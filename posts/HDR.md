@@ -130,6 +130,38 @@ Tone mapping compresses these values to \[0, 1] or \[0, 255] range.
 
 *Fig. 2 Reinhard tone mapping compresses the radiance map to 0, 1, Now for a custom tone mapping we can insist on more highlits or shadows*
 
+In a **tone mapping curve**, different regions of the curve control different parts of the dynamic range of the image:
+
+---
+
+### 🔷 Anatomy of a Tone Mapping Curve
+
+A **tone mapping curve** is typically a function:
+
+$$
+y = f(x)
+$$
+
+* $x$ = input luminance (often HDR, e.g., in log or linear scale)
+* $y$ = mapped luminance (SDR, displayable)
+
+The **shape** of the curve determines how different intensity ranges (shadows, midtones, highlights) are compressed.
+
+---
+
+### 🔷 Key Regions of the Curve
+
+| Region of Input (x) | Affects        | Location on Curve | Behavior                                                                |
+| ------------------- | -------------- | ----------------- | ----------------------------------------------------------------------- |
+| **Low values**      | **Shadows**    | **Left**          | Controls visibility of dark regions; risk of crushing black if too flat |
+| **Mid values**      | **Midtones**   | **Middle**        | Controls contrast and perceptual detail                                 |
+| **High values**     | **Highlights** | **Right**         | Compresses bright parts to avoid clipping; controls glow or shine       |
+
+---
+
+### 🔷 Visual Intuition
+
+```
  y(srgb)
  │               .------           <- highlight rolloff (compression of highlights)
  │            .-'                 
@@ -140,6 +172,25 @@ Tone mapping compresses these values to \[0, 1] or \[0, 255] range.
  └─────────────────► x(HDR)
      ↑      ↑      ↑
   shadows midtones highlights
+```
+
+* **Left part (x ≈ 0–0.3)**: Shadows — you can lift this part to brighten dark areas.
+* **Right part (x ≈ 0.7–1.0)**: Highlights — compress this to avoid clipping; this is where highlight roll-off happens.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 **Equation (5):**
