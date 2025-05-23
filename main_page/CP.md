@@ -51,3 +51,11 @@ HPF and LPF filtering of images, Gaussian Kernels, Laplacian Pyramids
 <p></p>
 </div>
 
+## [![HDR](https://img.shields.io/badge/HDR-High_Dynamic_Range-blue?style=for-the-badge&logo=github)](../posts/HDR)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+Standard cameras and displays work in Standard Dynamic Range (SDR), which only captures a limited range of light intensity (~100 nits). However, real-world scenes span a much larger range (~0.01 to 10,000+ nits). HDR imaging aims to:
+  <p></p>
+</div>
+
+
+
