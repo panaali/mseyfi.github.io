@@ -107,7 +107,8 @@ Since k-means++ does not choose $K$, you need to select it manually. Here are co
 
 ### 1. Elbow Method
 
-![Elbow]("../images/Elbow-Method.png")
+![Elbow](../images/Elbow.png)
+
 
 *Fig. 1 Within-Cluster-Sum of Squares (WCSS) loss versus K*
 
