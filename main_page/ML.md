@@ -47,3 +47,9 @@ K-Means is a popular clustering algorithm used to partition a dataset into **K c
 <p></p>
 </div>
 
+
+## [![DecisionTrees](https://img.shields.io/badge/DecisionTrees-Rule_Based_Model-blue?style=for-the-badge&logo=github)](../posts/DecisionTrees)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+A Decision Tree is a recursive, rule-based model that partitions the feature space $R^n$ into disjoint regions and assigns a prediction to each region. It works by splitting the dataset at each node based on feature values to reduce some measure of impurity or error.
+<p></p>
+</div>
