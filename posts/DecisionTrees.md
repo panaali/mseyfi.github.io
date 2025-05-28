@@ -82,7 +82,11 @@ $$
 L(S) = \frac{1}{n} \sum_{i=1}^{n} (y_i - \bar{y})^2 = \text{Var}(S)
 $$
 
-Where $\bar{y}$ is the mean of the target values in the node.
+* $y_i$ refers to the **true target value** of the $i^{th}$ training sample within the current node.
+* $\bar{y}$ is the **mean** of all $y_i$ values in the node (i.e., the prediction the model will output for all samples in this region).
+* So this formula measures how far each true value $y_i$ is from the average $\bar{y}$, and **squares** that distance to penalize larger deviations more.
+
+This is the **mean squared error (MSE)**, and it's used to quantify how well a node's prediction (the average) fits the actual values.
 
 ---
 
