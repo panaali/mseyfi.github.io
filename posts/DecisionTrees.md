@@ -297,7 +297,26 @@ We prune the tree by selecting subtrees that minimize $R_\alpha(T)$. Larger $\al
 
 Decision trees can easily overfit the training data by creating very specific branches for rare patterns. To prevent this, we apply **pruning**, which simplifies the tree structure.
 
-### Part 8: Summary Table
+### Part 8: Pros and Cons of Decision Trees
+#### ✅ Advantages:
+
+* **Interpretability**: Easy to visualize and explain. You can follow a decision path.
+* **No data normalization needed**: Trees are invariant to feature scaling.
+* **Handles mixed data types**: Works with numerical and categorical features.
+* **Fast inference**: Only one path is followed per prediction — $\mathcal{O}(D)$.
+* **Feature selection built-in**: Trees automatically select informative features.
+
+#### ❌ Disadvantages:
+
+* **Overfitting**: Deep trees often memorize the training data.
+* **Instability**: Small changes in the data can lead to different trees (high variance).
+* **Bias towards features with more splits**: Features with more values might dominate splits.
+* **Greedy decisions**: Local optima are found; there's no guarantee of global optimality.
+* **Hard to learn smooth functions**: Unlike linear models or kernel methods.
+
+---
+
+### Part 9: Summary Table
 
 | Task           | Loss Function  | Leaf Output    |
 | -------------- | -------------- | -------------- |
