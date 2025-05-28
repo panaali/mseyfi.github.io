@@ -281,7 +281,7 @@ $$
 * $|T|$: number of terminal (leaf) nodes
 * $\alpha$: regularization parameter controlling the trade-off between accuracy and simplicity
 
-We prune the tree by selecting subtrees that minimize $R_lpha(T)$. Larger $lpha$ encourages simpler trees. CCP is used in many implementations such as `scikit-learn`’s `DecisionTreeClassifier`.
+We prune the tree by selecting subtrees that minimize $R_\alpha(T)$. Larger $\alpha$ encourages simpler trees. CCP is used in many implementations such as `scikit-learn`’s `DecisionTreeClassifier`.
 
 Decision trees can easily overfit the training data by creating very specific branches for rare patterns. To prevent this, we apply **pruning**, which simplifies the tree structure.
 
