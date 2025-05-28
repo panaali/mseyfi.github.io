@@ -1,3 +1,7 @@
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+## [![ML](https://img.shields.io/badge/ML-Selected_Topics_in_Machine_Learning-green?style=for-the-badge&logo=github)](../main_page/ML)
+
 **# K-Means Clustering and k-means++ Initialization: A Practical Tutorial**
 
 ## 🔍 Overview
@@ -102,6 +106,7 @@ def kmeans(X, K, max_iters=100):
 Since k-means++ does not choose $K$, you need to select it manually. Here are common strategies:
 
 ### 1. Elbow Method
+
 ![Elbow]("../images/Elbow-Method.png")
 
 *Fig. 1 Within-Cluster-Sum of Squares (WCSS) loss versus K*
