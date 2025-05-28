@@ -137,19 +137,29 @@ This recursive algorithm ensures that once a split is selected, both child nodes
 
 #### Tree Representation and Inference
 
-Once trained, the decision tree is stored as a nested tree structure of nodes:
+* Each node stores a feature and threshold.
+* Each leaf stores a prediction (mean or majority class).
 
-* Each node holds the split feature and threshold.
-* Each leaf holds a value (class label or regression mean).
+**Inference in a Decision Tree**
 
-**Inference** works by traversing the tree:
+Once the tree is trained, inference is done by following a decision path from the root to a leaf node based on the input features.
 
-1. Start at the root.
-2. At each node, check the feature: if $x[f] \leq \text{threshold}$, go to left child; otherwise right.
-3. Repeat until a leaf is reached.
-4. Return the value in the leaf.
+**Procedure:**
 
-Time complexity of inference is $\mathcal{O}(D)$, where $D$ is the depth of the tree.
+1. Start at the root node.
+2. At each internal node:
+
+   * If the input feature value satisfies the condition (e.g., $x[j] \leq t$), move to the **left** child.
+   * Otherwise, move to the **right** child.
+3. Repeat this process recursively until a **leaf node** is reached.
+4. The prediction is the **value stored in the leaf**:
+
+   * For **classification**: the majority class in the node.
+   * For **regression**: the mean target value of the node’s samples.
+
+**Time Complexity**: Inference is very fast — $\mathcal{O}(D)$, where $D$ is the depth of the tree, because only one path from root to leaf is followed.
+
+This path-based traversal makes decision trees highly interpretable and efficient for real-time prediction tasks.
 
 ---
 
