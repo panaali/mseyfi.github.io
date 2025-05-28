@@ -1,0 +1,250 @@
+## 🌳 Decision Tree Tutorial
+
+### Part 1: What Is a Decision Tree?
+
+A Decision Tree is a recursive, rule-based model that partitions the feature space $\mathbb{R}^n$ into disjoint regions and assigns a prediction to each region. It works by splitting the dataset at each node based on feature values to reduce some measure of impurity or error.
+
+---
+
+### Part 2: Splits and Split Criteria
+
+A **split** is a binary partition of your dataset using a feature $x_j$ and a threshold $t$:
+
+* Left Child: $\{x \mid x_j \leq t\}$
+* Right Child: $\{x \mid x_j > t\}$
+
+We want to pick the split that results in the most **homogeneous** child nodes (lowest impurity or error).
+
+We use a greedy algorithm to find the best (feature, threshold) pair by minimizing:
+
+$L_{\text{split}} = \frac{n_L}{n} L_L + \frac{n_R}{n} L_R$
+
+Where:
+
+* $L_L, L_R$: loss of the left and right child
+* $n_L, n_R$: number of samples in left and right
+* $n = n_L + n_R$
+
+---
+
+### Part 3: Classification Losses
+
+#### Gini Impurity:
+
+$$
+G(S) = 1 - \sum_{c=1}^{C} p(c)^2
+$$
+
+The Gini impurity measures how often a randomly chosen element from the set would be incorrectly labeled if it were randomly labeled according to the distribution of labels in the subset.
+
+The term $p(c)^2$ reflects the probability of **correctly guessing** the label if you sample twice with replacement:
+
+* $p(c)^2$: probability that two independent samples from the node belong to class $c$.
+* $\sum p(c)^2$: total probability of correct matches.
+* So $1 - \sum p(c)^2$: total probability of **mismatches** → this is the impurity.
+
+The square emphasizes that a node with one dominant class (large $p(c)$) gets much lower Gini, reinforcing purity.
+
+#### Entropy:
+
+$$
+H(S) = -\sum_{c=1}^{C} p(c) \log_2 p(c)
+$$
+
+Entropy comes from information theory. It measures the **expected number of bits** required to encode a label drawn at random.
+
+* When all classes are equally likely → maximum entropy.
+* When one class dominates → entropy is near zero.
+
+By minimizing entropy after a split, we aim to move towards **certainty** (low disorder). This means the region is more "pure", with fewer mixed-class samples.
+
+#### How is $p(c)$ defined?
+
+Given $n$ samples in a node and $n_c$ samples that belong to class $c$:
+
+$$
+p(c) = \frac{n_c}{n}
+$$
+
+It represents the **empirical probability** of class $c$ in the current node. Since the total number of samples in the node is $n$, we have:
+
+$$
+\sum_{c=1}^{C} p(c) = 1
+$$
+
+---
+
+### Part 4: Regression Loss
+
+#### Mean Squared Error (MSE):
+
+$$
+L(S) = \frac{1}{n} \sum_{i=1}^{n} (y_i - \bar{y})^2 = \text{Var}(S)
+$$
+
+Where $\bar{y}$ is the mean of the target values in the node.
+
+---
+
+### Part 5: Greedy Training Strategy
+
+At each node:
+
+1. Loop through every feature.
+2. For each unique threshold in that feature:
+
+   * Split the dataset.
+   * Compute child losses.
+   * Compute $L_{\text{split}}$.
+3. Choose the split with **minimum total loss**.
+
+This is greedy: no backtracking or lookahead.
+
+#### Depth-Based Splitting
+
+Let the user specify a maximum depth $D$. Starting from the root (depth 0), recursively split **both child nodes**, regardless of which has higher or lower loss. That is:
+
+* Even if one child has a worse loss than the other, **both children** are grown recursively to the next depth.
+* The selection of the split is based on minimizing the total weighted loss of **both children combined**.
+* This is a key property: you **do not pick just one child to split**. Once the best split is chosen, **both** the left and right child nodes become candidates for further recursive splitting (unless they hit a stopping condition like max depth or pure node).
+
+This strategy allows the tree to grow into a **full binary tree** of depth $D$ (if data allows), where every node potentially splits into two children, recursively.
+
+#### Pseudocode: Tree Growth with Depth Constraint
+
+```python
+function grow_tree(dataset, depth):
+    if stopping_condition_met(dataset, depth):
+        return Leaf(value = compute_leaf_value(dataset))
+
+    best_feature, best_threshold = find_best_split(dataset)
+    left_subset, right_subset = split_dataset(dataset, best_feature, best_threshold)
+
+    left_child = grow_tree(left_subset, depth + 1)
+    right_child = grow_tree(right_subset, depth + 1)
+
+    return Node(feature=best_feature, threshold=best_threshold, left=left_child, right=right_child)
+
+function stopping_condition_met(dataset, depth):
+    return (depth >= max_depth) or (all_same_class(dataset)) or (dataset too small)
+```
+
+This recursive algorithm ensures that once a split is selected, both child nodes are expanded independently — not just the better one.
+
+#### Tree Representation and Inference
+
+Once trained, the decision tree is stored as a nested tree structure of nodes:
+
+* Each node holds the split feature and threshold.
+* Each leaf holds a value (class label or regression mean).
+
+**Inference** works by traversing the tree:
+
+1. Start at the root.
+2. At each node, check the feature: if $x[f] \leq \text{threshold}$, go to left child; otherwise right.
+3. Repeat until a leaf is reached.
+4. Return the value in the leaf.
+
+Time complexity of inference is $\mathcal{O}(D)$, where $D$ is the depth of the tree.
+
+---
+
+### Part 6: Worked Example
+
+#### Dataset:
+
+| Sample | Weight (g) | Class |
+| ------ | ---------- | ----- |
+| A      | 150        | 0     |
+| B      | 160        | 0     |
+| C      | 170        | 0     |
+| D      | 180        | 1     |
+| E      | 200        | 1     |
+
+#### Depth 0: Root Node
+
+Try split at threshold = 165:
+
+* Left: \[150, 160] → Class = 0 → $G_L = 0$
+* Right: \[170, 180, 200] → Classes = \[0, 1, 1] → $p(0) = \frac{1}{3}, p(1) = \frac{2}{3}$ → $G_R = \frac{4}{9}$
+* Weighted Gini: $\frac{2}{5} \cdot 0 + \frac{3}{5} \cdot \frac{4}{9} = \frac{4}{15} \approx 0.266$
+
+#### Depth 1:
+
+**Left child** (\[150, 160]) → Pure → Leaf = 0
+
+**Right child** (\[170, 180, 200])
+
+* Try threshold = 175:
+
+  * Left: \[170] → Class = 0 → $G = 0$
+  * Right: \[180, 200] → Class = 1 → $G = 0$
+  * Weighted Gini: $\frac{1}{3} \cdot 0 + \frac{2}{3} \cdot 0 = 0$
+
+Perfect split → Both children are pure.
+
+#### Final Tree Table:
+
+| Depth | Node          | Samples | Gini | Split        | Left Child  | Right Child    |
+| ----- | ------------- | ------- | ---- | ------------ | ----------- | -------------- |
+| 0     | Root          | A–E     | 0.48 | Weight ≤ 165 | A, B        | C, D, E        |
+| 1     | Left of root  | A, B    | 0    | —            | Leaf: 0     | —              |
+| 1     | Right of root | C, D, E | 0.44 | Weight ≤ 175 | C (Leaf: 0) | D, E (Leaf: 1) |
+
+Tree growth terminates as all leaves are pure or max depth is reached.
+
+---
+
+### Part 7: Tree Pruning
+
+Decision trees can easily overfit the training data by creating very specific branches for rare patterns. To prevent this, we apply **pruning**, which simplifies the tree structure.
+
+#### Why Prune?
+
+* Reduce overfitting
+* Improve generalization
+* Shrink model size
+
+#### Types of Pruning
+
+1. **Pre-pruning (early stopping)**
+
+   * This stops tree growth **during training** based on certain conditions:
+
+     * **Max depth**: Stop splitting further once the tree reaches a specified depth.
+     * **Min samples per node**: Only allow a split if a node has more than a certain number of samples.
+     * **Min impurity decrease**: Stop splitting if the reduction in impurity (e.g. Gini or entropy) is less than a small threshold.
+   * Pre-pruning is fast and easy to implement, but can miss optimal splits that occur later in the tree.
+
+2. **Post-pruning (cost-complexity pruning)**
+
+   * The tree is grown **to full depth first** (or nearly full).
+   * Then, starting from the leaves, we consider removing splits (i.e., replacing internal nodes with leaves).
+   * A split is removed if it does not significantly reduce error on a **validation set**.
+   * This process simplifies the tree while ensuring it still performs well.
+
+#### Cost-Complexity Pruning (CCP)
+
+Define an objective function:
+
+$$
+R_\alpha(T) = R(T) + \alpha |T|
+$$
+
+* $R(T)$: empirical error (e.g. misclassification rate, Gini, entropy) of tree $T$
+* $|T|$: number of terminal (leaf) nodes
+* $\alpha$: regularization parameter controlling the trade-off between accuracy and simplicity
+
+We prune the tree by selecting subtrees that minimize $R_lpha(T)$. Larger $lpha$ encourages simpler trees. CCP is used in many implementations such as `scikit-learn`’s `DecisionTreeClassifier`.
+
+Decision trees can easily overfit the training data by creating very specific branches for rare patterns. To prevent this, we apply **pruning**, which simplifies the tree structure.
+
+### Part 8: Summary Table
+
+| Task           | Loss Function  | Leaf Output    |
+| -------------- | -------------- | -------------- |
+| Classification | Gini / Entropy | Majority class |
+| Regression     | MSE / Variance | Mean value     |
+
+---
+
