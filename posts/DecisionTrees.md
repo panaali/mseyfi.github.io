@@ -153,7 +153,7 @@ Time complexity of inference is $\mathcal{O}(D)$, where $D$ is the depth of the 
 
 ---
 
-### Part 6: Worked Example
+### Part 6A: Classification Example
 
 #### Dataset:
 
@@ -196,6 +196,48 @@ Perfect split → Both children are pure.
 | 1     | Right of root | C, D, E | 0.44 | Weight ≤ 175 | C (Leaf: 0) | D, E (Leaf: 1) |
 
 Tree growth terminates as all leaves are pure or max depth is reached.
+
+
+
+### Part 6B: Regression Example
+
+#### Dataset:
+
+| Sample | Size | Price |
+| ------ | ---- | ----- |
+| A      | 1100 | 200   |
+| B      | 1300 | 240   |
+| C      | 1500 | 270   |
+| D      | 1700 | 310   |
+| E      | 1900 | 350   |
+
+#### Root Node (Depth 0):
+
+* Try threshold: Size $\leq 1400$
+* Left: A, B → Mean = 220 → MSE = $\frac{(200-220)^2 + (240-220)^2}{2} = 400$
+* Right: C, D, E → Mean = 310 → MSE = $\frac{(270-310)^2 + (310-310)^2 + (350-310)^2}{3} = 533.33$
+* Weighted MSE = $\frac{2}{5} \cdot 400 + \frac{3}{5} \cdot 533.33 = 480$
+
+#### Depth 1:
+
+* Left child is pure enough or has small data → stop
+* Right child: C, D, E
+
+  * Try threshold: Size $\leq 1600$
+
+    * Left: C → Mean = 270, MSE = 0
+    * Right: D, E → Mean = 330, MSE = $\frac{(310-330)^2 + (350-330)^2}{2} = 400$
+    * Weighted MSE = $\frac{1}{3} \cdot 0 + \frac{2}{3} \cdot 400 = 266.67$
+
+#### Final Tree Table:
+
+| Depth | Node          | Samples | Split       | MSE    | Prediction |
+| ----- | ------------- | ------- | ----------- | ------ | ---------- |
+| 0     | Root          | A–E     | Size ≤ 1400 | 480    |            |
+| 1     | Left of Root  | A, B    | —           | 400    | Mean = 220 |
+| 1     | Right of Root | C, D, E | Size ≤ 1600 | 266.67 |            |
+| 2     | Left          | C       | —           | 0      | Mean = 270 |
+| 2     | Right         | D, E    | —           | 400    | Mean = 330 |
 
 ---
 
