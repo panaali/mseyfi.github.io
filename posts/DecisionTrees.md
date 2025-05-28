@@ -157,6 +157,8 @@ Once the tree is trained, inference is done by following a decision path from th
    * For **classification**: the majority class in the node.
    * For **regression**: the mean target value of the node’s samples.
 
+**Leaf nodes in a tree are decision makers, so we traverse all the tree until we hit a leaf. Each leaf decides on part of the dataset.**
+
 **Time Complexity**: Inference is very fast — $\mathcal{O}(D)$, where $D$ is the depth of the tree, because only one path from root to leaf is followed.
 
 This path-based traversal makes decision trees highly interpretable and efficient for real-time prediction tasks.
