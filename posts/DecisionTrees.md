@@ -32,10 +32,10 @@ Where:
 #### Gini Impurity:
 
 $$
-G(S) = 1 - \sum_{c=1}^{C} p(c)^2
+G(S) = \sum_{c=1}^{C} p(c) (1 - p(c)) = 1 - \sum_{c=1}^{C} p(c)^2
 $$
 
-The Gini impurity measures how often a randomly chosen element from the set would be incorrectly labeled if it were randomly labeled according to the distribution of labels in the subset.
+The Gini impurity measures how often a randomly chosen element from the set would be incorrectly labeled if it were randomly labeled according to the distribution of labels in the subset. Kind of the expected value of miss-classification.
 
 The term $p(c)^2$ reflects the probability of **correctly guessing** the label if you sample twice with replacement:
 
