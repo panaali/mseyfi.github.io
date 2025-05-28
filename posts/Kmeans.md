@@ -102,7 +102,7 @@ def kmeans(X, K, max_iters=100):
 Since k-means++ does not choose $K$, you need to select it manually. Here are common strategies:
 
 ### 1. Elbow Method
-[Elbow]("../../images/Elbow-Method.png")
+[Elbow]("../images/Elbow-Method.png")
 
 *Fig. 1 Within-Cluster-Sum of Squares (WCSS) loss versus K*
 
