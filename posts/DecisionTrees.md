@@ -324,4 +324,42 @@ Decision trees can easily overfit the training data by creating very specific br
 | Regression     | MSE / Variance | Mean value     |
 
 ---
+## Appendix
+
+In a decision tree, **each split decision compares *a single feature* against a threshold**—not a multidimensional combination of features.
+
+### Key Concepts:
+
+1. **Univariate Splits (Most Common)**:
+
+   * At each internal node, the tree chooses **one feature** $f_j$ and finds the best **threshold** $t$ to split the data.
+   * The decision rule is:
+
+     $$
+     \text{If } x_j \leq t \text{ go left, else go right}
+     $$
+   * This means **yes, there is one threshold per feature tested** — but only **one feature is tested per node**.
+
+2. **How the feature and threshold are chosen**:
+
+   * During training, for each node, the algorithm evaluates **all features** $j \in \{1, \ldots, m\}$ and for each feature considers all possible thresholds $t$.
+   * For each (feature, threshold) pair, it computes a split score using criteria like **Gini impurity**, **entropy**, or **variance reduction**.
+   * The (feature, threshold) pair with the **best score** is chosen to split the data.
+
+3. **Multivariate Splits (Rare)**:
+
+   * These use linear combinations like $\mathbf{w}^T \mathbf{x} \leq t$, where multiple features are involved.
+   * This is **not standard in classical decision trees**, but exists in some variants like **oblique decision trees**.
+   * These are computationally more complex and less interpretable.
+
+---
+
+### Summary:
+
+* ✅ **Standard decision trees use one feature and one threshold per node.**
+* ❌ **They do not compare multidimensional feature combinations by default.**
+* ✅ **Each feature considered has its own candidate thresholds during training.**
+* 🧠 **Extensions exist** (e.g., oblique trees) for multivariate splits, but they are not part of classic decision trees like CART or ID3.
+
+
 
