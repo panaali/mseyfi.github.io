@@ -492,14 +492,44 @@ Repeat this for $T$ steps.
 In the next section, we’ll contrast boosting methods and give guidance on when to use them.
 
 ---
+## 📚 Ensemble Learning: Bagging, Boosting, and Bootstrap Sampling
+
+...\[previous sections remain unchanged]...
+
+---
 
 ### Part 7: Gradient Boosting — Intuition and Walkthrough
+
+Gradient Boosting can seem confusing because it's not just a simple ensemble like Bagging — it's actually performing **optimization in function space**. Here's a more detailed explanation to clarify the concepts:
+
+**Note:** Boosting is not limited to regression. It applies to both regression and classification tasks:
+
+* For **classification**, common loss functions include log-loss (cross-entropy), and the model outputs class probabilities or scores. AdaBoost, Gradient Boosting Classifier, and XGBoost for classification all follow this principle.
+* For **regression**, the model fits to the residuals using squared error, absolute error, or Huber loss.
+
+The key idea is that boosting works by sequentially reducing the loss, regardless of the task type.
+
+#### What Is Happening Intuitively?
+
+Think of gradient boosting like this:
+
+* You start with a weak model that gives poor predictions.
+* You look at where it went wrong (residuals or gradient of the loss).
+* Then, you train a new model **to correct just those mistakes**.
+* Add this correction to the original prediction.
+* Repeat — each new model keeps making the total prediction better.
+
+This is called **functional gradient descent** — instead of optimizing weights, you’re improving the model's function step by step.
+
+---
 
 #### Core Idea:
 
 Gradient Boosting builds an ensemble **sequentially**, where each new model tries to correct the error made by the previous models. Instead of adjusting weights (as in AdaBoost), it fits the **negative gradients** (residuals) of a loss function.
 
-#### Step-by-Step for Regression:
+#### Step-by-Step for Regression (with Motivation):
+
+Imagine you're trying to fit a curve to a set of noisy data points. Gradient Boosting builds the curve incrementally:
 
 Assume squared loss: $L(y, \hat{y}) = (y - \hat{y})^2$
 
@@ -521,11 +551,66 @@ $$
 3. Final prediction:
    $F_T(x)$
 
-#### Intuition:
+#### More Intuition (Why This Works):
+
+Each model doesn’t need to be perfect — it just needs to push the current model a bit closer to the ground truth. If each new model is just a small nudge in the right direction, the ensemble gets very accurate over time.
 
 Each tree fits to the **residuals** (what the current model got wrong). By combining these correction terms step-by-step, the overall model becomes more accurate.
 
 ---
+I tried updating the formulas in the tutorial section to use LaTeX-style formatting with display math (`\[\]`) and corrected symbols like $\hat{y}$ and gradients.
+
+However, the update failed because the replacement text contained LaTeX-style line breaks and indentation that aren't supported by the regex-based document editor.
+
+Here's what you can **manually paste** into the document in place of the current block about $F_t(x)$ and gradients:
+
+---
+
+#### Understanding $F_t(x)$, $h_t(x)$, and Their Relationship
+
+* $F_t(x)$ is the **current full model** at iteration $t$.
+* It is built by **adding up** the contributions from all previous weak learners:
+
+  $$
+  F_t(x) = F_0(x) + \eta h_1(x) + \eta h_2(x) + \dots + \eta h_t(x)
+  $$
+* Each $h_t(x)$ is a new tree trained on the **residuals** (negative gradients).
+* The update rule is:
+
+  $$
+  F_t(x) = F_{t-1}(x) + \eta h_t(x)
+  $$
+
+So, each new weak learner $h_t(x)$ is trained to fix what the current model $F_{t-1}(x)$ got wrong. Together, they form a cumulative, gradually improving model.
+
+---
+
+### Why Use Gradients Instead of Just Residuals?
+
+For **squared loss**, the negative gradient is just the residual:
+
+$$
+L(y, \hat{y}) = (y - \hat{y})^2 \quad \Rightarrow \quad -\frac{\partial L}{\partial \hat{y}} = y - \hat{y}
+$$
+
+But for **other losses** (e.g., log-loss in classification), residuals aren’t well-defined. Instead, we use the **negative gradient** of the loss:
+
+$$
+L(y, \hat{y}) = -y \log(\hat{y}) - (1 - y) \log(1 - \hat{y})
+$$
+
+$$
+\frac{\partial L}{\partial \hat{y}} = -\frac{y}{\hat{y}} + \frac{1 - y}{1 - \hat{y}}
+$$
+
+This gives us a **direction** to update the model even when no intuitive “residual” exists.
+
+📌 **Conclusion:** Gradient boosting is a flexible framework that applies gradient descent to any differentiable loss function.
+
+---
+
+Let me know if you'd like me to help manually restructure other sections too.
+
 
 ### Example:
 
@@ -549,3 +634,62 @@ Repeat this for $T$ steps.
 * Regularization: shrinkage ($\eta$), early stopping, max depth of trees.
 
 In the next section, we’ll contrast boosting methods and give guidance on when to use them.
+I attempted to insert a new **Part 9: XGBoost** section into your tutorial with detailed formulas and explanations, but the operation failed due to formatting issues with LaTeX-style equations in the replacement text.
+
+Here’s the content you can manually add to your document under **Part 9**:
+
+---
+
+### Part 8: XGBoost — eXtreme Gradient Boosting
+
+XGBoost is an optimized version of gradient boosting that improves training speed, generalization, and scalability. It includes several innovations over vanilla gradient boosting:
+
+#### 1. Objective Function with Regularization
+
+XGBoost minimizes a regularized objective:
+
+$$
+\mathcal{L}^{(t)} = \sum_{i=1}^n l(y_i, \hat{y}_i^{(t)}) + \sum_{k=1}^t \Omega(h_k)
+$$
+
+Where:
+
+* $l$: loss function (e.g., squared error, log-loss)
+* $\Omega(h) = \gamma T + \frac{1}{2} \lambda \sum_j w_j^2$: regularization term
+* $T$: number of leaves in a tree
+* $w_j$: weight of leaf $j$
+* $\gamma, \lambda$: regularization parameters
+
+This encourages simpler trees and reduces overfitting.
+
+#### 2. Second-Order Approximation
+
+Instead of fitting gradients, XGBoost fits trees using both first- and second-order derivatives:
+
+$$
+g_i = \frac{\partial l(y_i, \hat{y}_i)}{\partial \hat{y}_i}, \quad h_i = \frac{\partial^2 l(y_i, \hat{y}_i)}{\partial \hat{y}_i^2}
+$$
+
+The **gain** from splitting a node is computed as:
+
+$$
+\text{Gain} = \frac{1}{2} \left[ \frac{(\sum_{i \in L} g_i)^2}{\sum_{i \in L} h_i + \lambda} + \frac{(\sum_{i \in R} g_i)^2}{\sum_{i \in R} h_i + \lambda} - \frac{(\sum_{i \in L \cup R} g_i)^2}{\sum_{i \in L \cup R} h_i + \lambda} \right] - \gamma
+$$
+
+#### 3. Handling Sparsity
+
+XGBoost handles missing values by learning a default split direction (left or right) for missing entries during training, based on which way reduces loss more.
+
+#### 4. Parallelization and Efficiency
+
+* Uses histogram-based techniques for fast split finding.
+* Supports out-of-core learning for massive datasets.
+
+#### 5. Shrinkage and Column Subsampling
+
+* **Shrinkage** (learning rate $\eta$) reduces each tree’s influence, slowing learning to improve generalization.
+* **Column subsampling** (like in Random Forests) improves diversity and reduces overfitting.
+
+---
+
+Let me know if you'd like me to continue with LightGBM or summarize the differences across all boosting algorithms.
