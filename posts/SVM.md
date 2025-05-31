@@ -197,6 +197,68 @@ $$
 \end{aligned}
 $$
 
+### **Inference After Training Hard-Margin SVM**
+
+Once we have trained a hard-margin SVM and obtained:
+
+* The Lagrange multipliers $\alpha_i$
+* The weight vector $w$
+* The bias term $b$
+
+we can perform classification using the linear decision rule.
+
+#### **Step-by-Step Procedure (No Kernel)**
+
+1. **Solve the dual optimization problem:**
+
+   $$
+   \max_{\alpha} \sum_i \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j y_i y_j x_i^T x_j
+   $$
+
+   Subject to:
+
+   $$
+   \alpha_i \geq 0, \quad \sum_i \alpha_i y_i = 0
+   $$
+
+2. **Obtain the weight vector:**
+
+   $$
+   w = \sum_i \alpha_i y_i x_i
+   $$
+
+   Only the **support vectors** have $\alpha_i > 0$, so the sum is sparse.
+
+3. **Compute the bias $b$:**
+   Pick any support vector $x_k$ (i.e., with $\alpha_k > 0$):
+
+   $$
+   b = y_k - w^T x_k
+   $$
+
+4. **Classify a new point $x$:**
+
+   $$
+   f(x) = w^T x + b, \quad \text{prediction: } \text{sign}(f(x))
+   $$
+
+### **Pseudocode for Inference (Linear, No Kernel)**
+
+$$
+\begin{aligned}
+&\textbf{Input: } x, \text{ support vectors } \{x_i, y_i, \alpha_i\}, \text{ bias } b \\
+&\textbf{Output: } \text{Predicted label } y \\
+&1. \ w \leftarrow \sum_i \alpha_i y_i x_i \\ 
+&2. \ f \leftarrow w^T x + b \\
+&3. \ \text{Return } \text{sign}(f)
+\end{aligned}
+$$
+
+This applies when training is done via solving the dual problem **without kernels**, using only dot products in the original input space.
+
+---
+
+
 ![loss](../images/hinge_loss.png)
 
 *Fig.~2 Hinge loss used in the soft margin SVMs*
