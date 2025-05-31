@@ -630,3 +630,71 @@ SVM is inherently a **binary classifier**, but it can be extended to multiclass 
 **Note:** Modern libraries like `scikit-learn` handle multiclass SVMs automatically using OvR by default. They abstract the training of multiple binary classifiers behind a unified multiclass interface.
 
 ---
+... (previous content remains unchanged) ...
+
+---
+
+**Support Vector Regression (SVR)**
+
+Support Vector Machines can also be adapted for **regression tasks**. This version is called **Support Vector Regression (SVR)**.
+
+### **Key Idea**
+
+Instead of finding a hyperplane that separates classes, SVR finds a function that:
+
+* Has at most $\varepsilon$ deviation from the true target values for all training points.
+* Is as flat as possible (minimizing $\|w\|^2$).
+
+### **Loss Function (ε-insensitive)**
+
+SVR introduces the $\varepsilon$-insensitive loss:
+
+$$
+L_\varepsilon(y, f(x)) = \max(0, |y - f(x)| - \varepsilon)
+$$
+
+This means we ignore errors smaller than $\varepsilon$, and penalize errors beyond it linearly.
+
+### **Optimization Objective**
+
+Minimize:
+
+$$
+\frac{1}{2}\|w\|^2 + C \sum_{i=1}^n (\xi_i + \xi_i^*)
+$$
+
+Subject to:
+
+$$
+\begin{cases}
+    y_i - w^T x_i - b \leq \varepsilon + \xi_i \\
+    w^T x_i + b - y_i \leq \varepsilon + \xi_i^* \\
+    \xi_i, \xi_i^* \geq 0
+\end{cases}
+$$
+
+Here:
+
+* $\xi_i, \xi_i^*$ are slack variables for deviations beyond $\varepsilon$
+* $C$ controls the trade-off between flatness and tolerance to errors
+
+### **Kernelized SVR (Nonlinear Regression)**
+
+SVR can also use kernel functions to model nonlinear regression:
+
+$$
+f(x) = \sum_i (\alpha_i - \alpha_i^*) K(x_i, x) + b
+$$
+
+This is similar to classification SVMs, except the coefficients $\alpha_i, \alpha_i^*$ arise from a different dual problem adapted for regression.
+
+### **Use Cases**
+
+* Forecasting (e.g., stock prices, weather)
+* Signal denoising
+* Function approximation
+
+SVR offers a robust, margin-based approach to regression with strong generalization ability — especially when used with kernels for nonlinear trends.
+
+---
+
