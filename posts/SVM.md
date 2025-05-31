@@ -23,7 +23,7 @@ We aim to find a **decision boundary** (a line) that separates the two classes.
 ---
 ![svm](../images/svm.png)
 
-*Fig.~1 Support Vector Machines, Hard Marging SVM (left) vs Soft Margin SVM (right)*
+*Fig.~1 Support Vector Machines, Hard Marging SVM (left) vs Soft Margin SVM (right) where some outliers are allowed with a penalty*
 
 ### **2. Hard Margin SVM (Linearly Separable Case)**
 
