@@ -596,3 +596,37 @@ Thus, even though we are conceptually working in infinite dimensions, the kernel
 This is the core power of kernelized SVMs: they **transform impossible classification tasks into easy linear separations**, all while remaining computationally tractable.
 
 ---
+
+## Multiclass SVM: Linear and Nonlinear Cases
+
+SVM is inherently a **binary classifier**, but it can be extended to multiclass problems using two primary strategies:
+
+### **1. One-vs-Rest (OvR) Strategy**
+
+* For $K$ classes, train $K$ binary SVM classifiers.
+* Each classifier $f_k(x)$ learns to distinguish class $k$ vs. all other classes.
+* During inference, evaluate all $f_k(x)$ and pick the class with the highest score:
+
+  $$
+  \hat{y} = \arg\max_k f_k(x)
+  $$
+
+### **2. One-vs-One (OvO) Strategy**
+
+* Train $\frac{K(K-1)}{2}$ binary SVM classifiers, each distinguishing a pair of classes.
+* During inference, each classifier votes, and the class with the majority of votes is selected.
+
+### **Linear vs Nonlinear SVM in Multiclass**
+
+* **Linear Multiclass SVM**: Uses linear decision boundaries in original feature space. Suitable for data that is linearly separable or close to it.
+* **Nonlinear Multiclass SVM**: Uses kernels (e.g., polynomial, RBF) to create nonlinear decision boundaries in the input space. Particularly useful for complex, overlapping class structures.
+
+### **Kernel Multiclass SVM (Nonlinear)**
+
+* OvR and OvO strategies still apply.
+* Each classifier uses the kernel trick to implicitly operate in high-dimensional space.
+* Example: Use RBF kernel in OvR setup to create one nonlinear boundary for each class.
+
+**Note:** Modern libraries like `scikit-learn` handle multiclass SVMs automatically using OvR by default. They abstract the training of multiple binary classifiers behind a unified multiclass interface.
+
+---
