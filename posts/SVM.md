@@ -629,11 +629,6 @@ SVM is inherently a **binary classifier**, but it can be extended to multiclass 
 
 **Note:** Modern libraries like `scikit-learn` handle multiclass SVMs automatically using OvR by default. They abstract the training of multiple binary classifiers behind a unified multiclass interface.
 
----
-... (previous content remains unchanged) ...
-
----
-
 **Support Vector Regression (SVR)**
 
 Support Vector Machines can also be adapted for **regression tasks**. This version is called **Support Vector Regression (SVR)**.
