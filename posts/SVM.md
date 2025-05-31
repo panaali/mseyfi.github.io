@@ -503,4 +503,96 @@ $$
 
 This enables nonlinear separation using a linear classifier in a transformed space.
 
+
+#### **RBF as Infinite Polynomial Expansion**
+
+The standard RBF kernel is defined as:
+
+$$
+K(x_i, x_j) = \exp\left(-\frac{\|x_i - x_j\|^2}{2\sigma^2}\right)
+$$
+
+We can rewrite the squared norm using the identity:
+
+$$
+\|x_i - x_j\|^2 = \|x_i\|^2 + \|x_j\|^2 - 2 x_i^T x_j
+$$
+
+So:
+
+$$
+K(x_i, x_j) = \exp\left(-\frac{\|x_i\|^2}{2\sigma^2}\right) \cdot \exp\left(-\frac{\|x_j\|^2}{2\sigma^2}\right) \cdot \exp\left(\frac{x_i^T x_j}{\sigma^2}\right)
+$$
+
+Let:
+
+$$
+C(x_i, x_j) = \exp\left(-\frac{\|x_i\|^2 + \|x_j\|^2}{2\sigma^2}\right)
+$$
+
+Then:
+
+$$
+K(x_i, x_j) = C(x_i, x_j) \cdot \exp\left(\frac{x_i^T x_j}{\sigma^2}\right)
+$$
+
+Now, for any constant $\gamma = 1/\sigma^2$, consider:
+
+$$
+\exp\left(\gamma x_i^T x_j\right) = \exp\left(\gamma (x_i^T x_j + 1 - 1)\right) = e^{-\gamma} \cdot \exp\left(\gamma (1 + x_i^T x_j)\right)
+$$
+
+So we can write:
+
+$$
+K(x_i, x_j) = C'(x_i, x_j) \cdot \exp\left(\gamma (1 + x_i^T x_j)\right)
+$$
+
+where $C'(x_i, x_j) = C(x_i, x_j) e^{-\gamma}$.
+
+Finally, apply the Taylor expansion:
+
+$$
+\exp(\gamma (1 + x_i^T x_j)) = \sum_{n=0}^\infty \frac{\gamma^n}{n!}(1 + x_i^T x_j)^n
+$$
+
+So the full kernel becomes:
+
+$$
+K(x_i, x_j) = C'(x_i, x_j) \cdot \sum_{n=0}^\infty \frac{\gamma^n}{n!}(1 + x_i^T x_j)^n
+$$
+
+This shows that the RBF kernel is equivalent to a **weighted infinite sum of polynomial kernels of the form** $(1 + x_i^T x_j)^n$.
+
+**Intuition:**
+This expansion reveals how the RBF kernel implicitly combines all polynomial degrees simultaneously, allowing the model to separate data with arbitrarily complex decision boundaries in a smooth and efficient manner — without explicitly computing high-dimensional feature maps.
+
+---
+
+**How the Data Looks in Infinite Polynomial Space**
+
+When you transform data using all polynomial functions of all degrees (as the RBF kernel effectively does), you're projecting each data point into an infinite-dimensional space. Each new dimension corresponds to a different nonlinear combination of the original features:
+
+* degree-1 features: $x_i^1, x_i^2, \ldots$
+* degree-2 features: $(x_i^1)^2, x_i^1 x_i^2, \ldots$
+* degree-3 features: $(x_i^1)^3, (x_i^1)^2 x_i^2, \ldots$
+* ... up to infinity
+
+So every data point becomes a vector with infinitely many components, encoding all possible polynomial interactions. In this space:
+
+* Data that was **nonlinearly separable in the original space** becomes **linearly separable** because the higher-order dimensions stretch the space so that even complex curved boundaries become flat (linear hyperplanes).
+* This is particularly helpful for highly entangled classes or structured patterns (e.g., concentric circles, spirals, etc.).
+
+**How SVM Can Handle It**
+
+* SVM in its dual form **does not require explicitly computing this infinite-dimensional vector**.
+* It **only requires computing dot products** in this space — which the RBF kernel does implicitly.
+
+Thus, even though we are conceptually working in infinite dimensions, the kernel trick allows SVM to:
+
+* Represent and compute everything efficiently using only the kernel function.
+* Learn a separating hyperplane in this infinite space, which corresponds to a **nonlinear decision boundary** in the original space.
+
+This is the core power of kernelized SVMs: they **transform impossible classification tasks into easy linear separations**, all while remaining computationally tractable.
+
 ---
