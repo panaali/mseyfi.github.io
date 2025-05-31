@@ -271,3 +271,40 @@ $$
 $$
 
 ---
+
+### **How the Dual Helps in High Dimensions**
+
+The dual formulation of SVM is particularly powerful in high-dimensional spaces.
+
+#### **Why?**
+
+* In the dual, the data appears **only in terms of dot products**: $x_i^T x_j$.
+* These dot products can be computed **without explicitly constructing high-dimensional features** via the **kernel trick**.
+* This allows us to work in **infinite-dimensional** feature spaces (like with the RBF kernel) while computing everything efficiently in the original space.
+
+#### **Intuition:**
+
+Even if the data is not linearly separable in its original space, it may be separable in a higher-dimensional space. Instead of transforming all data points manually, we **implicitly map them using a kernel**, which computes dot products in that higher-dimensional space **without ever forming the mapped vectors**.
+
+This makes the dual SVM especially suited for high-dimensional or nonlinearly separable problems.
+
+#### **Dual Optimization vs Support Vectors**
+
+* The dual optimization problem introduces one Lagrange multiplier $\alpha_i$ **for every training point**.
+* So during training, the dual is optimized over **all data points**.
+* However, **after training**, most $\alpha_i$ are zero.
+* Only the **support vectors** — points that lie exactly on the margin or violate it — have non-zero $\alpha_i$.
+
+**Therefore:**
+
+* **Dual training** involves all data.
+* **Inference (prediction)** only uses support vectors:
+
+$$
+f(x) = \sum_{i \in \text{SV}} \alpha_i y_i K(x_i, x) + b
+$$
+
+This sparsity is a key reason why SVMs are efficient at prediction time.
+
+---
+
