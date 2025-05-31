@@ -117,9 +117,7 @@ Perfect — let’s address this precisely.
 
 ---
 
-### ❓ Your question:
-
-> Why is minimizing the **primal problem with constraints** equivalent to solving the **saddle point problem**:
+#### Why is minimizing the **primal problem with constraints** equivalent to solving the **saddle point problem**:
 
 $$
 \min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha} \geq 0} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
@@ -129,11 +127,9 @@ Why does this min-max give the **same result** as solving the original constrain
 
 ---
 
-## ✅ Answer: **This is guaranteed by the Karush-Kuhn-Tucker (KKT) conditions and strong duality** — but let’s derive it intuitively and mathematically.
+**This is guaranteed by the Karush-Kuhn-Tucker (KKT) conditions and strong duality** — but let’s derive it intuitively and mathematically.
 
----
-
-## 🧱 Step 1: Original Constrained Problem (Primal Form)
+##  Original Constrained Problem (Primal Form)
 
 We want to solve:
 
@@ -148,7 +144,7 @@ These are **inequality constraints**, so we introduce **Lagrange multipliers** $
 
 ---
 
-## 🧠 Step 2: Define the Lagrangian Function
+##  Define the Lagrangian Function
 
 We build:
 
