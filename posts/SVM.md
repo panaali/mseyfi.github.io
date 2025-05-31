@@ -374,3 +374,133 @@ This sparsity is a key reason why SVMs are efficient at prediction time.
 
 ---
 
+### **Kernel Trick: Making SVMs Nonlinear**
+
+#### **Why Do We Need Kernels? (Intuition)**
+
+![Kernel](../images/Kernel.ipg)
+*Fig.3 Mapping the features to a new space via a nonlinear transformation does the trick and helps the SVM to linearly separate the data using a hyperplane.*
+
+Suppose you have a dataset where class 0 lies in a small circle centered at the origin, and class 1 surrounds it in a ring. Clearly, no straight line (or hyperplane) can separate them in 2D space — **the problem is nonlinear**.
+
+One idea: **manually project** the data into a higher-dimensional space. For example, we can map:
+
+$$
+\phi(x_i) = ((x_i^1)^2, (x_i^2)^2, \sqrt{2}x_i^1x_i^2, \sqrt{2}x_i^1, \sqrt{2}x_i^2, 1)
+$$
+
+This maps the 2D input into a **6-dimensional space** where the inner and outer circles can be linearly separated.
+
+To perform classification with a linear SVM in this new space, we need dot products between projected vectors.
+Let two input vectors be:
+
+$$
+x_i = (x_i^1, x_i^2), \quad x_j = (x_j^1, x_j^2)
+$$
+
+Then:
+
+$$
+\phi(x_i)^T \phi(x_j) = (x_i^1)^2(x_j^1)^2 + (x_i^2)^2(x_j^2)^2 + 2x_i^1x_i^2x_j^1x_j^2 + 2x_i^1x_j^1 + 2x_i^2x_j^2 + 1
+$$
+
+But this is exactly:
+
+$$
+(x_i^T x_j + 1)^2
+$$
+
+This shows that **a simple kernel function**:
+
+$$
+K(x_i, x_j) = (x_i^T x_j + 1)^2
+$$
+
+computes the dot product in the 6D feature space **without ever computing $\phi(x_i)$** explicitly.
+
+---
+
+#### **Problems with Manual Feature Mapping**
+
+* Requires clever and problem-specific design.
+* Explicitly computing $\phi(x_i)$ for all data points becomes infeasible as dimensionality increases.
+* Storage and computation cost grow rapidly.
+
+#### **How Kernels Help**
+
+The **kernel trick** allows us to skip computing the high-dimensional mapping $\phi(x_i)$ altogether.
+Instead of projecting to feature space and doing the dot product, we use:
+
+$$
+K(x_i, x_j) = \phi(x_i)^T \phi(x_j)
+$$
+
+This allows us to work implicitly in high-dimensional or infinite-dimensional spaces using only functions of dot products in the original space.
+
+This leads to **significant savings in computation and memory**, especially in large or complex datasets.
+
+---
+
+### **Common Kernel Functions**
+
+#### **1. Polynomial Kernel**
+
+Defined as:
+
+$$
+K(x_i, x_j) = (x_i^T x_j + c)^d
+$$
+
+* $d$: degree of the polynomial
+* $c$: constant to control the influence of higher-order terms
+
+**Example (quadratic):**
+
+$$
+K(x_i, x_j) = (x_i^T x_j + 1)^2
+$$
+
+This implicitly maps inputs to a space that includes all degree-2 combinations of features:
+
+$$
+(x_i^1, x_i^2) \mapsto ((x_i^1)^2, (x_i^2)^2, x_i^1 x_i^2, x_i^1, x_i^2, 1)
+$$
+
+#### **2. Radial Basis Function (RBF) Kernel / Gaussian Kernel**
+
+Defined as:
+
+$$
+K(x_i, x_j) = \exp\left(-\frac{\|x_i - x_j\|^2}{2\sigma^2}\right)
+$$
+
+* $\sigma$: width of the Gaussian
+
+This measures similarity: close points give high values $\approx 1$, distant points yield values $\approx 0$.
+It corresponds to mapping inputs into an **infinite-dimensional space** of Gaussian basis functions.
+
+---
+
+### **Kernelized Dual Optimization Problem**
+
+After applying a kernel, the dual becomes:
+
+$$
+\max_{\alpha} \sum_i \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j y_i y_j K(x_i, x_j)
+$$
+
+Subject to:
+
+$$
+\alpha_i \geq 0, \quad \sum_i \alpha_i y_i = 0
+$$
+
+The prediction function for a new sample $x$ becomes:
+
+$$
+f(x) = \sum_{i \in \text{SV}} \alpha_i y_i K(x_i, x) + b
+$$
+
+This enables nonlinear separation using a linear classifier in a transformed space.
+
+---
