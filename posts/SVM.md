@@ -197,6 +197,10 @@ $$
 \end{aligned}
 $$
 
+![loss](../images/hinge_loss.png)
+
+*Fig.~2 Hinge loss used in the soft margin SVMs*
+
 ### **3. Soft Margin SVM (Handling Non-Separable Data)**
 
 In real-world problems (like the med school example), perfect separation is rare. For instance, a student with high GPA and low MCAT might still be accepted, creating an **outlier**.
