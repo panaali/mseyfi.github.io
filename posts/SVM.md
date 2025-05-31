@@ -1,4 +1,4 @@
-**Support Vector Machines (SVMs) — Full Tutorial**
+## Support Vector Machines (SVMs)
 
 ---
 
