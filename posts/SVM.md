@@ -201,4 +201,77 @@ $$
 \end{aligned}
 $$
 
+### **3. Soft Margin SVM (Handling Non-Separable Data)**
+
+In real-world problems (like the med school example), perfect separation is rare. For instance, a student with high GPA and low MCAT might still be accepted, creating an **outlier**.
+
+To handle such cases, we allow some violations of the margin using **slack variables** $\xi_i \geq 0$.
+
+#### **Soft Margin SVM Primal Formulation:**
+
+We modify the constraints:
+
+$$
+ y_i(w^T x_i + b) \geq 1 - \xi_i
+$$
+
+Objective becomes:
+
+$$
+\min_{w, b, \xi} \quad \frac{1}{2} \|w\|^2 + C \sum_i \xi_i
+$$
+
+Where:
+
+* $\frac{1}{2} \|w\|^2$: encourages a large margin
+* $\sum \xi_i$: penalizes margin violations
+* $C$: trade-off parameter between margin size and violations
+
+---
+
+### **Hinge Loss Reformulation**
+
+The problem can also be expressed using **hinge loss**:
+
+$$
+L(w, b) = \frac{1}{2} \|w\|^2 + C \sum_i \max(0, 1 - y_i(w^T x_i + b))
+$$
+
+* If $y_i(w^T x_i + b) \geq 1$, loss is zero (correctly classified with margin)
+* If $y_i(w^T x_i + b) < 1$, we incur linear loss
+
+This form is subdifferentiable and suitable for **gradient-based optimization**.
+
+---
+
+### **Training Soft Margin SVM via Gradient Descent**
+
+Let $z_i = y_i(w^T x_i + b)$.
+Gradient of the hinge loss is:
+$$
+\nabla_w L = w - C \sum_{i: z_i < 1} y_i x_i
+$$
+$$
+\nabla_b L = -C \sum_{i: z_i < 1} y_i
+$$
+#### **Pseudocode: Soft Margin SVM (Gradient Descent)**
+
+$$
+\begin{aligned}
+&\textbf{Input:} \ \text{Training data } \{(x_i, y_i)\}, \text{learning rate } \eta, \text{regularization } C, \text{epochs } T \\
+&\textbf{Output:} \ w, b \\
+&1. \ \text{Initialize } w = 0, \ b = 0 \\
+&2. \ \text{For } t = 1 \text{ to } T:\\
+&\quad \text{For each } (x_i, y_i):\\
+&\quad\quad \text{Compute margin: } m = y_i(w^T x_i + b) \\
+&\quad\quad \text{If } m \geq 1:\\
+&\quad\quad\quad w \leftarrow w - \eta w \\
+&\quad\quad\quad b \leftarrow b \\
+&\quad\quad \text{Else:}\\
+&\quad\quad\quad w \leftarrow w - \eta (w - C y_i x_i) \\
+&\quad\quad\quad b \leftarrow b + \eta C y_i \\
+&3. \ \text{Return } w, b
+\end{aligned}
+$$
+
 ---
