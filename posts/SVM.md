@@ -21,7 +21,7 @@ We aim to find a **decision boundary** (a line) that separates the two classes.
 * **Optimal Hyperplane**: The one that **maximizes the margin** between classes.
 
 ---
-![svm](../images/svm.png)
+![svm](../images/SVM.png)
 
 *Fig.~1 Support Vector Machines, Hard Marging SVM (left) vs Soft Margin SVM (right) where some outliers are allowed with a penalty*
 
