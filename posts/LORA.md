@@ -19,6 +19,8 @@ This allows only $A$ and $B$ to be trained.
 ![LORA](../images/LORA.png)
 *Fig.~1 LORA fine-tuning the weights with intorducing the low-rank trainable matrices*
 
+[Good implementation](https://github.com/hkproj/pytorch-lora/tree/main)
+
 ### Why Efficient?
 
 * The full matrix $W$ has $d \times k$ parameters.
