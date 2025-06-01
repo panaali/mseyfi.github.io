@@ -146,7 +146,7 @@ This means:
 * The majority of meaningful updates to the model live in a small subspace.
 * Most of the directions in the full matrix space are either redundant or irrelevant for fine-tuning.
 
-By using low-rank matrices $A$ and $B$, LoRA captures the most impactful directions without needing to store or compute all $d 	imes k$ values.
+By using low-rank matrices $A$ and $B$, LoRA captures the most impactful directions without needing to store or compute all $d 	\times k$ values.
 
 This principle — that the **intrinsic dimensionality** of useful changes is small — allows LoRA to work effectively with far fewer parameters.
 
