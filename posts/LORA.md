@@ -175,6 +175,40 @@ This scaling ensures that:
 
 The authors note that tuning $\alpha$ is roughly equivalent to tuning the learning rate, so they usually set $\alpha = r$ to avoid retuning.
 
+### LoRA weights randomly initialized even with a pretrained base.
+---
+This is intentional and necessary:
+
+* The frozen base weights $W$ are loaded from a strong pretrained model.
+* The LoRA adapters $A$ and $B$ are **task-specific**. They start from random initialization and are trained to adapt $W$ for the **new downstream task**.
+* Since pretraining does not know the downstream task in advance, there's no meaningful way to pretrain the LoRA adapters.
+
+This formulation ensures three things:
+
+1. **LoRA starts near-zero:**
+
+   * $B$ is initialized to zeros and $A$ with small random noise.
+   * So initially, $\Delta W = BA \approx 0$, and the effective weight is just the frozen $W$.
+   * This allows the model to behave identically to the pretrained base at the beginning of fine-tuning.
+
+2. **Stable learning dynamics:**
+
+   * Without proper scaling, increasing rank $r$ increases the magnitude of $\Delta W$, which can destabilize the model.
+   * By scaling $\Delta W$ as $\frac{\alpha}{r} BA$, LoRA keeps its contribution numerically stable across ranks. 
+
+3. **Minimal hyperparameter tuning:**
+
+   * Tuning $\alpha$ behaves similarly to adjusting learning rate.
+   * Empirically, setting $\alpha = r$ works well across tasks and simplifies experimentation.
+   * You don’t need to retune learning rate every time you change $r$.
+
+Think of $W$ as the pre-trained brain, and $AB$ as adjustable reading glasses:
+
+* The brain is already powerful (pretrained weights).
+* You custom-fit new glasses (randomly initialized LoRA) to help the brain adapt to a new vision problem (task).
+
+---
+
 ---
 
 
