@@ -58,74 +58,9 @@ LoRA is usually applied to:
 
 **Why Q and V?**
 
-* $W^Q$: Affects how each token queries others — essential for attention pattern.
-* $W^V$: Affects the actual values propagated through attention.
-
-**Why not always K?**
-
-***classroom analogy:***
-
-
-
-
-
-
-
-
-# LoRA (Low-Rank Adaptation) for Multi-Head Attention: Complete Tutorial
-
-## 1. Introduction to LoRA
-
-**LoRA (Low-Rank Adaptation)** is a parameter-efficient fine-tuning technique for large-scale pre-trained models. It allows us to adapt a model by introducing low-rank trainable matrices into certain parts of the network while keeping the original pre-trained weights frozen.
-
-## 2. Core Idea
-
-In standard training, a weight matrix $W \in \mathbb{R}^{d \times k}$ is updated directly. LoRA freezes $W$ and instead introduces a trainable low-rank perturbation:
-
-$W' = W + \Delta W \quad \text{where} \quad \Delta W = A B \quad A \in \mathbb{R}^{d \times r}, B \in \mathbb{R}^{r \times k}, r \ll \min(d, k)$
-
-This allows only $A$ and $B$ to be trained.
-
-### Why Efficient?
-
-* The full matrix $W$ has $d \times k$ parameters.
-* LoRA adds $d \times r + r \times k = r (d + k)$ trainable parameters.
-* For square matrices where $d = k$, LoRA has $2 \times r \times d$ parameters.
-
-This is a massive reduction when $r \ll d$.
-
-### Why Can We Approximate a Matrix with a Low-Rank One?
-
-Most real-world weight matrices contain significant redundancy. The effective information often lies in a low-dimensional subspace. Through **Singular Value Decomposition (SVD)**:
-
-$W = U \Sigma V^\top$
-
-We can keep only the top $r$ singular values and associated vectors:
-
-$W \approx U_r \Sigma_r V_r^\top = A B$
-
-LoRA mimics this with trainable $A$ and $B$, assuming that the model only needs a low-dimensional update for fine-tuning. This insight drastically reduces the number of trainable parameters without a significant drop in performance.
-
-## 3. Where LoRA is Applied in Attention
-
-In Transformers, attention is computed as:
-
-$\text{Attention}(Q, K, V) = \text{softmax}\left( \frac{Q K^\top}{\sqrt{d_k}} \right)V$
-
-Where:
-
-* $Q = X W^Q$, $K = X W^K$, $V = X W^V$
-
-LoRA is usually applied to:
-
-* $W^Q$, $W^V$
-* Optionally $W^K$
-
-**Why Q and V?**
-
 To understand this intuitively, imagine a **math classroom** where tokens are students:
 
-* Each student wants to learn about a specific topic (e.g., algebra, geometry).
+* Each student learns about a specific topic (e.g., algebra, geometry).
 * Each student can ask questions (**Query / Q**) and answer questions (**Value / V**).
 * Each student also wears a name tag (**Key / K**) that tells others what topic they are knowledgeable about.
 
