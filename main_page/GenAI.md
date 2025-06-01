@@ -86,3 +86,9 @@ notable text-to-image generation models along with their corresponding research 
 LoRA (Low-Rank Adaptation) is a parameter-efficient fine-tuning technique for large-scale pre-trained models. It allows us to adapt a model by introducing low-rank trainable matrices into certain parts of the network while keeping the original pre-trained weights frozen. <p></p>
 </div>
 
+## [![EVALUATION](https://img.shields.io/badge/Evaluation-Metrics_for_LLMs-blue?style=for-the-badge&logo=github)](../posts/EvaluationMetricsLLM)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+Language models are evaluated across diverse tasks such as next-token prediction, text classification, summarization, translation, code generation, and question answering. Each task requires a suitable metric that reflects model performance both quantitatively and qualitatively.
+
+</div>
+
