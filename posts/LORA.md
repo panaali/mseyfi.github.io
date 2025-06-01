@@ -283,44 +283,6 @@ mha_lora = MultiHeadAttentionWithLoRA(embed_dim=64, num_heads=4, r=8)
 out = mha_lora(x)
 print(out.shape)  # (2, 16, 64)
 ```
-
-## 7. Can LoRA Work Without Pretrained Weights?
-
-Yes, it is possible to use LoRA without loading any pretrained weights. In this case, the base weight matrices (e.g., $W^Q$, $W^V$) are randomly initialized and then frozen, while the low-rank adapters are trained from scratch.
-
-However, this defeats the main purpose of LoRA:
-
-* LoRA is designed for **efficient adaptation** of large **pretrained models**.
-* Without a pretrained base, LoRA becomes just a constrained low-rank parameterization of a random model.
-
-### Why are LoRA weights randomly initialized even with a pretrained base?
-
-This is intentional and necessary:
-
-* The frozen base weights $W$ are loaded from a strong pretrained model.
-* The LoRA adapters $A$ and $B$ are **task-specific**. They start from random initialization and are trained to adapt $W$ for the **new downstream task**.
-* Since pretraining does not know the downstream task in advance, there's no meaningful way to pretrain the LoRA adapters.
-
-Think of $W$ as the pre-trained brain, and $A B$ as adjustable reading glasses:
-
-* The brain is already powerful (pretrained weights).
-* You custom-fit new glasses (randomly initialized LoRA) to help the brain adapt to a new vision problem (task).
-
-Reusing LoRA weights from another task would likely misalign with the new objective.
-
-### When does it make sense to skip pretrained weights?
-
-* **Experimental setups** where you're studying LoRA behavior.
-* **Warm-start training**, where the base model isn’t fully pretrained but is partially trained or adapted on related data. In this case, the model starts with weights that are not random but also not fully pretrained — they might come from a previous training stage or a domain-adapted model.
-* This approach is used when full pretraining is too expensive or unnecessary, and partial initialization can offer a reasonable starting point for LoRA.
-
-### Trade-offs:
-
-* You lose the performance benefits of starting from a powerful pretrained model.
-* Training becomes harder and slower.
-
-So while valid, using LoRA without pretrained weights is generally discouraged in practical applications.
-
 ## 7. Summary Table
 
 | Component         | LoRA Applied? | Explanation                               |
