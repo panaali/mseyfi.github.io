@@ -120,6 +120,19 @@ $\Delta W = A B \quad \text{rank}(\Delta W) \le r$
 
 This reduces both memory and compute. The success of this approximation depends on the low intrinsic dimensionality of useful updates.
 
+### What is Low Intrinsic Dimensionality?
+
+Although the weight matrix $W$ might be high-dimensional (e.g., 1024×1024), the essential changes needed to adapt it for a new task often lie in a much lower-dimensional space.
+
+This means:
+
+* The majority of meaningful updates to the model live in a small subspace.
+* Most of the directions in the full matrix space are either redundant or irrelevant for fine-tuning.
+
+By using low-rank matrices $A$ and $B$, LoRA captures the most impactful directions without needing to store or compute all $d 	imes k$ values.
+
+This principle — that the **intrinsic dimensionality** of useful changes is small — allows LoRA to work effectively with far fewer parameters.
+
 ## 5. LoRA-Enhanced Attention: How It Works
 
 Given a frozen weight $W^Q$, we replace it with:
@@ -130,6 +143,25 @@ During training, only $A_Q, B_Q$ are updated. $W^Q$ remains frozen.
 
 This is similarly done for $W^V$, optionally $W^K$.
 
+### Scaling Factor in LoRA
+
+From Section 4.1 of the original LoRA paper:
+
+* The update is defined as $\Delta W = \frac{\alpha}{r} B A$
+* $\alpha$: A constant scaling hyperparameter (often set equal to $r$)
+* $r$: The rank of the low-rank update
+
+This scaling ensures that:
+
+* The contribution of $\Delta W$ remains numerically stable regardless of $r$
+* When combined with optimizers like Adam, $\alpha$ acts like a gain factor or implicit learning rate for the adapter
+
+The authors note that tuning $\alpha$ is roughly equivalent to tuning the learning rate, so they usually set $\alpha = r$ to avoid retuning.
+
+---
+
+
+
 ## 6. LoRA Multi-Head Attention Code (No LLM Libraries)
 
 ```python
@@ -137,46 +169,59 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class LoRALinear(nn.Module):
-    def __init__(self, in_features, out_features, r=4, alpha=1.0, dropout=0.0):
+class LoRAParametrization(nn.Module):
+    def __init__(self, features_in, features_out, rank=1, alpha=1, device='cpu'):
         super().__init__()
-        self.in_features = in_features
-        self.out_features = out_features
-        self.r = r
-        self.alpha = alpha
+        self.lora_A = nn.Parameter(torch.zeros((rank, features_out)).to(device))
+        self.lora_B = nn.Parameter(torch.zeros((features_in, rank)).to(device))
+        nn.init.normal_(self.lora_A, mean=0, std=1)
+        self.scale = alpha / rank
+        self.enabled = True
 
-        self.weight = nn.Parameter(torch.randn(out_features, in_features))
-        self.weight.requires_grad = False
+    def forward(self, original_weights):
+        if self.enabled:
+            return original_weights + torch.matmul(self.lora_B, self.lora_A).view(original_weights.shape) * self.scale
+        else:
+            return original_weights
 
-        self.A = nn.Parameter(torch.randn(r, in_features) * 0.01)
-        self.B = nn.Parameter(torch.randn(out_features, r) * 0.01)
-
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, x):
-        delta_w = torch.matmul(self.B, self.A)
-        adapted_weight = self.weight + self.alpha * delta_w
-        return F.linear(self.dropout(x), adapted_weight)
-
+# Note: In practical usage, LoRA modules (q_proj and v_proj) should also be initialized
+# with weights from a pre-trained model if available, to preserve compatibility.
 class MultiHeadAttentionWithLoRA(nn.Module):
-    def __init__(self, embed_dim, num_heads, r=4):
+    # Accept pretrained weights for Q and V projections (optional)
+    def __init__(self, embed_dim, num_heads, r=4, alpha=1.0, pretrained_q=None, pretrained_v=None):
         super().__init__()
         assert embed_dim % num_heads == 0
         self.embed_dim = embed_dim
         self.num_heads = num_heads
         self.head_dim = embed_dim // num_heads
 
-        self.q_proj = LoRALinear(embed_dim, embed_dim, r=r)
+        self.q_weight = nn.Parameter(
+            pretrained_q.clone().detach() if pretrained_q is not None else torch.empty(embed_dim, embed_dim),
+            requires_grad=False
+        )
+        if pretrained_q is None:
+            nn.init.kaiming_uniform_(self.q_weight, a=math.sqrt(5))
+        self.v_weight = nn.Parameter(
+            pretrained_v.clone().detach() if pretrained_v is not None else torch.empty(embed_dim, embed_dim),
+            requires_grad=False
+        )
+        if pretrained_v is None:
+            nn.init.kaiming_uniform_(self.v_weight, a=math.sqrt(5))
+
+        self.q_lora = LoRAParametrization(embed_dim, embed_dim, rank=r, alpha=alpha)
+        self.v_lora = LoRAParametrization(embed_dim, embed_dim, rank=r, alpha=alpha)
+
         self.k_proj = nn.Linear(embed_dim, embed_dim)
-        self.v_proj = LoRALinear(embed_dim, embed_dim, r=r)
         self.out_proj = nn.Linear(embed_dim, embed_dim)
 
     def forward(self, x):
         B, T, C = x.shape
 
-        Q = self.q_proj(x).view(B, T, self.num_heads, self.head_dim).transpose(1, 2)
+        q_weight = self.q_lora(self.q_weight)
+        Q = F.linear(x, q_weight).view(B, T, self.num_heads, self.head_dim).transpose(1, 2)
         K = self.k_proj(x).view(B, T, self.num_heads, self.head_dim).transpose(1, 2)
-        V = self.v_proj(x).view(B, T, self.num_heads, self.head_dim).transpose(1, 2)
+        v_weight = self.v_lora(self.v_weight)
+        V = F.linear(x, v_weight).view(B, T, self.num_heads, self.head_dim).transpose(1, 2)
 
         attn_weights = torch.matmul(Q, K.transpose(-2, -1)) / (self.head_dim ** 0.5)
         attn_probs = F.softmax(attn_weights, dim=-1)
@@ -191,6 +236,43 @@ mha_lora = MultiHeadAttentionWithLoRA(embed_dim=64, num_heads=4, r=8)
 out = mha_lora(x)
 print(out.shape)  # (2, 16, 64)
 ```
+
+## 7. Can LoRA Work Without Pretrained Weights?
+
+Yes, it is possible to use LoRA without loading any pretrained weights. In this case, the base weight matrices (e.g., $W^Q$, $W^V$) are randomly initialized and then frozen, while the low-rank adapters are trained from scratch.
+
+However, this defeats the main purpose of LoRA:
+
+* LoRA is designed for **efficient adaptation** of large **pretrained models**.
+* Without a pretrained base, LoRA becomes just a constrained low-rank parameterization of a random model.
+
+### Why are LoRA weights randomly initialized even with a pretrained base?
+
+This is intentional and necessary:
+
+* The frozen base weights $W$ are loaded from a strong pretrained model.
+* The LoRA adapters $A$ and $B$ are **task-specific**. They start from random initialization and are trained to adapt $W$ for the **new downstream task**.
+* Since pretraining does not know the downstream task in advance, there's no meaningful way to pretrain the LoRA adapters.
+
+Think of $W$ as the pre-trained brain, and $A B$ as adjustable reading glasses:
+
+* The brain is already powerful (pretrained weights).
+* You custom-fit new glasses (randomly initialized LoRA) to help the brain adapt to a new vision problem (task).
+
+Reusing LoRA weights from another task would likely misalign with the new objective.
+
+### When does it make sense to skip pretrained weights?
+
+* **Experimental setups** where you're studying LoRA behavior.
+* **Warm-start training**, where the base model isn’t fully pretrained but is partially trained or adapted on related data. In this case, the model starts with weights that are not random but also not fully pretrained — they might come from a previous training stage or a domain-adapted model.
+* This approach is used when full pretraining is too expensive or unnecessary, and partial initialization can offer a reasonable starting point for LoRA.
+
+### Trade-offs:
+
+* You lose the performance benefits of starting from a powerful pretrained model.
+* Training becomes harder and slower.
+
+So while valid, using LoRA without pretrained weights is generally discouraged in practical applications.
 
 ## 7. Summary Table
 
