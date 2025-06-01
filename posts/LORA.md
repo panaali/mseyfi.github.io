@@ -121,10 +121,13 @@ So, yes—it is **possible** to update both K and V safely. But:
 In low-rank settings like LoRA, Q and V often give the best return on investment with the least risk.
 
 Empirically, this is enough to shift the model toward the new domain without corrupting its internal structure.
-**Not applied to:**
+
+**LORA is Not applied to:**
 
 * $QK^\top$, the attention score matrix, which is a result of computation.
 * $QK^\top V$, the attention output, which is not a parameter but an intermediate result.
+
+Because they are not weights, they are only the result of multiplications that depend on the input data.
 
 ## 4. Rank of Matrix in LoRA
 
