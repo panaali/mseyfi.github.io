@@ -1,6 +1,6 @@
 ## 📚 Ensemble Learning: Bagging, Boosting, and Bootstrap Sampling
 
-### Part 1: What is Bootstrapping in Ensembling?
+## part 1: What is Bootstrapping in Ensembling?
 
 **Bootstrapping** is the process of creating multiple new datasets by sampling from the original dataset **with replacement**.
 
@@ -65,7 +65,7 @@ This has the effect of **weighting** some samples more heavily (depending on how
 
 ---
 
-### Part 2: What is Bagging (Bootstrap Aggregating)?
+## part 2: What is Bagging (Bootstrap Aggregating)?
 
 **Bagging** is an ensemble learning technique that combines the predictions of multiple base models, each trained on a different **bootstrap sample** of the data.
 
@@ -115,7 +115,7 @@ Say we create 5 bootstraps from the dataset of 100 samples, and train 5 decision
 * If it's regression → take average of 5 outputs.
 
 
-### Part 3: Mathematical Insights on Bagging
+## part 3: Mathematical Insights on Bagging
 
 #### 1. Why Does Ensembling Reduce Variance?
 
@@ -168,7 +168,7 @@ This insight is fundamental to understanding how Bagging builds diversity, and h
 
 ---
 
-### Part 3B: Variance of the Ensemble with Correlated Predictors
+## part 3B: Variance of the Ensemble with Correlated Predictors
 
 Assume:
 
@@ -201,7 +201,7 @@ $$
 This shows that **lower correlation** between predictors increases the benefit of ensembling — motivating methods like Random Forests to inject feature randomness.
 
 
-### Part 4: Random Forests
+## part 4: Random Forests
 
 A **Random Forest** is an ensemble of decision trees trained using the **bagging** technique, but with an added twist: it introduces randomness in the selection of features.
 
@@ -271,7 +271,7 @@ $$
 * Bagging is great for **variance reduction** without increasing bias.
 ---
 
-### Part 6: Why Do We Do Boosting?
+## part 6: Why Do We Do Boosting?
 
 Boosting aims to convert a collection of **weak learners** (models that perform just slightly better than random guessing) into a **strong learner** (a high-performance model).
 
@@ -310,7 +310,7 @@ This approach helps to:
 
 Now let’s walk through a worked example and pseudocode for boosting with decision stumps.
 
-### Part 6: Boosting with Decision Stumps — Worked Example and Pseudocode
+## part 6: Boosting with Decision Stumps — Worked Example and Pseudocode
 
 Let’s walk through a simple boosting process using **decision stumps** (one-level decision trees) for a **binary classification** task.
 
@@ -371,7 +371,7 @@ In the next section, we’ll break down Gradient Boosting in more detail with lo
 
 ---
 
-### Part 7: Gradient Boosting — Intuition and Walkthrough
+## part 7: Gradient Boosting — Intuition and Walkthrough
 
 #### Core Idea:
 
@@ -435,7 +435,7 @@ In the next section, we’ll contrast boosting methods and give guidance on when
 
 ---
 
-### Part 7: Gradient Boosting — Intuition and Walkthrough
+## part 7: Gradient Boosting — Intuition and Walkthrough
 
 Gradient Boosting can seem confusing because it's not just a simple ensemble like Bagging — it's actually performing **optimization in function space**. Here's a more detailed explanation to clarify the concepts:
 
@@ -577,7 +577,7 @@ Here’s the content you can manually add to your document under **Part 9**:
 
 ---
 
-### Part 8: XGBoost — eXtreme Gradient Boosting
+## part 8: XGBoost — eXtreme Gradient Boosting
 
 XGBoost is an optimized version of gradient boosting that improves training speed, generalization, and scalability. It includes several innovations over vanilla gradient boosting:
 
