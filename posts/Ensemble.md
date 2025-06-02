@@ -269,6 +269,7 @@ $$
 * Each model has high variance, but averaging reduces overall **variance**.
 * Bias stays roughly the same.
 * Bagging is great for **variance reduction** without increasing bias.
+  
 ---
 
 ## part 6: Why Do We Do Boosting?
