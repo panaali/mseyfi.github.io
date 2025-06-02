@@ -430,11 +430,6 @@ Repeat this for $T$ steps.
 In the next section, we’ll contrast boosting methods and give guidance on when to use them.
 
 ---
-## 📚 Ensemble Learning: Bagging, Boosting, and Bootstrap Sampling
-
-...\[previous sections remain unchanged]...
-
----
 
 ## part 7: Gradient Boosting — Intuition and Walkthrough
 
