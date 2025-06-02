@@ -200,69 +200,6 @@ $$
 
 This shows that **lower correlation** between predictors increases the benefit of ensembling — motivating methods like Random Forests to inject feature randomness.
 
-### Part 4: Random Forests
-
-A **Random Forest** is an ensemble of decision trees trained using the **bagging** technique, but with an added twist: it introduces randomness in the selection of features.
-
-This extra randomness **reduces the correlation** $\rho$ between trees, improving the ensemble’s effectiveness according to the formula:
-
-$$
-\text{Var}(\bar{f}) = \frac{\sigma^2}{B}(1 + (B - 1)\rho)
-$$
-
-### Key Differences from Bagging Alone:
-
-* **Bagging**: Samples different data subsets (bootstraps), but each model sees all features.
-* **Random Forest**: Samples data (bootstraps) **and** samples a random subset of features **at each split**.
-
-### Training Procedure:
-
-![Random Forest Training Diagram](https://upload.wikimedia.org/wikipedia/commons/7/76/Random_forest_diagram_complete.png)
-
-*Illustration of bootstrap sampling and feature selection at each split.*
-
-**Note:** In Random Forests, feature selection is done **at each node**, not once per tree. This means that every node might consider a different subset of features. This enhances model diversity even further than just bootstrapped data.
-
-1. Create $B$ bootstrap samples.
-2. Train a decision tree on each bootstrap sample.
-3. When splitting each node in a tree:
-
-   * Randomly select $m$ features from the full set ($m < d$, where $d$ is the total number of features).
-   * Split only on the best among those $m$.
-
-### Prediction:
-
-* **Classification**: Take the majority vote among the trees.
-* **Regression**: Take the mean of predictions.
-
-### Typical Values:
-
-* Number of features per split:
-
-  * Classification: $m = \sqrt{d}$
-  * Regression: $m = d/3$
-
-### Advantages of Random Forests:
-
-* Better generalization than bagging alone.
-* Handles high-dimensional data well.
-* Robust to overfitting and noise.
-* Works for both classification and regression.
-
-### Out-of-Bag Error in Random Forests:
-
-* Each tree is trained on a bootstrap sample.
-* \~36.8% of samples are left out (OOB samples).
-* These can be used to estimate generalization error **without a separate validation set**.
-
-
-
-
-## 📚 Ensemble Learning: Bagging, Boosting, and Bootstrap Sampling
-
-...\[previous sections remain unchanged]...
-
----
 
 ### Part 4: Random Forests
 
@@ -281,7 +218,7 @@ $$
 
 ### Training Procedure:
 
-![Random Forest Training Diagram](https://upload.wikimedia.org/wikipedia/commons/7/76/Random_forest_diagram_complete.png)
+![Random Forest Training Diagram](../images/RF.jpeg)
 
 *Illustration of bootstrap sampling and feature selection at each split.*
 
