@@ -37,4 +37,54 @@ The model has no knowledge of the end of the sentence.Unidirectional context, ve
 10- Encoder-Decoder models(T5, Bart) summarization, translation, question answering   
   - pretrain using span corruption
   - Sentinel tokens
+# computational Challenges of LLMs
+BFLOAT16 and FP16
+Model Sharding FSDP
+Chinchilla Rule 
+## Finetuning
+
+ICL (in-contect learning zeor/one/few shot learning doesnt work for smaller models and may take a lot of space in the context window)
+
+1- Instruction fine-tuning 
+  - works on pairs of prompt-completion.
+  - For a single task fine-tuning we need around 1K examples.
+  - it's a full fine-tuning mechanism that updates all the model weights
+  - Finetuning on a single task may cause catastrophic forgetting
+  - If model performance drop on other tasks are important, you need to finetune over multiple tasks
+    - Often 50K to 100K examples across multiple taks are needed.
+  - **PEFT** or parameter efficient fine-tuning only adapt task-specific weights.
+  - One important technique to prevent catasrophic forgetting is regularization on gradients norms. Using this technique, we prevent big updates on the backpropagation.
+  - ## FLAN Finetuned LAnguage NET.
+2- Metrics for evaluating LLMS
+  - ## Definitions:
+    -  **Unigram** is a single word  
+    -  **Bigram** is a two words
+    -  **n-gram** is a group of n *consecutive* words
+  
+  - Rouge: Used for text summarization
+    - compares a summary to one or multiple other reference summaries. 
     
+    EX:
+
+    Reference: It is cold outside
+    
+    Generated output: it is very cols outside 
+    
+    $$
+    Rouge-1_{\text{recall}} = \frac{\text{unigram matches}}{\text{unnigrams in reference}}
+    $$
+
+    
+    $$
+    Rouge-1_{\text{precision}} = \frac{\text{unigram matches}}{\text{unnigrams in output}}
+    $$
+
+    $$
+    Rouge-1_{\text{F1}} = 2.\frac{\text{precision}\times \text{recall}}{\text{precision} + \text{recall}}
+    $$
+    
+  
+  - BLEU: Used for translation task
+    - Compares translation to human-generated translation   
+        
+  
