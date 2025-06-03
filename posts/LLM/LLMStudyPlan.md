@@ -46,6 +46,7 @@ Understand LLM training pipelines and generation strategies.
 * Optimizer: AdamW, learning rate scheduling, weight decay
 * Context length, batch size, token masking
 * Gradient checkpointing, FSDP, ZeRO, mixed precision
+* Model sharding, tensor/parameter parallelism
 * Text generation: greedy, beam search, top-k, top-p, temperature, contrastive decoding
 
 ### 🔗 Key Papers:
@@ -182,4 +183,3 @@ Learn alignment, retrieval-based generation, and advanced applications.
 * OpenChatKit: [https://github.com/togethercomputer/OpenChatKit](https://github.com/togethercomputer/OpenChatKit)
 
 ---
-
