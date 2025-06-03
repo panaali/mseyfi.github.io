@@ -1,209 +1,185 @@
-Here’s your **complete 6-week study plan** for learning LLMs from the ground up — **topics**, **papers**, **GitHub repos**, and **goals** are all included. Each week focuses on mastering a coherent module of LLM development, tuning, evaluation, and deployment, optimized for your deep learning background.
+## 📅 6-Week Curriculum to Learn Large Language Models (LLMs)
 
----
-
-# 📅 Full 6-Week Calendar to Learn LLMs
+This curriculum is designed for learners with a deep learning and transformer background (e.g., computer vision) who are new to language models. It covers theory, hands-on tools, codebases, and essential papers from training to deployment.
 
 ---
 
 ## ✅ WEEK 1: Transformer Decoder, Tokenization, and Causal LM
 
-### 🎯 Goal: Understand how GPT-style models represent and process text.
+### 🎯 Goal:
+
+Understand how GPT-style models process text via self-attention and how tokenization works.
 
 ### 📘 Topics:
 
-* Transformer decoder stack: self-attention, feed-forward, residual + LayerNorm
-* Causal attention mask
-* Position encodings: sinusoidal vs learned
-* Byte-Pair Encoding (BPE), WordPiece, SentencePiece
-* Tokenizer input/output formats
+* Transformer decoder stack: self-attention, FFN, residuals, LayerNorm
+* Causal attention masking
+* Positional encodings: sinusoidal vs learned
+* Tokenization: BPE, WordPiece, SentencePiece
 * Special tokens (PAD, BOS, EOS, CLS)
 * Autoregressive language modeling objective
-* Perplexity definition and cross-entropy loss
+* Perplexity and cross-entropy loss
 
 ### 🔗 Key Papers:
 
-* [Attention is All You Need](https://arxiv.org/abs/1706.03762)
-* [GPT-3: Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165)
+* Attention is All You Need – Vaswani et al. (2017)
+* Language Models are Few-Shot Learners (GPT-3)
 
 ### 💻 GitHub Repos:
 
-* [nanoGPT](https://github.com/karpathy/nanoGPT)
-* [minGPT](https://github.com/karpathy/minGPT)
-* [HuggingFace Tokenizers](https://github.com/huggingface/tokenizers)
-* [tiktoken](https://github.com/openai/tiktoken)
+* nanoGPT: [https://github.com/karpathy/nanoGPT](https://github.com/karpathy/nanoGPT)
+* minGPT: [https://github.com/karpathy/minGPT](https://github.com/karpathy/minGPT)
+* HuggingFace Tokenizers: [https://github.com/huggingface/tokenizers](https://github.com/huggingface/tokenizers)
+* tiktoken: [https://github.com/openai/tiktoken](https://github.com/openai/tiktoken)
 
 ---
 
-## ✅ WEEK 2: LLM Pretraining and Sampling Strategies
+## ✅ WEEK 2: Pretraining and Sampling Strategies
 
-### 🎯 Goal: Learn how LLMs are pretrained on large corpora and how text is generated.
+### 🎯 Goal:
+
+Understand LLM training pipelines and generation strategies.
 
 ### 📘 Topics:
 
 * Pretraining datasets: C4, The Pile, BookCorpus, Common Crawl
-* Optimizer: AdamW, LR schedules, weight decay
-* Gradient checkpointing, FSDP, ZeRO
-* Sequence truncation and chunking
-* Context window, batch size, masking mechanics
-* Sampling techniques:
-
-  * Greedy
-  * Beam search
-  * Top-k, top-p (nucleus)
-  * Temperature
-  * Contrastive decoding
+* Optimizer: AdamW, learning rate scheduling, weight decay
+* Context length, batch size, token masking
+* Gradient checkpointing, FSDP, ZeRO, mixed precision
+* Text generation: greedy, beam search, top-k, top-p, temperature, contrastive decoding
 
 ### 🔗 Key Papers:
 
-* [Scaling Laws for Neural Language Models (Kaplan et al.)](https://arxiv.org/abs/2001.08361)
-* [Better Language Models (GPT-2)](https://openai.com/research/better-language-models)
+* Scaling Laws for Neural Language Models (Kaplan et al.)
+* Better Language Models and Their Implications (GPT-2)
 
-### 💻 GitHub Repos:
+### 💻 GitHub:
 
-* [DeepSpeed Examples – ChatGPT training](https://github.com/microsoft/DeepSpeedExamples/tree/master/applications/DeepSpeed-Chat)
-* [Megatron-LM](https://github.com/NVIDIA/Megatron-LM)
-* [HuggingFace Transformers Trainer](https://github.com/huggingface/transformers)
-* [Text generation sampling demo](https://huggingface.co/blog/how-to-generate)
+* DeepSpeed Chat Examples: [https://github.com/microsoft/DeepSpeedExamples](https://github.com/microsoft/DeepSpeedExamples)
+* Megatron-LM: [https://github.com/NVIDIA/Megatron-LM](https://github.com/NVIDIA/Megatron-LM)
+* HuggingFace Trainer: [https://github.com/huggingface/transformers](https://github.com/huggingface/transformers)
+* HuggingFace Sampling Blog: [https://huggingface.co/blog/how-to-generate](https://huggingface.co/blog/how-to-generate)
 
 ---
 
 ## ✅ WEEK 3: Evaluation Metrics and Benchmarks
 
-### 🎯 Goal: Evaluate LLM quality across generation, classification, and reasoning tasks.
+### 🎯 Goal:
+
+Learn how to evaluate LLMs using standardized metrics and benchmarks.
 
 ### 📘 Topics:
 
-* Perplexity, cross-entropy
-* BLEU (translation), ROUGE (summarization), METEOR
-* BERTScore (semantic similarity)
-* Exact Match, F1 (for QA)
-* Pass\@k (code generation)
-* HumanEval, MT-Bench
-* Benchmarks:
-
-  * MMLU
-  * TruthfulQA
-  * HellaSwag
-  * ARC
-  * GSM8K
+* Metrics: perplexity, cross-entropy, BLEU, ROUGE, METEOR
+* BERTScore for semantic similarity
+* Pass\@k for code generation
+* QA metrics: Exact Match (EM), F1
+* Benchmarks: MMLU, TruthfulQA, ARC, HellaSwag, GSM8K
 
 ### 🔗 Key Papers:
 
-* [BLEU](https://aclanthology.org/P02-1040/)
-* [ROUGE](https://aclanthology.org/W04-1013/)
-* [BERTScore](https://arxiv.org/abs/1904.09675)
-* [MMLU Benchmark](https://arxiv.org/abs/2009.03300)
+* BLEU (Papineni et al. 2002)
+* ROUGE (Lin 2004)
+* BERTScore (Zhang et al. 2019)
+* MMLU (Hendrycks et al. 2020)
 
-### 💻 GitHub Repos:
+### 💻 GitHub:
 
-* [nlp-metrics (nlg-eval)](https://github.com/Maluuba/nlg-eval)
-* [BERTScore](https://github.com/Tiiiger/bert_score)
-* [lm-eval-harness](https://github.com/EleutherAI/lm-evaluation-harness)
-* [HuggingFace Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
+* BERTScore: [https://github.com/Tiiiger/bert\_score](https://github.com/Tiiiger/bert_score)
+* nlg-eval: [https://github.com/Maluuba/nlg-eval](https://github.com/Maluuba/nlg-eval)
+* lm-eval-harness: [https://github.com/EleutherAI/lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
+* HuggingFace Open LLM Leaderboard: [https://huggingface.co/spaces/HuggingFaceH4/open\_llm\_leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
 
 ---
 
-## ✅ WEEK 4: Fine-Tuning, Instruction Tuning, LoRA, QLoRA
+## ✅ WEEK 4: Finetuning, Instruction Tuning, LoRA, QLoRA
 
-### 🎯 Goal: Adapt pretrained LLMs to downstream tasks with limited compute.
+### 🎯 Goal:
+
+Learn how to adapt pretrained LLMs efficiently.
 
 ### 📘 Topics:
 
-* Supervised instruction tuning (e.g. FLAN, Alpaca)
-* Prompt–response dataset structure
-* Hyperparameter tuning for finetuning
-* Parameter-efficient tuning:
-
-  * LoRA (Low-Rank Adaptation)
-  * QLoRA (4-bit training)
-  * Prefix tuning
-  * BitFit
-* Evaluation of finetuned models
-* Data formatting: prompt engineering for finetuning
+* Supervised instruction tuning: FLAN, Alpaca, Dolly
+* Prompt-response dataset formatting
+* LoRA (Low-Rank Adaptation), QLoRA (4-bit quantization)
+* Prefix tuning, BitFit
+* PEFT trade-offs: compute vs accuracy
 
 ### 🔗 Key Papers:
 
-* [Self-Instruct](https://arxiv.org/abs/2212.10560)
-* [LoRA](https://arxiv.org/abs/2106.09685)
-* [QLoRA](https://arxiv.org/abs/2305.14314)
+* Self-Instruct (Wang et al., 2022)
+* LoRA (Hu et al., 2021)
+* QLoRA (Dettmers et al., 2023)
 
-### 💻 GitHub Repos:
+### 💻 GitHub:
 
-* [HuggingFace PEFT](https://github.com/huggingface/peft)
-* [alpaca-lora](https://github.com/tloen/alpaca-lora)
-* [QLoRA (artidoro)](https://github.com/artidoro/qlora)
-* [FastChat](https://github.com/lm-sys/FastChat)
+* HuggingFace PEFT: [https://github.com/huggingface/peft](https://github.com/huggingface/peft)
+* Alpaca-LoRA: [https://github.com/tloen/alpaca-lora](https://github.com/tloen/alpaca-lora)
+* QLoRA: [https://github.com/artidoro/qlora](https://github.com/artidoro/qlora)
+* FastChat: [https://github.com/lm-sys/FastChat](https://github.com/lm-sys/FastChat)
 
 ---
 
-## ✅ WEEK 5: Inference Optimization + Prompt Engineering
+## ✅ WEEK 5: Inference Optimization + Prompting
 
-### 🎯 Goal: Serve LLMs efficiently and improve zero-shot/few-shot capabilities.
+### 🎯 Goal:
+
+Serve LLMs efficiently and maximize performance via prompting.
 
 ### 📘 Topics:
 
-* Prompting:
-
-  * Zero-shot, few-shot, chain-of-thought (CoT)
-  * Tool-use, self-refinement, scratchpad prompting
-* Quantization:
-
-  * GPTQ (INT4)
-  * AWQ (asymmetric quantization)
-  * LLM.int8()
-* KV caching
-* FlashAttention, Rotary Positional Embedding (RoPE)
-* Efficient inference libraries (vLLM, TensorRT-LLM)
+* Prompting strategies: zero-shot, few-shot, chain-of-thought, self-refinement
+* FlashAttention, KV caching, Rotary Positional Embedding (RoPE)
+* Quantization: GPTQ, AWQ, LLM.int8
+* Accelerated inference: vLLM, TensorRT-LLM
 
 ### 🔗 Key Papers:
 
-* [Chain-of-Thought Prompting](https://arxiv.org/abs/2201.11903)
-* [LLM.int8()](https://arxiv.org/abs/2208.07339)
-* [FlashAttention](https://arxiv.org/abs/2205.14135)
+* Chain-of-Thought Prompting (Wei et al., 2022)
+* LLM.int8() (Dettmers et al., 2022)
+* FlashAttention (Dao et al., 2022)
 
-### 💻 GitHub Repos:
+### 💻 GitHub:
 
-* [vLLM](https://github.com/vllm-project/vllm)
-* [GPTQ](https://github.com/IST-DASLab/gptq)
-* [AWQ](https://github.com/mit-han-lab/llm-awq)
-* [Prompt Engineering Guide](https://github.com/dair-ai/Prompt-Engineering-Guide)
-* [LangChain](https://github.com/langchain-ai/langchain)
+* vLLM: [https://github.com/vllm-project/vllm](https://github.com/vllm-project/vllm)
+* GPTQ: [https://github.com/IST-DASLab/gptq](https://github.com/IST-DASLab/gptq)
+* AWQ: [https://github.com/mit-han-lab/llm-awq](https://github.com/mit-han-lab/llm-awq)
+* Prompt Engineering Guide: [https://github.com/dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide)
+* LangChain: [https://github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain)
 
 ---
 
-## ✅ WEEK 6: RLHF + Applications (QA, Summarization, Coding, Agents)
+## ✅ WEEK 6: RLHF + RAG + Applications + Agents
 
-### 🎯 Goal: Understand how models are aligned with human preferences and deployed in real-world tasks.
+### 🎯 Goal:
+
+Learn alignment, retrieval-based generation, and advanced applications.
 
 ### 📘 Topics:
 
-* RLHF:
-
-  * Reward model training
-  * Preference pair generation
-  * PPO algorithm
-  * DPO (Direct Preference Optimization)
-* Constitutional AI (Anthropic)
-* Use cases:
-
-  * Summarization
-  * Question Answering
-  * Retrieval Augmented Generation (RAG)
-  * Code generation (e.g., HumanEval, CodeT)
-  * Multi-modal LLMs (BLIP, Flamingo, LLaVA – optional)
+* RLHF: preference modeling, reward modeling, PPO, DPO
+* RAG: query embedding, document chunking, FAISS, Chroma, context injection
+* Tools & agents: ReAct, Toolformer, AutoGPT
+* Use cases: QA, summarization, code generation, dialog systems
+* Safety & guardrails: hallucination detection, content filtering, Constitutional AI
 
 ### 🔗 Key Papers:
 
-* [InstructGPT](https://arxiv.org/abs/2203.02155)
-* [DPO](https://arxiv.org/abs/2305.18290)
-* [Constitutional AI](https://arxiv.org/abs/2212.08073)
+* InstructGPT (Ouyang et al., 2022)
+* DPO (Rafailov et al., 2023)
+* RAG (Lewis et al., 2020)
+* Atlas (Izacard et al., 2022)
+* Constitutional AI (Anthropic, 2022)
 
-### 💻 GitHub Repos:
+### 💻 GitHub:
 
-* [trlx](https://github.com/CarperAI/trlx)
-* [HuggingFace TRL](https://github.com/huggingface/trl)
-* [Axolotl (LoRA + RLHF trainer)](https://github.com/OpenAccess-AI-Collective/axolotl)
-* [OpenChatKit](https://github.com/togethercomputer/OpenChatKit)
+* TRLX: [https://github.com/CarperAI/trlx](https://github.com/CarperAI/trlx)
+* HuggingFace TRL: [https://github.com/huggingface/trl](https://github.com/huggingface/trl)
+* Axolotl: [https://github.com/OpenAccess-AI-Collective/axolotl](https://github.com/OpenAccess-AI-Collective/axolotl)
+* LangChain RAG: [https://github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain)
+* Haystack: [https://github.com/deepset-ai/haystack](https://github.com/deepset-ai/haystack)
+* OpenChatKit: [https://github.com/togethercomputer/OpenChatKit](https://github.com/togethercomputer/OpenChatKit)
 
 ---
+
