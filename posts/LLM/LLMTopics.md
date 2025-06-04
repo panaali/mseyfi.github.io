@@ -83,7 +83,9 @@ ICL (in-contect learning zeor/one/few shot learning doesnt work for smaller mode
     Rouge-1_{\text{F1}} = 2.\frac{\text{precision}\times \text{recall}}{\text{precision} + \text{recall}}
     $$
     
-  
+  - Issues: ordering of words are not taken into consideration therefore Rouge_1 can have a high number but they results may subjectively be poor.
+  - We can use N-grams instead of word matching for Rouge
+  - **LCS**: Longest common sequence
   - BLEU: Used for translation task
     - Compares translation to human-generated translation   
         
