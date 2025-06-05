@@ -1,8 +1,10 @@
+# Big Topics in LLMs
+
 1- what is Tokenizer, what are different tokenizers?
 
 2- Embedding 
 
-3- detokenizatin
+3- How de-tokenizatin
 
 4-Transformer architechtures:
   - Encoder only models (BERT) sequence-to-sequence, (input output same size) or use case: sentiment, classification
@@ -37,7 +39,7 @@ The model has no knowledge of the end of the sentence.Unidirectional context, ve
 10- Encoder-Decoder models(T5, Bart) summarization, translation, question answering   
   - pretrain using span corruption
   - Sentinel tokens
-# computational Challenges of LLMs
+# Computational Challenges of LLMs
 BFLOAT16 and FP16
 Model Sharding FSDP
 Chinchilla Rule 
@@ -97,7 +99,7 @@ ICL (in-contect learning zeor/one/few shot learning doesnt work for smaller mode
 -  Convert ranking into pariwise training data for the reward model
 - Reorder the prompts so that the prefered option comes first 
 
- ## why Convert ranking into pariwise training data for the reward model
+ ## Why Convert ranking into pariwise training data for the reward model
 
   Learning from full rankings (e.g., A > B > C > D) is more **complex and less stable** than learning from pairwise preferences due to several intertwined mathematical, computational, and statistical reasons. Here’s a breakdown:
 
