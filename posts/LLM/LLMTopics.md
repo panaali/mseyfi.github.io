@@ -675,3 +675,8 @@ $$L(\theta, \phi) = L^{CLIP}(\theta) - c_1 L^{VF}(\phi) + c_2 L^S(\theta)$$
 
 By optimizing this combined objective, PPO ensures that the Actor learns to take better actions in a stable way, the Critic learns to accurately predict outcomes, and the whole system maintains a healthy level of exploration.
 
+# Reward Hacking
+# Constitutional AI
+# RLAIF
+# Model Optimization
+## Prompt enginnering vs prompt tuning vs fine-tuning
