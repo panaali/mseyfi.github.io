@@ -673,10 +673,21 @@ $$L(\theta, \phi) = L^{CLIP}(\theta) - c_1 L^{VF}(\phi) + c_2 L^S(\theta)$$
 * $c_1$ and $c_2$ are coefficients that balance the importance of the value loss and the entropy bonus.
 * We subtract the value loss because we are typically performing gradient *ascent* on the policy objective (making it bigger) but gradient *descent* on the value error (making it smaller). Including it this way allows a single optimizer to handle everything.
 
-By optimizing this combined objective, PPO ensures that the Actor learns to take better actions in a stable way, the Critic learns to accurately predict outcomes, and the whole system maintains a healthy level of exploration.
+By optimizing this combined objective, PPO ensures that the Actor learns to take better actions stably, the Critic learns to predict outcomes accurately, and the whole system maintains a healthy level of exploration.
 
 # Reward Hacking
 # Constitutional AI
 # RLAIF
 # Model Optimization
-## Prompt enginnering vs prompt tuning vs fine-tuning
+## Prompt engineering vs prompt tuning(PEFT technique) vs fine-tuning(PEFT or non peft)
+
+# Problems with LLMs:
+  1-  **Hallucination**
+  2- Knowledge cut-off issue e.g., the president of the USA is Barack Obama (at the time of training, but someone else now)
+# Connecting LLMS to output sources
+  1- **RAG Retrieval augmented Generation**
+  -  Help to update the LLM knowledg
+  2- **Chain-of-thoughts prompting**
+  3- **Program Aided Language Models (PAL)**
+  4- **ReAct: Combining Reasoning and Action**
+## LangChain
