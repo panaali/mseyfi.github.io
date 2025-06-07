@@ -24,7 +24,11 @@ This mechanism allows the model to weigh the importance of other words when enco
 
 Given an input sequence of token embeddings $X = (x\_1, x\_2, ..., x\_n)$, we first project them into three distinct spaces using learned weight matrices ($W^Q, W^K, W^V$) to create Query, Key, and Value matrices:
 
-$$Q = XW^Q$$$$K = XW^K$$$$V = XW^V$$
+$$Q = XW^Q$$
+
+$$K = XW^K$$
+
+$$V = XW^V$$
 
 The **Scaled Dot-Product Attention** is then calculated as:
 
