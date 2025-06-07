@@ -1,3 +1,7 @@
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+
+## [![GenAI](https://img.shields.io/badge/CV-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../main_page/GenAI)
+
 After BERT established the paradigm of pre-training and fine-tuning, the natural next step in the scientific process was to ask: "Was this done optimally?" The original BERT paper left several questions unanswered regarding its design choices. Was the Next Sentence Prediction task truly necessary? How much did the data size and other hyperparameters matter?
 
 This brings us to our next topic: **RoBERTa**, a 2019 model from Facebook AI that stands for **R**obustly **O**ptimized **BERT** **A**pproach. RoBERTa is not a new architecture. Rather, it is a meticulous study that takes the original BERT architecture and systematically evaluates its pre-training recipe, resulting in a significantly more powerful model.
