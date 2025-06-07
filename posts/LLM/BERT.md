@@ -362,7 +362,3 @@ for epoch in range(num_epochs):
 ```
 
 -----
-
-### 11\. De-Tokenization
-
-De-tokenization is the process of converting the model's output token IDs back into human-readable text. The tokenizer object provides this functionality, typically via a `decode` method. This method takes a sequence of token IDs, looks them up in its vocabulary, and intelligently stitches sub-words (those starting with `##`) back into complete words.
