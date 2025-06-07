@@ -93,6 +93,9 @@ BERT uses a sub-word tokenizer called **WordPiece**. It effectively **eliminates
 -----
 
 ### 6\. BERT's Input Representation
+![Embedding](../../images/BERTEmbedding.png)
+
+*Fig. 1 BERT structure of Embeddings in the input*
 
 The final input vector for each token is the sum of three embeddings:
 
@@ -109,6 +112,10 @@ The final input vector for each token is the sum of three embeddings:
 BERT's deep bidirectional understanding of language is a direct result of its unique, unsupervised pre-training on two specific tasks. The training data for these tasks is generated "on the fly" from a massive, unlabeled text corpus (like Wikipedia). These tasks are trained **simultaneously**.
 
 #### 7.1 Task 1: Masked Language Model (MLM)
+
+![MLM](../../images/BERTMLM.png)
+
+*Fig. 2 BERT MLM task overview*
 
 * **The Task:** The MLM task moves beyond simple left-to-right language modeling. Instead of predicting the *next* word, the model must predict a word that has been intentionally hidden or "masked" from the input. To do this, it is forced to use both the left and right context, making it deeply bidirectional.
 
@@ -129,6 +136,10 @@ BERT's deep bidirectional understanding of language is a direct result of its un
     * **Expected Prediction:** The model should predict the word `hairy` for the `[MASK]` position by understanding the context provided by "dog," "is," and "playful."
 
 #### 7.2 Task 2: Next Sentence Prediction (NSP)
+
+![NSP](../../images/BERTNSP.png)
+
+*Fig. 3 BET NSP task overview*
 
 * **The Task:** This is a binary classification task designed to teach the model to understand sentence relationships. Given two sentences, A and B, the model must predict whether Sentence B is the actual sentence that followed Sentence A in the original text.
 
@@ -192,6 +203,10 @@ $$L_{\text{batch}}(\theta) = L_{MLM}^{\text{batch}}(\theta) + L_{NSP}^{\text{bat
 -----
 
 ### 9\. Fine-Tuning BERT for Downstream Tasks
+![NSP](../../images/BERTFT.png)
+
+*Fig. 4 Some BERT downstream tasks that BERT can be fine-tuned over *
+
 
 Fine-tuning adapts the pre-trained model by replacing the pre-training heads with a new, task-specific head.
 
