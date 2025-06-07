@@ -1,6 +1,6 @@
-[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../)
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../../)
 
-## [![GenAI](https://img.shields.io/badge/CV-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../main_page/GenAI)
+## [![GenAI](https://img.shields.io/badge/CV-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../../main_page/GenAI)
 
 # LoRA (Low-Rank Adaptation) for Multi-Head Attention: Complete Tutorial
 
@@ -16,7 +16,7 @@ $W' = W + \Delta W \quad \text{where} \quad \Delta W = A B \quad A \in \mathbb{R
 
 This allows only $A$ and $B$ to be trained.
 
-![LORA](../images/LORA.png)
+![LORA](../../images/LORA.png)
 *Fig.~1 LORA fine-tuning the weights with intorducing the low-rank trainable matrices*
 
 [Good implementation](https://github.com/hkproj/pytorch-lora/tree/main)
