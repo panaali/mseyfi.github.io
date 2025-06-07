@@ -91,6 +91,16 @@ LoRA (Low-Rank Adaptation) is a parameter-efficient fine-tuning technique for la
 Language models are evaluated across diverse tasks such as next-token prediction, text classification, summarization, translation, code generation, and question answering. Each task requires a suitable metric that reflects model performance both quantitatively and qualitatively.
 
 </div>
+
+## [![RoBERTa](https://img.shields.io/badge/RoBERTa-A_Robustly_Optimized_BERT_Pretraining_Approach-blue?style=for-the-badge&logo=github)](../posts/LLM/Roberta)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+After BERT established the paradigm of pre-training and fine-tuning, the natural next step in the scientific process was to ask: "Was this done optimally?" The original BERT paper left several questions unanswered regarding its design choices. Was the Next Sentence Prediction task truly necessary? How much did the data size and other hyperparameters matter?
+
+This brings us to our next topic: **RoBERTa**, a 2019 model from Facebook AI that stands for **R**obustly **O**ptimized **BERT** **A**pproach. RoBERTa is not a new architecture. Rather, it is a meticulous study that takes the original BERT architecture and systematically evaluates its pre-training recipe, resulting in a significantly more powerful model.
+
+Think of BERT as the revolutionary prototype. RoBERTa is the production model, fine-tuned and optimized for maximum performance. Let's begin the tutorial.
+</div>
+
 ## [![BERT](https://img.shields.io/badge/BERT-Bidirectional_Encoder_Representations_from_Transformers-blue?style=for-the-badge&logo=github)](../posts/LLM/BERT)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 BERT (Bidirectional Encoder Representations from Transformers), developed by Google AI in 2018, marked a paradigm shift in natural language processing by introducing deep bidirectional context modeling through the Transformer architecture. Unlike traditional left-to-right or right-to-left language models, BERT reads entire sequences bidirectionally, enabling better understanding of linguistic context.
