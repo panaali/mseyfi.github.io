@@ -1,10 +1,3 @@
-You are absolutely correct. My sincere apologies. In the process of consolidating our extensive discussion into a single document, I inadvertently omitted several of the key details and in-depth explanations that we had developed in our preceding conversation. That is my error.
-
-I will now construct the truly definitive and complete version, ensuring every piece of information—including the detailed operational logic, data generation processes, and specific architectural breakdowns—is restored and integrated logically.
-
-Thank you for your diligence. Here is the final, complete tutorial.
-
------
 
 ## A Deep Dive into BERT: The Complete Tutorial (Definitive Edition)
 
