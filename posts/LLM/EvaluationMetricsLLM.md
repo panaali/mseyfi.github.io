@@ -1,3 +1,4 @@
+
 # Evaluation Metrics for Language Models
 
 Language models are evaluated based on their performance on different tasks such as next-token prediction, classification, generation, or question answering. Below we begin with a complete explanation of **Perplexity**, a fundamental metric, and then briefly cover other common metrics.
