@@ -207,14 +207,77 @@ $$L_{\text{batch}}(\theta) = L_{MLM}^{\text{batch}}(\theta) + L_{NSP}^{\text{bat
 
 *Fig. 4 Some BERT downstream tasks that BERT can be fine-tuned over *
 
+Fine-tuning is the process where the pre-trained BERT model, with all its generalized linguistic knowledge, is adapted for a specific, supervised task. This involves adding a small, often simple, task-specific neural network layer—a "head"—on top of the BERT backbone.
 
-Fine-tuning adapts the pre-trained model by replacing the pre-training heads with a new, task-specific head.
+A crucial point to understand is the fine-tuning strategy: for most tasks, we perform **end-to-end fine-tuning**. This means we do **not** freeze the original BERT weights. Instead, the entire model, from the embedding layer to the final attention layer, is updated during training. However, we use a much smaller learning rate than in pre-training. This allows the pre-trained weights to adapt subtly to the nuances of the downstream task without catastrophically forgetting their powerful initial representations.
 
-  * **Text Classification:** A new classification head is placed on top of the `[CLS]` token's output.
-  * **Question Answering (Extractive):** Two new heads are added to predict the `start` and `end` tokens of the answer span from the passage tokens' outputs.
-  * **Named Entity Recognition (NER):** A new classification head is added to predict an entity label for *every* token's output.
+Let's examine the specifics for several key tasks.
 
------
+#### 9.1 Text Classification (e.g., Sentiment Analysis)
+This is the most straightforward fine-tuning task.
+
+* **Task:** Assign a single label to a sequence of text.
+* **Model Change:** A single linear classification layer is added. It takes the final hidden state of the **`[CLS]`** token (`[batch_size, hidden_size]`) and projects it to a vector of size `[batch_size, num_labels]`.
+* **Input-Output Pair:**
+    * **Input:** `[CLS] The movie was a masterpiece. [SEP]`
+    * **Output (Ground Truth):** A single class label, e.g., `Positive`.
+
+---
+#### 9.2 Question Answering (Extractive QA)
+
+This is a more complex, token-level task. The canonical dataset for this is the Stanford Question Answering Dataset (SQuAD).
+
+* **The Task:** Given a question and a context passage, the model must identify the continuous span of text *within the passage* that contains the answer. This is "extractive" because the model does not generate the answer; it extracts it.
+
+* **Input-Output Training Pair Construction:**
+    * **Input:** The input is a single packed sequence containing both the question and the context passage, separated by a `[SEP]` token.
+        * `[CLS] <Question Text> [SEP] <Context Passage Text> [SEP]`
+    * **Example Input:** `[CLS] What is the capital of France? [SEP] Paris is the capital and most populous city of France... [SEP]`
+    * **Output (Ground Truth):** The ground truth is **not** a class label. It consists of two integers:
+        1.  `start_position`: The index of the token where the answer begins in the passage.
+        2.  `end_position`: The index of the token where the answer ends.
+    * **Example Output:** For the input above, if "Paris" corresponds to token index 10 in the sequence, the ground truth would be `(start_position: 10, end_position: 10)`.
+
+* **How the Model is Changed (The QA Head):**
+    A single linear layer is added on top of the BERT backbone, but its application is different from classification.
+    1.  It takes the final hidden state of **every token** in the sequence as input (Shape: `[batch_size, sequence_length, hidden_size]`).
+    2.  It projects this input to an output of shape `[batch_size, sequence_length, 2]`.
+    3.  This final output tensor contains two numbers for each token:
+        * The **Start Logit**: The score indicating the likelihood of that token being the start of the answer span. (Slice `[:, :, 0]`)
+        * The **End Logit**: The score indicating the likelihood of that token being the end of the answer span. (Slice `[:, :, 1]`)
+
+* **Exact Training Procedure:**
+    1.  **Fine-Tuning Strategy:** The entire model is fine-tuned end-to-end.
+    2.  **Forward Pass:** An input pair is passed through the model to get the start and end logits for every token.
+    3.  **Loss Function:** The total loss is the sum of the cross-entropy losses for the start and end positions.
+        $$L_{QA} = L_{\text{start}} + L_{\text{end}}$$
+        * $L_{\text{start}}$ is the cross-entropy loss between the distribution of start logits (across all tokens) and the true `start_position`.
+        * $L_{\text{end}}$ is the cross-entropy loss between the distribution of end logits (across all tokens) and the true `end_position`.
+    4.  **Inference:** To predict an answer, we apply a `softmax` across the start logits and end logits independently to get probabilities. We then find the token indices `(i, j)` that maximize the score `p_start(i) + p_end(j)`, subject to the constraint that `j >= i`. The token span from `i` to `j` is the predicted answer.
+
+---
+#### 9.3 Named Entity Recognition (NER)
+
+NER is another common token-level classification task.
+
+* **The Task:** Classify each token in a sentence into a set of predefined categories such as Person (PER), Organization (ORG), Location (LOC), or Other (O). This often uses the IOB2 tagging scheme (e.g., `B-PER` for the beginning of a Person entity, `I-PER` for a token inside a Person entity).
+
+* **Input-Output Training Pair Construction:**
+    * **Input:** A single tokenized sentence.
+        * `[CLS] George Washington went to Washington . [SEP]`
+    * **Output (Ground Truth):** A sequence of labels, one for each corresponding input token.
+        * `[O, B-PER, I-PER, O, O, B-LOC, O, O]`
+    * **Handling Sub-words:** This is a critical nuance. If a word is split by the WordPiece tokenizer (e.g., "Washington" -> `Washing`, `##ton`), the standard practice is to assign the label to the first sub-word (`B-LOC`) and a special padding label (often `X` or `-100` in implementations, which is ignored by the loss function) to subsequent sub-words (`##ton`).
+
+* **How the Model is Changed (The NER Head):**
+    1.  A linear classification layer is added on top of the BERT backbone.
+    2.  It takes the final hidden state of **every token** as input (Shape: `[batch_size, sequence_length, hidden_size]`).
+    3.  It projects these hidden states to the number of NER tags (e.g., 9 for a typical IOB2 scheme with 4 entities), resulting in an output of shape `[batch_size, sequence_length, num_ner_tags]`.
+
+* **Exact Training Procedure:**
+    1.  **Fine-Tuning Strategy:** The entire model is fine-tuned end-to-end.
+    2.  **Forward Pass:** The input sentence is passed through the model to get a logit distribution over the NER tags for every token.
+    3.  **Loss Function:** A standard **token-level cross-entropy loss**. The loss is calculated for every token in the sequence by comparing its predicted label distribution against its true label. The final loss is the average of the losses for all non-special (and non-sub-word-padding) tokens in the batch.
 
 ### 10\. Implementation in Practice
 
