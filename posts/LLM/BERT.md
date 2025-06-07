@@ -202,10 +202,11 @@ $$L_{\text{batch}}(\theta) = L_{MLM}^{\text{batch}}(\theta) + L_{NSP}^{\text{bat
 
 -----
 
-### 9\. Fine-Tuning BERT for Downstream Tasks
 ![NSP](../../images/BERTFT.png)
 
 *Fig. 4 Some BERT downstream tasks that BERT can be fine-tuned over *
+
+### 9\. Fine-Tuning BERT for Downstream Tasks
 
 Fine-tuning is the process where the pre-trained BERT model, with all its generalized linguistic knowledge, is adapted for a specific, supervised task. This involves adding a small, often simple, task-specific neural network layer—a "head"—on top of the BERT backbone.
 
