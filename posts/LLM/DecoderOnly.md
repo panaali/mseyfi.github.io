@@ -121,18 +121,204 @@ Developed by Meta AI, the Llama family focused on training efficiency, demonstra
 
 #### 6.1 A Deep Dive into Sampling Strategies
 
-1.  **Greedy Search (Deterministic):** Always select the single token with the highest probability (`argmax`). This is fast but highly repetitive and rarely used for creative generation.
+Of course, professor. That is an excellent point. A high-level description is insufficient for a graduate-level understanding. The precise mechanics of *how* a token is selected from a probability distribution are fundamental to the behavior of these models.
 
-2.  **Temperature Sampling:** Rescales the logits before the softmax function using a `temperature` parameter ($T$).
-    * $T > 1$ increases randomness and creativity.
-    * $T < 1$ increases determinism, making the output more focused.
+Let's dedicate a detailed section to this, complete with procedural explanations and code snippets. I will add this to our definitive tutorial.
 
-3.  **Top-k Sampling:** Restricts the choice to a "shortlist" of the `k` most probable tokens, then samples from that smaller set. This avoids picking absurdly unlikely tokens from the distribution's tail.
+---
 
-4.  **Top-p (Nucleus) Sampling:** A more adaptive approach and the most common sophisticated method. It creates a shortlist of variable size by selecting the smallest set of tokens whose cumulative probability exceeds a threshold `p` (e.g., 0.95). If the model is certain, the set is small; if uncertain, the set is larger, allowing for more creativity.
+### A Deep Dive into Inference: How the Next Token is Picked
 
-5.  **Beam Search:** Used to find a high-probability *sequence* rather than just the next word. It keeps track of the `k` (the "beam width") most probable partial sequences at each step and expands them. It is more computationally intensive but often produces more coherent and optimal outputs for tasks like translation or summarization.
+Once the decoder model has completed its forward pass, it outputs a vector of **logits** for the next token. This vector has a size equal to the entire vocabulary (e.g., `[1, 50257]` for GPT-2). To be useful, these raw scores must be converted into a probability distribution.
 
+**The Starting Point: The Softmax Function**
+
+First, we apply the `softmax` function to the logits to get a probability distribution `P` where every value is between 0 and 1, and all values sum to 1.
+
+$$P = \text{softmax}(\text{logits})$$
+
+At this point, we have a probability for every single word in the vocabulary being the next word. The question is: **how do we choose one?**
+
+Let's explore the common strategies, from simplest to most sophisticated.
+
+#### 1. Greedy Search (Deterministic)
+
+This is the most straightforward method.
+
+* **Mechanism:** Simply select the token with the highest probability. This is equivalent to performing an `argmax` on the logits vector.
+* **Intuition:** "Always choose what the model thinks is best."
+* **Shortcoming:** While safe, it's extremely boring and repetitive. The model will often get stuck in loops of commonly associated words, lacking any creativity or variation. It is almost never used for creative text generation.
+
+#### 2. Temperature Sampling
+
+This is not a selection strategy on its own, but a modifier that affects all other sampling methods. It allows us to control the "randomness" of the model's predictions.
+
+* **Mechanism:** We rescale the logits before applying the softmax function using a `temperature` parameter, $T$.
+
+    $$P = \text{softmax}\left(\frac{\text{logits}}{T}\right)$$
+* **Intuition:**
+    * **$T > 1$ (e.g., 1.2):** Flattens the distribution. This makes less likely tokens more probable, increasing randomness. The model becomes more "creative" and "daring."
+    * **$T < 1$ (e.g., 0.7):** Sharpens the distribution. This makes high-probability tokens even more likely, reducing randomness. The model becomes more "focused" and "confident."
+
+#### 3. Top-k Sampling
+
+This is the first true sampling strategy that addresses the problem of Greedy Search.
+
+* **Intuition:** "Don't even consider the crazy, low-probability options. Only choose from a fixed-size 'shortlist' of the most likely candidates."
+* **Mechanism:**
+    1.  Identify the `k` tokens with the highest probabilities from the full distribution `P`.
+    2.  Set the probability of all other tokens to zero.
+    3.  **Re-normalize** the probabilities of the top `k` tokens so they sum to 1.
+    4.  Sample from this new, smaller distribution.
+* **Problem:** A fixed `k` is not adaptive. In some contexts, the number of reasonable next words might be very large (e.g., at the start of a story), and in others very small (e.g., after "The Eiffel Tower is in..."). Top-k struggles with this dynamic.
+
+* **Code Snippet for Top-k:**
+    ```python
+    import torch
+    import torch.nn.functional as F
+
+    def top_k_sampling(logits, k=50):
+        # logits shape: [batch_size, vocab_size]
+        
+        # 1. Find the top k logits and their values
+        # The `topk` function returns both values and indices
+        top_k_values, top_k_indices = torch.topk(logits, k) # [B, k]
+
+        # 2. Create a new logits tensor filled with -inf
+        filtered_logits = torch.full_like(logits, float('-inf'))
+
+        # 3. Use `scatter` to place the top k values back into the filtered logits
+        # This effectively sets all non-top-k logits to -inf
+        filtered_logits.scatter_(1, top_k_indices, top_k_values)
+
+        # 4. Apply softmax to get a re-normalized probability distribution
+        probabilities = F.softmax(filtered_logits, dim=-1)
+
+        # 5. Sample from this new distribution
+        next_token = torch.multinomial(probabilities, num_samples=1)
+        
+        return next_token
+    ```
+
+#### 4. Top-p (Nucleus) Sampling
+
+This is the most popular and effective sampling method, as it creates an adaptive shortlist.
+
+* **Intuition:** "Instead of a fixed-size list, choose from the smallest possible list of candidates whose combined probability meets a certain threshold."
+* **Mechanism:**
+    1.  Sort the vocabulary tokens by their probability in descending order.
+    2.  Calculate the cumulative sum of these sorted probabilities.
+    3.  Find all tokens whose cumulative probability is greater than the threshold `p` (e.g., `p=0.95`). These tokens are removed from the candidate list. The remaining set is the "nucleus."
+    4.  **Re-normalize** the probabilities of the nucleus tokens so they sum to 1.
+    5.  Sample from this adaptive nucleus distribution.
+
+Of course. That's an excellent request, as the tensor manipulations in Top-p sampling can be complex. Understanding the shapes at each step is key to grasping the algorithm.
+
+Let's break down the code with detailed inline comments explaining the tensor sizes. We will assume a `batch_size` (B) of 4 and a `vocab_size` (V) of 50,000 for this example.
+
+### Top-p (Nucleus) Sampling with Tensor Size Explanations
+
+```python
+import torch
+import torch.nn.functional as F
+
+def top_p_sampling(logits, p=0.95):
+    # Assume:
+    B = 4  # batch_size
+    V = 50000 # vocab_size
+    
+    # logits shape: [B, V] -> e.g., [4, 50000]
+    # This is the raw output from the language model head for the last token.
+
+    # 1. Sort logits in descending order to easily find the nucleus of high-probability tokens.
+    # We need both the sorted values and their original indices to reconstruct the filter later.
+    sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+    # sorted_logits shape: [B, V] -> e.g., [4, 50000]
+    # sorted_indices shape: [B, V] -> e.g., [4, 50000]
+
+    # Convert sorted logits to probabilities
+    sorted_probabilities = F.softmax(sorted_logits, dim=-1)
+    # sorted_probabilities shape: [B, V] -> e.g., [4, 50000]
+    # Example for one row: [0.1, 0.08, 0.05, 0.02, ..., 0.00001]
+
+    # 2. Calculate the cumulative sum of the probabilities.
+    cumulative_probs = torch.cumsum(sorted_probabilities, dim=-1)
+    # cumulative_probs shape: [B, V] -> e.g., [4, 50000]
+    # Example for one row: [0.1, 0.18, 0.23, 0.25, ..., 1.0]
+
+    # 3. Create a mask of tokens to remove. These are tokens that are NOT in the nucleus.
+    # The nucleus is the smallest set of tokens whose cumulative probability is >= p.
+    # So, we find all tokens where the cumulative probability already exceeds p.
+    sorted_indices_to_remove = cumulative_probs > p
+    # sorted_indices_to_remove shape: [B, V], dtype=torch.bool
+    # Example for one row (if p=0.9): [False, False, ..., True, True, True]
+
+    # 4. Shift the mask to the right to ensure we keep the first token that pushes the
+    # cumulative probability over the threshold p.
+    # We shift all elements one to the right, and the first element becomes False (0).
+    sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+    sorted_indices_to_remove[..., 0] = 0
+    # Now the mask correctly identifies only tokens that are truly outside the nucleus.
+
+    # 5. Go from the sorted view back to the original vocabulary order.
+    # We create a boolean mask of the same shape as the original logits.
+    indices_to_remove = torch.zeros_like(logits, dtype=torch.bool)
+    # We use `scatter_` to place `True` values at the original positions of the tokens we want to remove.
+    indices_to_remove.scatter_(1, sorted_indices, sorted_indices_to_remove)
+    # indices_to_remove shape: [B, V], dtype=torch.bool
+
+    # 6. Apply the mask to the original logits.
+    # `masked_fill_` sets the value of logits to -inf wherever the mask is True.
+    filtered_logits = logits.masked_fill(indices_to_remove, float('-inf'))
+    # filtered_logits shape: [B, V] -> e.g., [4, 50000]
+    # Now contains the original logit values for nucleus tokens, and -inf for all others.
+
+    # 7. Apply softmax to the filtered logits to get re-normalized probabilities.
+    # The -inf values will become 0 after softmax, and the probabilities of the
+    # nucleus tokens will be re-distributed to sum to 1.
+    probabilities = F.softmax(filtered_logits, dim=-1)
+    # probabilities shape: [B, V] -> e.g., [4, 50000]
+
+    # 8. Sample one token from this new, filtered distribution.
+    # `torch.multinomial` performs a weighted random draw.
+    next_token = torch.multinomial(probabilities, num_samples=1)
+    # next_token shape: [B, 1] -> e.g., [4, 1]
+
+    return next_token
+```
+
+### Step-by-Step Walkthrough
+
+Let's trace a single sequence (`B=1`) with a tiny vocabulary (`V=10`) and `p=0.9` to make it concrete.
+
+1.  **Start with Logits:**
+    `logits` = `[1.2, 3.1, 0.5, 8.2, -1.0, 5.5, 6.1, 0.1, 2.5, 4.3]` (Shape: `[1, 10]`)
+
+2.  **Sort Logits:** We get the sorted values and their original indices.
+    `sorted_logits` = `[8.2, 6.1, 5.5, 4.3, 3.1, 2.5, 1.2, 0.5, 0.1, -1.0]`
+    `sorted_indices` = `[3, 6, 5, 9, 1, 8, 0, 7, 2, 4]`
+
+3.  **Get Sorted Probabilities** (after softmax):
+    `sorted_probabilities` = `[0.60, 0.18, 0.10, 0.04, 0.01, ..., ]`
+
+4.  **Get Cumulative Probabilities:**
+    `cumulative_probs` = `[0.60, 0.78, 0.88, 0.92, 0.93, ..., 1.0]`
+
+5.  **Find Indices to Remove:** Find where `cumulative_probs > p` (where `p=0.9`).
+    `sorted_indices_to_remove` (initial) = `[F, F, F, T, T, T, T, T, T, T]`
+
+6.  **Shift the Mask:**
+    `sorted_indices_to_remove` (shifted) = `[F, F, F, F, T, T, T, T, T, T]`
+    *This is the key step. We keep the token that pushed us over the `p` threshold (the 4th one, with probability 0.04).* The nucleus now consists of the first 4 tokens.
+
+7.  **Map Mask to Original Indices:** We use `sorted_indices` to put `True` (remove) at the correct original positions. We will remove all tokens *except* those at original indices `3, 6, 5, 9`.
+
+8.  **Filter Logits:** The original `logits` tensor has the scores for tokens outside the nucleus set to `-inf`.
+
+9.  **Re-normalize with Softmax:** We apply a final softmax. Only the 4 tokens in the nucleus will have a non-zero probability, and their probabilities will sum to 1.
+
+10. **Sample:** `torch.multinomial` picks one token from this final 4-element distribution. The result is a single token ID.
+In practice, libraries like Hugging Face `transformers` combine all these techniques into a single `.generate()` method where you can specify `temperature`, `top_k`, and `top_p` simultaneously, allowing for fine-grained control over the generation process.
 ---
 ### 7. From-Scratch Implementation of a Decoder-Only Model
 This implementation uses the computationally efficient, fused-layer approach for multi-head attention.
