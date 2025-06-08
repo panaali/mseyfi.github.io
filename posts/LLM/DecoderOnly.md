@@ -17,6 +17,7 @@ This is achieved by adding a mask to the attention score matrix before the softm
 #### The Mathematics of Causal Self-Attention
 
 We modify the standard attention formula by adding a mask matrix $M$:
+
 $$M_{ij} = \begin{cases} 0 & \text{if } i \geq j \\ -\infty & \text{if } i < j \end{cases}$$
 
 $$\text{CausalAttention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V$$
