@@ -1,3 +1,6 @@
+[![Home](https://img.shields.io/badge/Home-Click%20Here-blue?style=flat&logo=homeadvisor&logoColor=white)](../../)
+
+## [![GenAI](https://img.shields.io/badge/GenAI-Selected_Topics_in_Generative_AI-green?style=for-the-badge&logo=github)](../../main_page/GenAI)
 
 # Evaluation Metrics for Language Models
 
@@ -8,6 +11,7 @@ Language models are evaluated based on their performance on different tasks such
 # 1. Perplexity (PPL)
 
 ### Definition:
+
 $$
 \text{Perplexity} = \exp\left(-\frac{1}{N} \sum_{i=1}^N \log p(x_i \mid x_{<i}) \right)
 $$
