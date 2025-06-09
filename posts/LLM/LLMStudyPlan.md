@@ -23,14 +23,12 @@ Understand how GPT-style models process text via self-attention and how tokeniza
 ### 🔗 Key Papers:
 
 * Attention is All You Need – Vaswani et al. (2017)
-* Language Models are Few-Shot Learners (GPT-3)
+* Language Models are Few-Shot Learners (GPT-2)
 
 ### 💻 GitHub Repos:
 
 * nanoGPT: [https://github.com/karpathy/nanoGPT](https://github.com/karpathy/nanoGPT)
-* minGPT: [https://github.com/karpathy/minGPT](https://github.com/karpathy/minGPT)
-* HuggingFace Tokenizers: [https://github.com/huggingface/tokenizers](https://github.com/huggingface/tokenizers)
-* tiktoken: [https://github.com/openai/tiktoken](https://github.com/openai/tiktoken)
+* picoGPT: [https://github.com/jaymody/picoGPT](https://github.com/jaymody/picoGPT)
 
 ---
 
@@ -71,18 +69,12 @@ Learn how to evaluate LLMs using standardized metrics and benchmarks.
 
 ### 📘 Topics:
 
-* Metrics: perplexity, cross-entropy, BLEU, ROUGE, METEOR
-* BERTScore for semantic similarity
-* Pass\@k for code generation
-* QA metrics: Exact Match (EM), F1
-* Benchmarks: MMLU, TruthfulQA, ARC, HellaSwag, GSM8K
+* Metrics: perplexity, cross-entropy, BLEU, ROUGE
 
 ### 🔗 Key Papers:
 
 * BLEU (Papineni et al. 2002)
 * ROUGE (Lin 2004)
-* BERTScore (Zhang et al. 2019)
-* MMLU (Hendrycks et al. 2020)
 
 ### 💻 GitHub:
 
@@ -103,23 +95,16 @@ Learn how to adapt pretrained LLMs efficiently.
 
 * Supervised instruction tuning: FLAN, Alpaca, Dolly
 * Prompt-response dataset formatting
-* LoRA (Low-Rank Adaptation), QLoRA (4-bit quantization)
-* Prefix tuning, BitFit
+* LoRA (Low-Rank Adaptation)
+* Prefix tuning
 * PEFT trade-offs: compute vs accuracy
 
 ### 🔗 Key Papers:
-
-* Self-Instruct (Wang et al., 2022)
 * LoRA (Hu et al., 2021)
-* QLoRA (Dettmers et al., 2023)
 
 ### 💻 GitHub:
 
 * HuggingFace PEFT: [https://github.com/huggingface/peft](https://github.com/huggingface/peft)
-* Alpaca-LoRA: [https://github.com/tloen/alpaca-lora](https://github.com/tloen/alpaca-lora)
-* QLoRA: [https://github.com/artidoro/qlora](https://github.com/artidoro/qlora)
-* FastChat: [https://github.com/lm-sys/FastChat](https://github.com/lm-sys/FastChat)
-
 ---
 
 ## ✅ WEEK 5: Inference Optimization + Prompting
@@ -132,13 +117,12 @@ Serve LLMs efficiently and maximize performance via prompting.
 
 * Prompting strategies: zero-shot, few-shot, chain-of-thought, self-refinement
 * FlashAttention, KV caching, Rotary Positional Embedding (RoPE)
-* Quantization: GPTQ, AWQ, LLM.int8
-* Accelerated inference: vLLM, TensorRT-LLM
+* Quantization: GPTQ, AWQ
+* Accelerated inference: vLLM, sglang, TensorRT-LLM
 
 ### 🔗 Key Papers:
 
 * Chain-of-Thought Prompting (Wei et al., 2022)
-* LLM.int8() (Dettmers et al., 2022)
 * FlashAttention (Dao et al., 2022)
 
 ### 💻 GitHub:
@@ -146,9 +130,6 @@ Serve LLMs efficiently and maximize performance via prompting.
 * vLLM: [https://github.com/vllm-project/vllm](https://github.com/vllm-project/vllm)
 * GPTQ: [https://github.com/IST-DASLab/gptq](https://github.com/IST-DASLab/gptq)
 * AWQ: [https://github.com/mit-han-lab/llm-awq](https://github.com/mit-han-lab/llm-awq)
-* Prompt Engineering Guide: [https://github.com/dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide)
-* LangChain: [https://github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain)
-
 ---
 
 ## ✅ WEEK 6: RLHF + RAG + Applications + Agents
@@ -172,14 +153,5 @@ Learn alignment, retrieval-based generation, and advanced applications.
 * RAG (Lewis et al., 2020)
 * Atlas (Izacard et al., 2022)
 * Constitutional AI (Anthropic, 2022)
-
-### 💻 GitHub:
-
-* TRLX: [https://github.com/CarperAI/trlx](https://github.com/CarperAI/trlx)
-* HuggingFace TRL: [https://github.com/huggingface/trl](https://github.com/huggingface/trl)
-* Axolotl: [https://github.com/OpenAccess-AI-Collective/axolotl](https://github.com/OpenAccess-AI-Collective/axolotl)
-* LangChain RAG: [https://github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain)
-* Haystack: [https://github.com/deepset-ai/haystack](https://github.com/deepset-ai/haystack)
-* OpenChatKit: [https://github.com/togethercomputer/OpenChatKit](https://github.com/togethercomputer/OpenChatKit)
 
 ---
