@@ -92,6 +92,17 @@ Language models are evaluated across diverse tasks such as next-token prediction
 
 </div>
 
+## [![Decoder](https://img.shields.io/badge/Decoder-Decoder_Only_Transformers-blue?style=for-the-badge&logo=github)](../posts/LLM/DecoderOnly)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+The core task of a decoder-only model is autoregressive text generation. The model learns to predict the very next word given a sequence of preceding words. It generates text one token at a time, feeding its own previous output back in as input to predict the next token. This simple, self-supervised objective, when applied at a massive scale, enables the model to learn grammar, facts, reasoning abilities, and style.
+</div>
+
+## [![RoPE](https://img.shields.io/badge/ROPE-Rotary_Positional_Embedding-blue?style=for-the-badge&logo=github)](../posts/LLM/ROPE)
+<div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
+ROPE injects positional information into queries and keys by rotating their components in complex space. Instead of adding positional encodings (like in vanilla Transformers), ROPE rotates the vector based on position — and this rotation preserves distance and ordering relationships.
+</div>
+
+
 ## [![RoBERTa](https://img.shields.io/badge/RoBERTa-A_Robustly_Optimized_BERT_Pretraining_Approach-blue?style=for-the-badge&logo=github)](../posts/LLM/Roberta)
 <div style="background-color: #f0f8ff; color: #555;font-weight: 485; padding: 20px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc;">
 After BERT established the paradigm of pre-training and fine-tuning, the natural next step in the scientific process was to ask: "Was this done optimally?" The original BERT paper left several questions unanswered regarding its design choices. Was the Next Sentence Prediction task truly necessary? How much did the data size and other hyperparameters matter?
